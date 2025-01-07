@@ -1,7 +1,7 @@
 package com.spring.edna.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.spring.edna.models.enums.TargetCostumer;
+import com.spring.edna.models.enums.TargetCustomer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -30,7 +30,7 @@ public class Store extends User{
     private String cnpj;
 
     @Enumerated(EnumType.STRING)
-    private TargetCostumer targetCustomer;
+    private TargetCustomer targetCustomer;
 
     @OneToOne(mappedBy = "store")
     @JsonBackReference(value = "store-address")
