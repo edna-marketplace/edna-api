@@ -12,7 +12,7 @@ public class CreateStore {
     @Autowired
     private StoreRepository storeRepository;
 
-    public String createStore(Store store) {
+    public String execute(Store store) {
         store.setCnpj(DocumentUtils.stardandizeCnpj(store.getCnpj()));
 
         Store createdStore = storeRepository.save(store);

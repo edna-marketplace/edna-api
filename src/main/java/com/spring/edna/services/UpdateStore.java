@@ -17,15 +17,8 @@ public class UpdateStore {
     @Autowired
     private StoreRepository storeRepository;
 
-    public void updateStore(Store store) throws EdnaException {
-        List<TargetCustomer> targetCostumerValues = Arrays.asList(TargetCustomer.values());
-
-        if(!targetCostumerValues.contains(store.getTargetCustomer())) {
-            throw new EdnaException("Invalid target customer value.", HttpStatus.BAD_REQUEST);
-        }
-
+    public void execute(Store store) throws EdnaException {
         Store storeInDatabase = storeRepository.getById(store.getId());
-
 
         store.setCnpj(storeInDatabase.getCnpj());
         store.setCreatedAt(storeInDatabase.getCreatedAt());

@@ -16,6 +16,6 @@ public class UpdateStoreController {
 
     @PutMapping
     public void updateStore(@Valid @RequestBody Store store) throws EdnaException {
-        updateStore.updateStore(store);
+        updateStore.execute(store);
     }
 }

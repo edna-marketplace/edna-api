@@ -19,13 +19,9 @@ public class Address {
     private String id;
 
     @NotBlank(message = "Number is required.")
-    private Integer number;
+    private String number;
 
     @NotBlank(message = "CEP is required.")
-    @Pattern(
-            regexp = "^\\d{5}-\\d{3}$",
-            message = "CEP must follow the format 12345-678"
-    )
     private String cep;
 
     @NotBlank(message = "Street is required.")

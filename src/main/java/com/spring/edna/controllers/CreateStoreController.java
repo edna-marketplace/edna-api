@@ -18,6 +18,6 @@ public class CreateStoreController {
 
     @PostMapping
     public String createStore(@Valid @RequestBody Store store) {
-        return createStore.createStore(store);
+        return createStore.execute(store);
     }
 }
