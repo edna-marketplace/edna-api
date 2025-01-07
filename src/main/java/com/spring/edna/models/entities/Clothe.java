@@ -77,7 +77,6 @@ public class Clothe {
 
     @ManyToOne
     @JoinColumn(name = "store_id")
-    @NotBlank(message = "Store is required")
     private Store store;
 
     @OneToMany(mappedBy = "clothe")

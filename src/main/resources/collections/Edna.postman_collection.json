@@ -7,40 +7,56 @@
 	},
 	"item": [
 		{
-			"name": "Create Customer",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"teste\",\r\n    \"email\": \"teste1@teste.com\",\r\n    \"phone\": \"1234\",\r\n    \"password\": \"Abcd12345\",\r\n    \"cpf\": \"093.947.630-40\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+			"name": "Customer",
+			"item": [
+				{
+					"name": "Create Customer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"teste\",\r\n    \"email\": \"teste1@teste.com\",\r\n    \"phone\": \"1234\",\r\n    \"password\": \"Abcd12345\",\r\n    \"cpf\": \"093.947.630-40\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/customers"
+					},
+					"response": []
 				},
-				"url": "http://localhost:8080/customers"
-			},
-			"response": []
+				{
+					"name": "Fetch All Customers",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/customers"
+					},
+					"response": []
+				}
+			]
 		},
 		{
-			"name": "Fetch All Customers",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"teste\",\r\n    \"email\": \"teste1@teste.com\",\r\n    \"phone\": \"1234\",\r\n    \"password\": \"Abcd12345\",\r\n    \"cpf\": \"093.947.630-40\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": "http://localhost:8080/customers"
-			},
-			"response": []
+			"name": "Store",
+			"item": []
+		},
+		{
+			"name": "Clothe",
+			"item": []
 		}
 	]
 }

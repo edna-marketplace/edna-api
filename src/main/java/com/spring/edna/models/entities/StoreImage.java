@@ -17,10 +17,8 @@ public class StoreImage extends Image {
 
     @ManyToOne
     @JoinColumn(name = "store_id")
-    @NotNull(message = "Store is required.")
     private Store store;
 
-    @NotNull(message = "Type is required.")
     @Enumerated(EnumType.STRING)
     private StoreImageType type;
 }
