@@ -30,4 +30,6 @@ public abstract class User {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    private boolean deleted = false;
 }

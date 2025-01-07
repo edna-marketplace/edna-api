@@ -43,4 +43,6 @@ public class Address {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    private boolean deleted = false;
 }

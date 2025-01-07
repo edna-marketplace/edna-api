@@ -90,4 +90,6 @@ public class Clothe {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    private boolean deleted = false;
 }

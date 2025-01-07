@@ -32,4 +32,6 @@ public class OpeningHour {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    private boolean deleted = false;
 }
