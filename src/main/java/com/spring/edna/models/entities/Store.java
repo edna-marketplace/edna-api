@@ -29,7 +29,6 @@ public class Store extends User{
     @Column(unique = true)
     private String cnpj;
 
-    @NotBlank(message = "Target customer is required.")
     @Enumerated(EnumType.STRING)
     private TargetCostumer targetCustomer;
 

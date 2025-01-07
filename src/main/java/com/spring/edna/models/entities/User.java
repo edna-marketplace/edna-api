@@ -24,7 +24,6 @@ public abstract class User {
     @Column(unique = true)
     private String phone;
 
-    @NotBlank(message = "Password is required.")
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{8,20}$", message = "Password must have at least" +
             " 8 characters, include at least one uppercase letter, one lowercase letter, and one number.")
     private String password;
