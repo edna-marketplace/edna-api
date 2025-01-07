@@ -23,17 +23,14 @@ public class CustomerOrder {
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    @NotNull(message = "Customer is required.")
     private Customer customer;
 
     @ManyToOne
     @JoinColumn(name = "store_id")
-    @NotNull(message = "Store is required.")
     private Store store;
 
     @OneToOne
     @JoinColumn(name = "clothe_id")
-    @NotNull(message = "Clothe is required.")
     private Clothe clothe;
 
     @CreationTimestamp

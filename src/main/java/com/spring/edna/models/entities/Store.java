@@ -35,12 +35,10 @@ public class Store extends User{
 
     @OneToOne(mappedBy = "store")
     @JsonBackReference(value = "store-address")
-    @NotBlank(message = "Address is required.")
     private Address address;
 
     @OneToMany(mappedBy = "store")
     @JsonBackReference(value = "store-opening-hours")
-    @NotBlank(message = "Opening hours are required.")
     private List<OpeningHour> openingHours = new ArrayList<>();
 
     @OneToMany(mappedBy = "store")

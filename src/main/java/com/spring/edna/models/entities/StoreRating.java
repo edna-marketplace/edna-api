@@ -18,17 +18,14 @@ public class StoreRating {
     @UuidGenerator
     private String id;
 
-    @NotBlank(message = "Rating is required.")
     private Integer rating;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    @NotNull(message = "Customer is required.")
     private Customer customer;
 
     @ManyToOne
     @JoinColumn(name = "store_id")
-    @NotNull(message = "Store is required.")
     private Store store;
 
     @CreationTimestamp

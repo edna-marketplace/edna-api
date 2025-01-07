@@ -20,18 +20,14 @@ public class OpeningHour {
     @UuidGenerator
     private String id;
 
-    @NotBlank(message = "Day of week is required.")
     private DayOfWeek dayOfWeek;
 
-    @NotBlank(message = "Opening time is required.")
     private LocalTime openingTime;
 
-    @NotBlank(message = "Closing time is required.")
     private LocalTime closingTime;
 
     @ManyToOne
     @JoinColumn(name = "store_id")
-    @NotNull(message = "Store is required.")
     private Store store;
 
     @CreationTimestamp

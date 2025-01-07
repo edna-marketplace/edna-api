@@ -16,6 +16,5 @@ public class ClotheImage extends Image {
 
     @ManyToOne
     @JoinColumn(name = "clothe_id")
-    @NotNull(message = "Clothe is required.")
     private Clothe clothe;
 }
