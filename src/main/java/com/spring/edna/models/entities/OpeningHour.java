@@ -1,5 +1,6 @@
 package com.spring.edna.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -28,6 +29,7 @@ public class OpeningHour {
 
     @ManyToOne
     @JoinColumn(name = "store_id")
+    @JsonBackReference(value = "opening-hour-store")
     private Store store;
 
     @CreationTimestamp
