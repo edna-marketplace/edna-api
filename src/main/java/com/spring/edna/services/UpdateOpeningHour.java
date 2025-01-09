@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CreateOpeningHour {
+public class UpdateOpeningHour {
 
     @Autowired
     private OpeningHourRepository openingHourRepository;
@@ -26,13 +26,10 @@ public class CreateOpeningHour {
             }
 
             for(OpeningHour ohInDb : openingHoursInDB) {
-                if(oh.getDayOfWeek() == ohInDb.getDayOfWeek()) {
-                    throw new EdnaException("The opening hour for " + oh.getDayOfWeek() + " already exists, if you want a new" +
-                            " opening hour for this day, edit the current opening/closing time for " + oh.getDayOfWeek(),
-                            HttpStatus.CONFLICT);
+                if(oh.getId().equals(ohInDb.getId())) {
+                    oh.setDayOfWeek(ohInDb.getDayOfWeek());
                 }
             }
-
             openingHourRepository.save(oh);
         }
     }

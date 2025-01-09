@@ -32,8 +32,5 @@ public class OpeningHour {
     @JsonBackReference(value = "opening-hour-store")
     private Store store;
 
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-
     private boolean deleted = false;
 }
