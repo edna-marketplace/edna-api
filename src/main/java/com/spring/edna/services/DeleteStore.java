@@ -4,19 +4,19 @@ import com.spring.edna.exception.EdnaException;
 import com.spring.edna.models.entities.Store;
 import com.spring.edna.models.repositories.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UpdateStore {
+public class DeleteStore {
 
     @Autowired
     private StoreRepository storeRepository;
 
-    public void execute(Store store) throws EdnaException {
-        Store storeInDatabase = storeRepository.getById(store.getId());
+    public void execute(String id) throws EdnaException {
+        Store store = storeRepository.findById(id).orElseThrow(() -> new EdnaException("Store not found", HttpStatus.BAD_REQUEST));
 
-        store.setCnpj(storeInDatabase.getCnpj());
-        store.setCreatedAt(storeInDatabase.getCreatedAt());
+        store.setDeleted(true);
 
         storeRepository.save(store);
     }
