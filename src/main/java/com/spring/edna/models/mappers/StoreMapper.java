@@ -1,8 +1,12 @@
 package com.spring.edna.models.mappers;
 
 import com.spring.edna.models.dtos.StoreDetailsDTO;
+import com.spring.edna.models.dtos.StoreSummaryDTO;
 import com.spring.edna.models.entities.Store;
 import com.spring.edna.utils.StoreRatingUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class StoreMapper {
 
@@ -21,5 +25,25 @@ public class StoreMapper {
                 AddressMapper.toAddressDetailsDTO(store.getAddress()),
                 OpeningHourMapper.toOpeningHourDTOList(store.getOpeningHours())
         );
+    }
+
+    public static List<StoreSummaryDTO> toStoreSummaryDTOList(List<Store> stores) {
+        List<StoreSummaryDTO> storeSummaryDTOList = new ArrayList<>();
+
+        for (Store s : stores) {
+            StoreSummaryDTO dto = new StoreSummaryDTO(
+                    s.getId(),
+                    "mock-profile-image-url", // Mock value; TODO: Create images logic
+                    s.getStoreName(),
+                    StoreRatingUtils.calculateAverageRating(s.getRatings()),
+                    s.getTargetCustomer(),
+                    5000, // Mock value; TODO: Create logic to calculate the distance
+                    false // Mock value; TODO: Create logic with authenticated user id
+            );
+
+            storeSummaryDTOList.add(dto);
+        }
+
+        return storeSummaryDTOList;
     }
 }
