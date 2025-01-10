@@ -16,5 +16,7 @@ public abstract class Image {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    private boolean deleted = false;
 }
 

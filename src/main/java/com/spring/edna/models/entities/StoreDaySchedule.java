@@ -1,19 +1,16 @@
 package com.spring.edna.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.time.DayOfWeek;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
 @Data
-public class OpeningHour {
+public class StoreDaySchedule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -28,8 +25,8 @@ public class OpeningHour {
 
     @ManyToOne
     @JoinColumn(name = "store_id")
+    @JsonBackReference(value = "day-schedule-store")
     private Store store;
 
-    @CreationTimestamp
-    private LocalDateTime createdAt;
+    private boolean deleted = false;
 }

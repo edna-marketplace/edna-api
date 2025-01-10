@@ -1,9 +1,10 @@
 package com.spring.edna.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.spring.edna.models.enums.TargetCostumer;
+import com.spring.edna.models.enums.TargetCustomer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.hibernate.annotations.UuidGenerator;
 import org.hibernate.validator.constraints.br.CNPJ;
@@ -24,22 +25,24 @@ public class Store extends User{
     @Column(unique = true)
     private String storeName;
 
+    @Size(max = 400)
+    private String storeDescription;
+
     @NotBlank(message = "CNPJ is required.")
     @CNPJ(message = "CNPJ must be valid.")
     @Column(unique = true)
     private String cnpj;
 
-    @NotBlank(message = "Target customer is required.")
     @Enumerated(EnumType.STRING)
-    private TargetCostumer targetCustomer;
+    private TargetCustomer targetCustomer;
 
     @OneToOne(mappedBy = "store")
     @JsonBackReference(value = "store-address")
     private Address address;
 
     @OneToMany(mappedBy = "store")
-    @JsonBackReference(value = "store-opening-hours")
-    private List<OpeningHour> openingHours = new ArrayList<>();
+    @JsonBackReference(value = "store-schedule")
+    private List<StoreDaySchedule> schedule = new ArrayList<>();
 
     @OneToMany(mappedBy = "store")
     @JsonBackReference(value = "store-clothes")

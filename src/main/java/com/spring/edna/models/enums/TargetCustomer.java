@@ -1,6 +1,6 @@
 package com.spring.edna.models.enums;
 
-public enum TargetCostumer {
+public enum TargetCustomer {
     MALE,
     FEMALE,
     ALL
