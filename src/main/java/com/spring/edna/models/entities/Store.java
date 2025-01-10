@@ -2,8 +2,10 @@ package com.spring.edna.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.spring.edna.models.enums.TargetCustomer;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.hibernate.annotations.UuidGenerator;
 import org.hibernate.validator.constraints.br.CNPJ;
@@ -23,6 +25,9 @@ public class Store extends User{
     @NotBlank(message = "Store name is required.")
     @Column(unique = true)
     private String storeName;
+
+    @Size(max = 400)
+    private String storeDescription;
 
     @NotBlank(message = "CNPJ is required.")
     @CNPJ(message = "CNPJ must be valid.")

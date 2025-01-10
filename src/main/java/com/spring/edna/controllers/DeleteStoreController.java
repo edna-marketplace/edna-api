@@ -13,9 +13,9 @@ public class DeleteStoreController {
     @Autowired
     private DeleteStore deleteStore;
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteStore(@PathVariable String id) throws EdnaException {
-        deleteStore.execute(id);
+    @DeleteMapping("/{storeId}")
+    public ResponseEntity<Void> deleteStore(@PathVariable String storeId) throws EdnaException {
+        deleteStore.execute(storeId);
 
         return ResponseEntity.ok().build();
     }
