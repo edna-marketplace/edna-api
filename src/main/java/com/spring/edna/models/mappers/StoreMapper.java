@@ -23,7 +23,7 @@ public class StoreMapper {
                 store.getStoreDescription(),
                 store.getCnpj(),
                 AddressMapper.toAddressDetailsDTO(store.getAddress()),
-                OpeningHourMapper.toOpeningHourDTOList(store.getOpeningHours())
+                StoreScheduleMapper.toStoreDayScheduleDTOList(store.getSchedule())
         );
     }
 

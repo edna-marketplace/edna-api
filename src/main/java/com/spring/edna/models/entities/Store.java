@@ -2,7 +2,6 @@ package com.spring.edna.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.spring.edna.models.enums.TargetCustomer;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -42,8 +41,8 @@ public class Store extends User{
     private Address address;
 
     @OneToMany(mappedBy = "store")
-    @JsonBackReference(value = "store-opening-hours")
-    private List<OpeningHour> openingHours = new ArrayList<>();
+    @JsonBackReference(value = "store-schedule")
+    private List<StoreDaySchedule> schedule = new ArrayList<>();
 
     @OneToMany(mappedBy = "store")
     @JsonBackReference(value = "store-clothes")

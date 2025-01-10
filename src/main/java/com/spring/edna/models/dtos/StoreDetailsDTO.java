@@ -20,5 +20,5 @@ public class StoreDetailsDTO {
     private String storeDescription;
     private String cnpj;
     private AddressDetailsDTO address;
-    private List<OpeningHourDTO> openingHours;
+    private List<StoreDayScheduleDTO> schedule;
 }
