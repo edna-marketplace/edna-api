@@ -8,6 +8,7 @@ import com.spring.edna.models.enums.ClotheSize;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -40,7 +41,7 @@ public class Clothe {
     @NotBlank(message = "Name is required.")
     private String name;
 
-    @NotBlank(message = "Price is required.")
+    @NotNull(message = "Price is required.")
     private Integer priceInCents;
 
     @Nullable
@@ -53,25 +54,25 @@ public class Clothe {
     @NotBlank(message = "Color is required.")
     private String color;
 
-    @NotBlank(message = "Length is required.")
+    @NotNull(message = "Length is required.")
     private Integer lengthInCm;
 
-    @NotBlank(message = "Width is required.")
+    @NotNull(message = "Width is required.")
     private Integer widthInCm;
 
-    @NotBlank(message = "Category is required.")
+    @NotNull(message = "Category is required.")
     @Enumerated(EnumType.STRING)
     private ClotheCategory category;
 
-    @NotBlank(message = "Size is required.")
+    @NotNull(message = "Size is required.")
     @Enumerated(EnumType.STRING)
     private ClotheSize size;
 
-    @NotBlank(message = "Gender is required.")
+    @NotNull(message = "Gender is required.")
     @Enumerated(EnumType.STRING)
     private ClotheGender gender;
 
-    @NotBlank(message = "Brand is required.")
+    @NotNull(message = "Brand is required.")
     @Enumerated(EnumType.STRING)
     private ClotheBrand brand;
 
