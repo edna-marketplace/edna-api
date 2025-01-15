@@ -1,26 +1,25 @@
 package com.spring.edna.controllers;
 
+import com.spring.edna.exception.EdnaException;
 import com.spring.edna.models.entities.Clothe;
-import com.spring.edna.services.CreateClothe;
+import com.spring.edna.services.UpdateClothe;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(path = "/clothes")
-public class CreateClotheController {
+public class UpdateClotheController {
 
     @Autowired
-    private CreateClothe createClothe;
+    private UpdateClothe updateClothe;
 
-    @PostMapping
-    public ResponseEntity<Void> createClothe(@Valid @RequestBody Clothe clothe) {
-        createClothe.execute(clothe);
-
-        return ResponseEntity.ok().build();
+    @PutMapping
+    public void updateClothe(@Valid @RequestBody Clothe clothe) throws EdnaException {
+        updateClothe.execute(clothe);
     }
+
 }
