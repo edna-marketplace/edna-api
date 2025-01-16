@@ -11,7 +11,8 @@ public class CreateCustomer {
     @Autowired
     private CustomerRepository customerRepository;
 
-    public void execute(Customer customer) {
-        customerRepository.save(customer);
+    public String execute(Customer customer) {
+        Customer createdCustomer = customerRepository.save(customer);
+        return createdCustomer.getId();
     }
 }
