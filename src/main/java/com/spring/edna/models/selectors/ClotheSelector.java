@@ -52,7 +52,7 @@ public class ClotheSelector extends BaseSelector implements Specification<Clothe
             predicates.add(cb.like(cb.lower(root.get("color")), "%" + this.getColor().toLowerCase() + "%"));
         }
         if (this.getGender() != null) {
-            predicates.add(cb.like(root.get("gender"), "%" + this.getGender() + "%"));
+            predicates.add(cb.equal(root.get("gender"), this.getGender()));
         }
         if (this.getStoreId() != null) {
             predicates.add(cb.equal(root.get("store").get("id"), this.getStoreId()));
