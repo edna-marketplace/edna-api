@@ -17,13 +17,9 @@ public class UpdateCustomer {
         Customer customerInDatabase = customerRepository.findById(customer.getId())
                 .orElseThrow(() -> new EdnaException("Customer not found", HttpStatus.BAD_REQUEST));
 
-        // Preserva o CPF (ou qualquer outro campo imutável)
         customer.setCpf(customerInDatabase.getCpf());
-
-        // Preserva o timestamp de criação, caso exista
         customer.setCreatedAt(customerInDatabase.getCreatedAt());
 
-        // Salva o cliente atualizado no banco de dados
         customerRepository.save(customer);
     }
 }
