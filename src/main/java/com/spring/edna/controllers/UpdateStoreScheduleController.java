@@ -5,6 +5,7 @@ import com.spring.edna.models.entities.StoreDaySchedule;
 import com.spring.edna.services.UpdateStoreSchedule;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ public class UpdateStoreScheduleController {
     private UpdateStoreSchedule updateStoreSchedule;
 
     @PutMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> updateSchedule(@Valid @RequestBody List<StoreDaySchedule> schedule) throws EdnaException {
         updateStoreSchedule.execute(schedule);
 
