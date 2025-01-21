@@ -17,11 +17,11 @@ public class StoreDaySchedule {
     @UuidGenerator
     private String id;
 
-    private DayOfWeek dayOfWeek;
+    private Integer dayOfWeek;
 
-    private LocalTime openingTime;
+    private Integer openingTimeInMinutes;
 
-    private LocalTime closingTime;
+    private Integer closingTimeInMinutes;
 
     @ManyToOne
     @JoinColumn(name = "store_id")
