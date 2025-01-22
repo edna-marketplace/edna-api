@@ -34,6 +34,7 @@ build/
 
 ### env ###
 src/main/resources/application.properties
+src/test/resources/application-test.properties
 
 ### docker compose ###
 docker-compose.yml
