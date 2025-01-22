@@ -2,15 +2,10 @@ package com.spring.edna.services;
 
 import com.spring.edna.exception.EdnaException;
 import com.spring.edna.models.dtos.ClotheSummaryDTO;
-import com.spring.edna.models.dtos.StoreSummaryDTO;
 import com.spring.edna.models.entities.Clothe;
-import com.spring.edna.models.entities.Store;
 import com.spring.edna.models.mappers.ClotheMapper;
-import com.spring.edna.models.mappers.StoreMapper;
 import com.spring.edna.models.repositories.ClotheRepository;
 import com.spring.edna.models.selectors.ClotheSelector;
-import com.spring.edna.models.selectors.StoreSelector;
-import com.spring.edna.utils.StoreUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;

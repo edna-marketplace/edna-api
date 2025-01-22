@@ -27,7 +27,7 @@ public class StoreMapper {
         );
     }
 
-    public static List<StoreSummaryDTO> toStoreSummaryDTOList(List<Store> stores) {
+    public static List<StoreSummaryDTO> toStoreSummaryDTOList(List<Store> stores, List<Store> customerFavoriteStores) {
         List<StoreSummaryDTO> storeSummaryDTOList = new ArrayList<>();
 
         for (Store s : stores) {
@@ -38,7 +38,7 @@ public class StoreMapper {
                     StoreRatingUtils.calculateAverageRating(s.getRatings()),
                     s.getTargetCustomer(),
                     5000, // Mock value; TODO: Create logic to calculate the distance
-                    false // Mock value; TODO: Create logic with authenticated user id
+                    customerFavoriteStores.contains(s)
             );
 
             storeSummaryDTOList.add(dto);

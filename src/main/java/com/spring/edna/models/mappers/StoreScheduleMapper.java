@@ -15,8 +15,8 @@ public class StoreScheduleMapper {
             StoreDayScheduleDTO dto = new StoreDayScheduleDTO(
                     ds.getId(),
                     ds.getDayOfWeek(),
-                    ds.getOpeningTime(),
-                    ds.getClosingTime()
+                    ds.getOpeningTimeInMinutes(),
+                    ds.getClosingTimeInMinutes()
             );
 
             storeDayScheduleDTOList.add(dto);

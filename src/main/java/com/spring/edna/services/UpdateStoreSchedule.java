@@ -21,8 +21,8 @@ public class UpdateStoreSchedule {
         List<StoreDaySchedule> scheduleInDB = storeDayScheduleRepository.findByStoreId(storeId);
 
         for(StoreDaySchedule ds : schedule) {
-            if(ds.getOpeningTime().isAfter(ds.getClosingTime())) {
-                throw new EdnaException("The opening time must be before the closing time.", HttpStatus.BAD_REQUEST);
+            if(ds.getClosingTimeInMinutes() - 60 < ds.getOpeningTimeInMinutes()) {
+                throw new EdnaException("The closing time must be at least one hour later then the opening time.", HttpStatus.BAD_REQUEST);
             }
 
             for(StoreDaySchedule dsInDb : scheduleInDB) {
