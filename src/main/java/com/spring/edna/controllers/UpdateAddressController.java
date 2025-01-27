@@ -6,6 +6,7 @@ import com.spring.edna.services.UpdateAddress;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,7 +18,9 @@ public class UpdateAddressController {
 
     @PutMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateAddress(@Valid @RequestBody Address address) throws EdnaException {
+    public ResponseEntity<Void> updateAddress(@Valid @RequestBody Address address) throws EdnaException {
         updateAddress.execute(address);
+
+        return ResponseEntity.noContent().build();
     }
 }

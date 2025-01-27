@@ -17,6 +17,6 @@ public class DeleteStoreController {
     public ResponseEntity<Void> deleteStore(@PathVariable String storeId) throws EdnaException {
         deleteStore.execute(storeId);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

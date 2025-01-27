@@ -15,14 +15,15 @@ public class UpdateStoreSchedule {
     @Autowired
     private StoreDayScheduleRepository storeDayScheduleRepository;
 
-    public void execute(List<StoreDaySchedule> schedule) throws EdnaException {
+    public HttpStatus execute(List<StoreDaySchedule> schedule) throws EdnaException {
         String storeId = schedule.get(0).getStore().getId();
 
         List<StoreDaySchedule> scheduleInDB = storeDayScheduleRepository.findByStoreId(storeId);
 
         for(StoreDaySchedule ds : schedule) {
             if(ds.getClosingTimeInMinutes() - 60 < ds.getOpeningTimeInMinutes()) {
-                throw new EdnaException("The closing time must be at least one hour later then the opening time.", HttpStatus.BAD_REQUEST);
+                throw new EdnaException("The closing time must be at least one hour later then the opening time on "
+                            + ds.getDayOfWeek(), HttpStatus.BAD_REQUEST);
             }
 
             for(StoreDaySchedule dsInDb : scheduleInDB) {
@@ -30,7 +31,9 @@ public class UpdateStoreSchedule {
                     ds.setDayOfWeek(dsInDb.getDayOfWeek());
                 }
             }
-            storeDayScheduleRepository.save(ds);
         }
+        storeDayScheduleRepository.saveAll(schedule);
+
+        return HttpStatus.NO_CONTENT;
     }
 }

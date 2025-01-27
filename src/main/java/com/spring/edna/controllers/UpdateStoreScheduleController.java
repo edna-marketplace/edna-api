@@ -23,6 +23,6 @@ public class UpdateStoreScheduleController {
     public ResponseEntity<Void> updateSchedule(@Valid @RequestBody List<StoreDaySchedule> schedule) throws EdnaException {
         updateStoreSchedule.execute(schedule);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

@@ -21,6 +21,6 @@ public class CreateAddressController {
     public ResponseEntity<Void> createAddress(@Valid @RequestBody Address address) throws EdnaException {
         createAddress.execute(address);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.created(null).build();
     }
 }

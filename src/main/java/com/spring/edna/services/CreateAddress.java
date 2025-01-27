@@ -13,7 +13,7 @@ public class CreateAddress {
     @Autowired
     private AddressRepository addressRepository;
 
-    public void execute(Address address) throws EdnaException {
+    public HttpStatus execute(Address address) throws EdnaException {
 
         Address addressInDatabase = addressRepository.findByCepAndNumber(address.getCep(), address.getNumber()).orElse(null);
 
@@ -22,5 +22,7 @@ public class CreateAddress {
         } else {
             throw new EdnaException("Address already exists", HttpStatus.CONFLICT);
         }
+
+        return HttpStatus.CREATED;
     }
 }

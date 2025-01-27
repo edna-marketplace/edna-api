@@ -13,9 +13,10 @@ public class UpdateAddress {
     @Autowired
     private AddressRepository addressRepository;
 
-    public void execute(Address address) throws EdnaException {
+    public HttpStatus execute(Address address) throws EdnaException {
 
-        Address addressWithSameCepAndNumber = addressRepository.findByCepAndNumber(address.getCep(), address.getNumber()).orElse(null);
+        Address addressWithSameCepAndNumber = addressRepository.findByCepAndNumber(address.getCep(), address.getNumber())
+                                                                .orElse(null);
 
         if(addressWithSameCepAndNumber == null || addressWithSameCepAndNumber.getId().equals(address.getId())) {
 
@@ -30,5 +31,7 @@ public class UpdateAddress {
         } else {
             throw new EdnaException("Address already exists", HttpStatus.CONFLICT);
         }
+
+        return HttpStatus.NO_CONTENT;
     }
 }

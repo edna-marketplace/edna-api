@@ -13,11 +13,13 @@ public class DeleteStore {
     @Autowired
     private StoreRepository storeRepository;
 
-    public void execute(String storeId) throws EdnaException {
+    public HttpStatus execute(String storeId) throws EdnaException {
         Store store = storeRepository.findById(storeId).orElseThrow(() -> new EdnaException("Store not found", HttpStatus.BAD_REQUEST));
 
         store.setDeleted(true);
 
         storeRepository.save(store);
+
+        return HttpStatus.NO_CONTENT;
     }
 }

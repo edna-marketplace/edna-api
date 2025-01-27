@@ -13,12 +13,16 @@ public class UpdateStore {
     @Autowired
     private StoreRepository storeRepository;
 
-    public void execute(Store store) throws EdnaException {
-        Store storeInDatabase = storeRepository.findById(store.getId()).orElseThrow(() -> new EdnaException("Store not found", HttpStatus.BAD_REQUEST));
+    public HttpStatus execute(Store store) throws EdnaException {
+        Store storeInDatabase = storeRepository.findById(store.getId()).orElseThrow(() ->
+                new EdnaException("Store not found", HttpStatus.BAD_REQUEST)
+        );
 
         store.setCnpj(storeInDatabase.getCnpj());
         store.setCreatedAt(storeInDatabase.getCreatedAt());
 
         storeRepository.save(store);
+
+        return HttpStatus.NO_CONTENT;
     }
 }
