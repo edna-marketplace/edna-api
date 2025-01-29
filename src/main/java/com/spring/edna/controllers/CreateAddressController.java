@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = "/addresses")
+@RequestMapping(path = "/public/addresses")
 public class CreateAddressController {
 
     @Autowired

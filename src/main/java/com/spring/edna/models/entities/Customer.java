@@ -10,18 +10,15 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UuidGenerator;
 import org.hibernate.validator.constraints.br.CPF;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Data
 public class Customer extends User{
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @UuidGenerator
-    private String id;
 
     @NotBlank(message = "Name is required.")
     private String name;

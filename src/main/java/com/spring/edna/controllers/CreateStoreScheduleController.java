@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/schedules")
+@RequestMapping(path = "/public/schedules")
 public class CreateStoreScheduleController {
 
     @Autowired

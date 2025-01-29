@@ -8,18 +8,15 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.hibernate.annotations.UuidGenerator;
 import org.hibernate.validator.constraints.br.CNPJ;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Data
 public class Store extends User{
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @UuidGenerator
-    private String id;
 
     @NotBlank(message = "Store name is required.")
     @Column(unique = true)
