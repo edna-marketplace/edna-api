@@ -1,6 +1,8 @@
 package com.spring.edna.controllers;
 
+import com.spring.edna.auth.AuthService;
 import com.spring.edna.exception.EdnaException;
+import com.spring.edna.models.entities.User;
 import com.spring.edna.models.selectors.StoreSelector;
 import com.spring.edna.services.FetchStoresWithFilter;
 import com.spring.edna.services.presenters.FetchStoresWithFilterPresenter;
@@ -14,9 +16,14 @@ public class FetchStoresWithFilterController {
     @Autowired
     private FetchStoresWithFilter fetchStoresWithFilter;
 
-    @PostMapping("/filter/{customerId}")
-    public FetchStoresWithFilterPresenter fetchStoresWithFilter(@RequestBody StoreSelector selector, @PathVariable String customerId) throws EdnaException {
-        return fetchStoresWithFilter.execute(selector, customerId);
+    @Autowired
+    private AuthService authService;
+
+    @PostMapping("/filter")
+    public FetchStoresWithFilterPresenter fetchStoresWithFilter(@RequestBody StoreSelector selector) throws EdnaException {
+        User subject = authService.getAuthenticatedUser();
+
+        return fetchStoresWithFilter.execute(selector, subject.getId());
     }
 }
 

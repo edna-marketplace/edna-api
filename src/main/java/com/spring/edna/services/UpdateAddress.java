@@ -13,7 +13,7 @@ public class UpdateAddress {
     @Autowired
     private AddressRepository addressRepository;
 
-    public HttpStatus execute(Address address) throws EdnaException {
+    public HttpStatus execute(Address address, String storeId) throws EdnaException {
 
         Address addressWithSameCepAndNumber = addressRepository.findByCepAndNumber(address.getCep(), address.getNumber())
                                                                 .orElse(null);
@@ -23,6 +23,10 @@ public class UpdateAddress {
             Address addressInDatabase = addressRepository.findById(address.getId()).orElseThrow(() -> new EdnaException(
                     "Address not found", HttpStatus.BAD_REQUEST)
             );
+
+            if(!addressInDatabase.getStore().getId().equals(storeId)) {
+                throw new EdnaException("You can only update the address from your store.", HttpStatus.BAD_REQUEST);
+            }
 
             address.setStore(addressInDatabase.getStore());
             address.setCreatedAt(addressInDatabase.getCreatedAt());

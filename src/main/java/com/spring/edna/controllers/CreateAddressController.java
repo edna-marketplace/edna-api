@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = "/addresses")
+@RequestMapping(path = "/public/addresses")
 public class CreateAddressController {
 
     @Autowired
@@ -19,6 +19,7 @@ public class CreateAddressController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> createAddress(@Valid @RequestBody Address address) throws EdnaException {
+
         createAddress.execute(address);
 
         return ResponseEntity.created(null).build();

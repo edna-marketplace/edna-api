@@ -1,8 +1,11 @@
 package com.spring.edna.controllers;
 
+import com.spring.edna.auth.AuthService;
 import com.spring.edna.exception.EdnaException;
+import com.spring.edna.models.entities.User;
 import com.spring.edna.services.DeleteCustomer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,10 +19,19 @@ public class DeleteCustomerController {
     @Autowired
     private DeleteCustomer deleteCustomer;
 
+    @Autowired
+    private AuthService authService;
+
     @DeleteMapping("/{customerId}")
     public ResponseEntity<Void> deleteCustomer(@PathVariable String customerId) throws EdnaException {
-        deleteCustomer.execute(customerId);
+        User subject = authService.getAuthenticatedUser();
 
-        return ResponseEntity.ok().build();
+        if(subject.getId().equals(customerId)) {
+            deleteCustomer.execute(customerId);
+
+            return ResponseEntity.ok().build();
+        } else {
+            throw new EdnaException("You cant delete another customer's account.", HttpStatus.BAD_REQUEST);
+        }
     }
 }

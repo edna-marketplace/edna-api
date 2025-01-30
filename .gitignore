@@ -38,3 +38,6 @@ src/test/resources/application-test.properties
 
 ### docker compose ###
 docker-compose.yml
+
+### jwt keys ###
+src/main/resources/*.pem
