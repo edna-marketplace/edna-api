@@ -1,7 +1,9 @@
 package com.spring.edna.controllers;
 
+import com.spring.edna.auth.AuthService;
 import com.spring.edna.exception.EdnaException;
 import com.spring.edna.models.entities.Store;
+import com.spring.edna.models.entities.User;
 import com.spring.edna.services.UpdateStore;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +30,8 @@ public class UpdateStoreController {
     @PutMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> updateStore(@Valid @RequestBody Store store) throws EdnaException {
-        String encryptedPassowrd = passwordEncoder.encode(store.getPassword());
-
-        store.setPassword(encryptedPassowrd);
+        String encryptedPassword = passwordEncoder.encode(store.getPassword());
+        store.setPassword(encryptedPassword);
 
         updateStore.execute(store);
 

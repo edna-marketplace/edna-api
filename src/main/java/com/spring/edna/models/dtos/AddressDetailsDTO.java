@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class AddressDetailsDTO {
-    private String addressId;
+    private String id;
     private String number;
     private String cep;
     private String street;

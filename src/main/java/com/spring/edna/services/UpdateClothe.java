@@ -13,9 +13,13 @@ public class UpdateClothe {
     @Autowired
     private ClotheRepository clotheRepository;
 
-    public void execute (Clothe clothe) throws EdnaException {
+    public void execute (Clothe clothe, String storeId) throws EdnaException {
 
         Clothe clotheInDatabase = clotheRepository.findById(clothe.getId()).orElseThrow(() -> new EdnaException("Clothe not found", HttpStatus.BAD_REQUEST));
+
+        if(!clotheInDatabase.getStore().getId().equals(storeId)) {
+            throw new EdnaException("You can only update clothes from your store.", HttpStatus.BAD_REQUEST);
+        }
 
         clothe.setStore(clotheInDatabase.getStore());
 

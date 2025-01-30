@@ -1,7 +1,9 @@
 package com.spring.edna.controllers;
 
+import com.spring.edna.auth.AuthService;
 import com.spring.edna.exception.EdnaException;
 import com.spring.edna.models.entities.Clothe;
+import com.spring.edna.models.entities.User;
 import com.spring.edna.services.UpdateClothe;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +19,14 @@ public class UpdateClotheController {
     @Autowired
     private UpdateClothe updateClothe;
 
+    @Autowired
+    private AuthService authService;
+
     @PutMapping
     public void updateClothe(@Valid @RequestBody Clothe clothe) throws EdnaException {
-        updateClothe.execute(clothe);
+        User subject = authService.getAuthenticatedUser();
+
+        updateClothe.execute(clothe, subject.getId());
     }
 
 }

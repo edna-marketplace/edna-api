@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class StoreSummaryDTO {
-    private String storeId;
+    private String id;
     private String profileImageUrl;
     private String storeName;
     private Double avgRating;

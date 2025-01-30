@@ -19,6 +19,7 @@ public class CreateAddressController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> createAddress(@Valid @RequestBody Address address) throws EdnaException {
+
         createAddress.execute(address);
 
         return ResponseEntity.created(null).build();

@@ -15,8 +15,14 @@ public class UpdateStoreSchedule {
     @Autowired
     private StoreDayScheduleRepository storeDayScheduleRepository;
 
-    public HttpStatus execute(List<StoreDaySchedule> schedule) throws EdnaException {
-        String storeId = schedule.get(0).getStore().getId();
+    public HttpStatus execute(List<StoreDaySchedule> schedule, String storeId) throws EdnaException {
+        StoreDaySchedule dayScheduleInDb = storeDayScheduleRepository.findById(schedule.get(0).getId()).orElseThrow(
+                () -> new EdnaException("Day schedule not found.", HttpStatus.BAD_REQUEST)
+        );
+
+        if(!dayScheduleInDb.getStore().getId().equals(storeId)) {
+            throw new EdnaException("You cant update another store's schedule.", HttpStatus.BAD_REQUEST);
+        }
 
         List<StoreDaySchedule> scheduleInDB = storeDayScheduleRepository.findByStoreId(storeId);
 

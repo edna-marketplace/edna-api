@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class StoreDetailsDTO {
-    private String storeId;
+    private String id;
     private String bannerImageUrl;
     private String profileImageUrl;
     private String storeName;

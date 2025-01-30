@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class StoreDayScheduleDTO {
-    private String storeDayScheduleId;
+    private String id;
     private Integer dayOfWeek;
     private Integer openingTimeInMinutes;
     private Integer closingTimeInMinutes;

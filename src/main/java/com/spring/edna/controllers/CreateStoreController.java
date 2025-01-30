@@ -21,9 +21,9 @@ public class CreateStoreController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public String createStore(@Valid @RequestBody Store store) {
-        String encryptedPassowrd = passwordEncoder.encode(store.getPassword());
+        String encryptedPassword = passwordEncoder.encode(store.getPassword());
 
-        store.setPassword(encryptedPassowrd);
+        store.setPassword(encryptedPassword);
 
         return createStore.execute(store);
     }

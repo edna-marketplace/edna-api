@@ -20,9 +20,9 @@ public class CreateCustomerController {
 
     @PostMapping
     public ResponseEntity<Void> createCustomer(@Valid @RequestBody Customer customer) {
-        String encryptedPassowrd = passwordEncoder.encode(customer.getPassword());
+        String encryptedPassword = passwordEncoder.encode(customer.getPassword());
 
-        customer.setPassword(encryptedPassowrd);
+        customer.setPassword(encryptedPassword);
 
         createCustomer.execute(customer);
 
