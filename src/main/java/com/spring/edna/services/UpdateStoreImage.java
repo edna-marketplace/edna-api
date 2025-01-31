@@ -51,12 +51,12 @@ public class UpdateStoreImage {
             storeImageRepository.deleteById(imageInDB.getId());
         }
 
-        String uniqueFileName = uploadImageToR2.execute(multipartFile);
+        String uniqueImageUrl = uploadImageToR2.execute(multipartFile);
 
         StoreImage storeImage = new StoreImage();
         storeImage.setStore(new Store());
         storeImage.getStore().setId(storeId);
-        storeImage.setUrl(uniqueFileName);
+        storeImage.setUrl(uniqueImageUrl);
         storeImage.setType(imageType);
 
 

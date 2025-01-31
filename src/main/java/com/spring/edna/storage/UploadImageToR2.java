@@ -29,10 +29,10 @@ public class UploadImageToR2 {
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(file.getContentType());
 
-        String uniqueFileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
+        String uniqueImageUrl = UUID.randomUUID() + "-" + file.getOriginalFilename();
 
-        s3.putObject(bucketName, uniqueFileName, file.getInputStream(), metadata);
+        s3.putObject(bucketName, uniqueImageUrl, file.getInputStream(), metadata);
 
-        return uniqueFileName;
+        return uniqueImageUrl;
     }
 }
