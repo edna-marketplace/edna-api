@@ -23,7 +23,7 @@ public class UploadImageToR2 {
 
     public String execute(MultipartFile file) throws EdnaException, IOException {
         if (file.getContentType() == null || !file.getContentType().matches("image/(jpeg|jpg|png)")) {
-            throw new EdnaException("Invalid file type! Only JPEG, JPG or PNG are allowed.", HttpStatus.BAD_REQUEST);
+            throw new EdnaException("Invalid file format! Only JPEG, JPG or PNG are allowed.", HttpStatus.BAD_REQUEST);
         }
 
         ObjectMetadata metadata = new ObjectMetadata();
