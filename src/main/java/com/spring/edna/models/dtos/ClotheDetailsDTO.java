@@ -7,6 +7,8 @@ import com.spring.edna.models.enums.ClotheSize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 public class ClotheDetailsDTO {
@@ -24,4 +26,5 @@ public class ClotheDetailsDTO {
     private ClotheBrand brand;
     private ClotheCategory category;
     private String storeName;
+    private List<String> images;
 }
