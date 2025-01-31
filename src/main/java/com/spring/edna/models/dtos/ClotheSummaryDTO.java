@@ -10,7 +10,7 @@ import lombok.Data;
 public class ClotheSummaryDTO {
 
     private String clotheId;
-    private String imagesURL;
+    private String imageURL;
     private String name;
     private String storeImageURL;
     private Integer priceInCents;

@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ClotheMapper {
 
-    public static ClotheDetailsDTO toClotheDetailsDTO(Clothe clothe) {
+    public static ClotheDetailsDTO toClotheDetailsDTO(Clothe clothe, List<String> imagesUrls) {
         Store store = clothe.getStore();
         return new ClotheDetailsDTO(
                 clothe.getId(),
@@ -25,7 +25,8 @@ public class ClotheMapper {
                 clothe.getWidthInCm(),
                 clothe.getBrand(),
                 clothe.getCategory(),
-                store != null ? store.getStoreName() : "N/A"
+                store != null ? store.getStoreName() : "N/A",
+                imagesUrls
         );
     }
 
@@ -36,9 +37,9 @@ public class ClotheMapper {
             Store store = c.getStore();
             ClotheSummaryDTO dto = new ClotheSummaryDTO(
                     c.getId(),
-                    c.getImages() != null && !c.getImages().isEmpty() ? c.getImages().get(0).getUrl() : "default-clothe-image-url",
+                    c.getImages() != null && !c.getImages().isEmpty() ? c.getImages().get(0).getUrl() : null,
                     c.getName(),
-                    store != null ? "mock-store-image-url" : "default-store-image-url",
+                    c.getStore().getImages() != null && !c.getStore().getImages().isEmpty() ? c.getStore().getImages().get(0).getUrl() : null,
                     c.getPriceInCents(),
                     c.getSize(),
                     c.getBrand()

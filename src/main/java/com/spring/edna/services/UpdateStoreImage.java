@@ -31,7 +31,7 @@ public class UpdateStoreImage {
     @Autowired
     private DeleteImageFromR2 deleteImageFromR2;
 
-    public HttpStatus execute(MultipartFile multipartFile, String imageTypeString, String storeId) throws EdnaException, IOException {
+    public HttpStatus execute(MultipartFile file, String imageTypeString, String storeId) throws EdnaException, IOException {
         if(!imageTypeString.equalsIgnoreCase("BANNER") && !imageTypeString.equalsIgnoreCase("PROFILE")) {
             throw new EdnaException("Invalid image type! The type must be 'banner' or 'profile'.", HttpStatus.BAD_REQUEST);
         }
@@ -51,7 +51,7 @@ public class UpdateStoreImage {
             storeImageRepository.deleteById(imageInDB.getId());
         }
 
-        String uniqueImageUrl = uploadImageToR2.execute(multipartFile);
+        String uniqueImageUrl = uploadImageToR2.execute(file);
 
         StoreImage storeImage = new StoreImage();
         storeImage.setStore(new Store());
