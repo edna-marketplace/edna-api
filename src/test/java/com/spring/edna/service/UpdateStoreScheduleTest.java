@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -58,10 +59,11 @@ public class UpdateStoreScheduleTest {
             scheduleReq.get(i).setClosingTimeInMinutes(1140);
         }
 
+        when(storeDayScheduleRepository.findById(scheduleReq.get(0).getId())).thenReturn(Optional.ofNullable(scheduleReq.get(0)));
         when(storeDayScheduleRepository.findByStoreId(store.getId())).thenReturn(scheduleInDB);
         when(storeDayScheduleRepository.saveAll(scheduleReq)).thenReturn(scheduleReq);
 
-        HttpStatus result = updateStoreSchedule.execute(scheduleReq);
+        HttpStatus result = updateStoreSchedule.execute(scheduleReq, store.getId());
 
         assertThat(result).isEqualTo(HttpStatus.NO_CONTENT);
     }
@@ -78,9 +80,10 @@ public class UpdateStoreScheduleTest {
         scheduleReq.get(2).setOpeningTimeInMinutes(540);
         scheduleReq.get(2).setClosingTimeInMinutes(540);
 
+        when(storeDayScheduleRepository.findById(scheduleReq.get(0).getId())).thenReturn(Optional.ofNullable(scheduleReq.get(0)));
         when(storeDayScheduleRepository.findByStoreId(store.getId())).thenReturn(scheduleInDB);
 
-        assertThatThrownBy(() -> updateStoreSchedule.execute(scheduleReq)).isInstanceOf(EdnaException.class)
+        assertThatThrownBy(() -> updateStoreSchedule.execute(scheduleReq, store.getId())).isInstanceOf(EdnaException.class)
             .hasMessageContaining("The closing time must be at least one hour later then the opening time on " +
                     "3");
     }

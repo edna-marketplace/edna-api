@@ -34,6 +34,11 @@ public class GetStoreById {
         }
 
         List<StoreImage> imagesInDB = store.getImages();
+
+        if(imagesInDB == null || imagesInDB.isEmpty()) {
+            return StoreMapper.toStoreDetailsDTO(store, null, null);
+        }
+
         StoreImage bannerImageInDB = imagesInDB.stream().filter(image -> image.getType().equals(StoreImageType.BANNER))
                 .findFirst().orElse(null);
         StoreImage profileImageInDB = imagesInDB.stream().filter(image -> image.getType().equals(StoreImageType.PROFILE))

@@ -47,7 +47,7 @@ public class GetStoreByIdTest {
         StoreDetailsDTO result = getStoreById.execute("store-id");
 
         assertThat(result).isNotNull();
-        assertThat(result.getStoreId()).isEqualTo("store-id");
+        assertThat(result.getId()).isEqualTo("store-id");
         assertThat(result.getStoreName()).isEqualTo("store-name");
     }
 
