@@ -56,7 +56,7 @@ public class UpdateAddressTest {
         );
         when(addressRepository.findById(addressReq.getId())).thenReturn(Optional.of(addressInDB));
         when(addressRepository.save(addressReq)).thenReturn(addressReq);
-        HttpStatus result = updateAddress.execute(addressReq);
+        HttpStatus result = updateAddress.execute(addressReq, store.getId());
 
         assertThat(result).isEqualTo(HttpStatus.NO_CONTENT);
     }
@@ -74,7 +74,7 @@ public class UpdateAddressTest {
         System.out.println(addressReq.getId());
         System.out.println(addressInDB.getId());
 
-        assertThatThrownBy(() -> updateAddress.execute(addressReq)).isInstanceOf(EdnaException.class)
+        assertThatThrownBy(() -> updateAddress.execute(addressReq, store.getId())).isInstanceOf(EdnaException.class)
                 .hasMessageContaining("Address already exists");
     }
 }
