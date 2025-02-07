@@ -13,11 +13,13 @@ public class DeleteCustomer {
     @Autowired
     private CustomerRepository customerRepository;
 
-    public void execute(String customerId) throws EdnaException {
+    public HttpStatus execute(String customerId) throws EdnaException {
         Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new EdnaException("Customer not found", HttpStatus.BAD_REQUEST));
 
         customer.setDeleted(true);
 
         customerRepository.save(customer);
+
+        return HttpStatus.NO_CONTENT;
     }
 }

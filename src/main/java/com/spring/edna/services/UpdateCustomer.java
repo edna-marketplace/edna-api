@@ -13,7 +13,7 @@ public class UpdateCustomer {
     @Autowired
     private CustomerRepository customerRepository;
 
-    public void execute(Customer customer) throws EdnaException {
+    public HttpStatus execute(Customer customer) throws EdnaException {
         Customer customerInDatabase = customerRepository.findById(customer.getId())
                 .orElseThrow(() -> new EdnaException("Customer not found", HttpStatus.BAD_REQUEST));
 
@@ -21,5 +21,7 @@ public class UpdateCustomer {
         customer.setCreatedAt(customerInDatabase.getCreatedAt());
 
         customerRepository.save(customer);
+
+        return HttpStatus.NO_CONTENT;
     }
 }
