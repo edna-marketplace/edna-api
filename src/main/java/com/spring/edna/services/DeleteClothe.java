@@ -14,15 +14,16 @@ public class DeleteClothe {
     @Autowired
     private ClotheRepository clotheRepository;
 
-    public void execute(String clotheId, String storeId) throws EdnaException {
+    public HttpStatus execute(String clotheId, String storeId) throws EdnaException {
         Clothe clothe = clotheRepository.findById(clotheId).orElseThrow(() -> new EdnaException("Clothe not found", HttpStatus.BAD_REQUEST));
 
-        if(!clothe.getStore().getId().equals(storeId)) {
+        if (!clothe.getStore().getId().equals(storeId)) {
             throw new EdnaException("You can only delete clothes from your store.", HttpStatus.BAD_REQUEST);
         }
 
         clothe.setDeleted(true);
 
         clotheRepository.save(clothe);
+        return HttpStatus.NO_CONTENT;
     }
 }
