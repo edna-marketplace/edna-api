@@ -2,23 +2,15 @@ package com.spring.edna.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UuidGenerator;
 import org.hibernate.validator.constraints.br.CPF;
-import org.springframework.security.core.GrantedAuthority;
-
-import java.time.LocalDateTime;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Data
-public class Customer extends User{
+public class Customer extends User {
 
     @NotBlank(message = "Name is required.")
     private String name;
@@ -40,7 +32,7 @@ public class Customer extends User{
     @ManyToMany
     @JoinTable(name = "favorite_store", joinColumns = @JoinColumn(name = "customer_id"), inverseJoinColumns = @JoinColumn(name = "store_id"))
     @JsonBackReference(value = "customer-favorite-stores")
-    private List<Store> favoriteStores;
+    private List<Store> favoriteStores = new ArrayList<>();
 
     @OneToMany(mappedBy = "customer")
     @JsonBackReference(value = "customer-store-ratings")
