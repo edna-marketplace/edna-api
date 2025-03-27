@@ -4,7 +4,7 @@ import com.spring.edna.exception.EdnaException;
 import com.spring.edna.models.dtos.PaginationMetaDTO;
 import com.spring.edna.models.dtos.CustomerOrderSummaryDTO;
 import com.spring.edna.models.entities.Customer;
-import com.spring.edna.models.entities.CustomerOrder;
+import com.spring.edna.models.entities.Order;
 import com.spring.edna.models.mappers.CustomerOrderMapper;
 import com.spring.edna.models.repositories.CustomerOrderRepository;
 import com.spring.edna.models.repositories.CustomerRepository;
@@ -42,7 +42,7 @@ public class FetchCustomerOrdersWithFilter {
 
         int totalCount = (int) customerOrderRepository.count(selector);
         PageRequest page = PageRequest.of(selector.getPage() - 1, selector.getLimit());
-        List<CustomerOrder> orders = customerOrderRepository.findAll(selector, page).toList();
+        List<Order> orders = customerOrderRepository.findAll(selector, page).toList();
 
         PaginationMetaDTO meta = new PaginationMetaDTO(selector.getPage(), selector.getLimit(), totalCount);
         List<CustomerOrderSummaryDTO> ordersSummary = orders.stream()

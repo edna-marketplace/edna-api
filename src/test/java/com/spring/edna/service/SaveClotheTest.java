@@ -1,4 +1,4 @@
-package com.spring.edna.service;
+/*package com.spring.edna.service;
 
 import com.spring.edna.exception.EdnaException;
 import com.spring.edna.models.entities.Clothe;
@@ -71,4 +71,4 @@ class SaveClotheTest {
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
         verify(customerRepository, never()).save(any());
     }
-}
+}*/

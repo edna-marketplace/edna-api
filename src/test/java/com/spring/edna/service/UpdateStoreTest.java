@@ -37,7 +37,7 @@ public class UpdateStoreTest {
 
         Store storeReq = StoreFactory.create();
         storeReq.setId(storeInDB.getId());
-        storeReq.setStoreName("store-name");
+        storeReq.setName("store-name");
         storeReq.setCnpj("store-cnpj");
 
         when(storeRepository.findById("store-id")).thenReturn(Optional.of(storeInDB));

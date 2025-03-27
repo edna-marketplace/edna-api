@@ -17,12 +17,12 @@ public class StoreMapper {
                 store.getId(),
                 bannerImageUrl,
                 profileImageUrl,
-                store.getStoreName(),
+                store.getName(),
                 store.getTargetCustomer(),
                 5000, // Mock value; TODO: Create logic to calculate the distance
-                StoreRatingUtils.calculateAverageRating(store.getRatings()),
+                5.0,
                 false, // Mock value; TODO: Create logic with authenticated user id
-                store.getStoreDescription(),
+                store.getDescription(),
                 store.getCnpj(),
                 AddressMapper.toAddressDetailsDTO(store.getAddress()),
                 StoreScheduleMapper.toStoreDayScheduleDTOList(store.getSchedule())
@@ -36,8 +36,8 @@ public class StoreMapper {
             StoreSummaryDTO dto = new StoreSummaryDTO(
                     s.getId(),
                     s.getImages().get(0).getUrl(),
-                    s.getStoreName(),
-                    StoreRatingUtils.calculateAverageRating(s.getRatings()),
+                    s.getName(),
+                    5.0,
                     s.getTargetCustomer(),
                     5000, // Mock value; TODO: Create logic to calculate the distance
                     customerFavoriteStores.contains(s)

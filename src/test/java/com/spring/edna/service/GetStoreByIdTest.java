@@ -36,7 +36,7 @@ public class GetStoreByIdTest {
     void setUp() {
         store = StoreFactory.create();
         store.setId("store-id");
-        store.setStoreName("store-name");
+        store.setName("store-name");
     }
 
     @Test

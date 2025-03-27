@@ -6,24 +6,23 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-import org.hibernate.annotations.UuidGenerator;
+import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.br.CNPJ;
-import org.springframework.security.core.GrantedAuthority;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 public class Store extends User{
 
     @NotBlank(message = "Store name is required.")
     @Column(unique = true)
-    private String storeName;
+    private String name;
 
     @Size(max = 400)
-    private String storeDescription;
+    private String description;
 
     @NotBlank(message = "CNPJ is required.")
     @CNPJ(message = "CNPJ must be valid.")
@@ -47,11 +46,7 @@ public class Store extends User{
 
     @OneToMany(mappedBy = "store")
     @JsonBackReference(value = "store-orders")
-    private List<CustomerOrder> customerOrders;
-
-    @OneToMany(mappedBy = "store")
-    @JsonBackReference(value = "store-ratings")
-    private List<StoreRating> ratings;
+    private List<Order> orders;
 
     @OneToMany(mappedBy = "store")
     @JsonBackReference(value = "store-images")
