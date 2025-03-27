@@ -12,8 +12,8 @@ public class CreateStore {
     private StoreRepository storeRepository;
 
     public String execute(Store store) {
-
         Store createdStore = storeRepository.save(store);
+
         return createdStore.getId();
     }
 }
