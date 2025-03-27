@@ -4,10 +4,13 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.br.CPF;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 public class Customer extends User {
@@ -22,12 +25,11 @@ public class Customer extends User {
 
     @OneToMany(mappedBy = "customer")
     @JsonBackReference(value = "customer-orders")
-    private List<CustomerOrder> customerOrders;
+    private List<Order> orders;
 
-    @ManyToMany
-    @JoinTable(name = "saved_clothe", joinColumns = @JoinColumn(name = "customer_id"), inverseJoinColumns = @JoinColumn(name = "clothe_id"))
+    @OneToMany(mappedBy = "customer")
     @JsonBackReference(value = "customer-saved-clothes")
-    private List<Clothe> savedClothes;
+    private List<SavedClothe> savedClothes;
 
     @ManyToMany
     @JoinTable(name = "favorite_store", joinColumns = @JoinColumn(name = "customer_id"), inverseJoinColumns = @JoinColumn(name = "store_id"))
@@ -35,6 +37,6 @@ public class Customer extends User {
     private List<Store> favoriteStores = new ArrayList<>();
 
     @OneToMany(mappedBy = "customer")
-    @JsonBackReference(value = "customer-store-ratings")
-    private List<StoreRating> storeRatings;
+    @JsonBackReference(value = "customer-order-ratings")
+    private List<OrderRating> orderRatings;
 }

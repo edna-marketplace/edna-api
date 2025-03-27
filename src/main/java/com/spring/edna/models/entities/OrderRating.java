@@ -1,6 +1,6 @@
 package com.spring.edna.models.entities;
 
-import com.spring.edna.models.enums.OrderStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -10,27 +10,23 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-public class CustomerOrder {
+public class OrderRating {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @UuidGenerator
     private String id;
 
-    @Enumerated(EnumType.STRING)
-    private OrderStatus status = OrderStatus.PENDING;
+    private Integer rating;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @ManyToOne
-    @JoinColumn(name = "store_id")
-    private Store store;
-
     @OneToOne
-    @JoinColumn(name = "clothe_id")
-    private Clothe clothe;
+    @JoinColumn(name = "order_id")
+    @JsonBackReference
+    private Order order;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

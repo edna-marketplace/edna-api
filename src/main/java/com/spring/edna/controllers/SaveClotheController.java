@@ -1,4 +1,4 @@
-package com.spring.edna.controllers;
+/*package com.spring.edna.controllers;
 
 import com.spring.edna.auth.AuthService;
 import com.spring.edna.exception.EdnaException;
@@ -25,4 +25,4 @@ public class SaveClotheController {
 
         saveClothe.execute(clothe, subject.getId());
     }
-}
+}*/

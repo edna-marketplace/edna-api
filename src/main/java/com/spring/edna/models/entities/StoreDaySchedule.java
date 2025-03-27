@@ -5,9 +5,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.UuidGenerator;
 
-import java.time.DayOfWeek;
-import java.time.LocalTime;
-
 @Entity
 @Data
 public class StoreDaySchedule {
@@ -27,6 +24,4 @@ public class StoreDaySchedule {
     @JoinColumn(name = "store_id")
     @JsonBackReference(value = "day-schedule-store")
     private Store store;
-
-    private boolean deleted = false;
 }

@@ -1,23 +1,23 @@
 package com.spring.edna.utils;
 
-import com.spring.edna.models.entities.StoreRating;
+import com.spring.edna.models.entities.OrderRating;
 
 import java.util.List;
 
 public class StoreRatingUtils {
 
-    public static Double calculateAverageRating(List<StoreRating> storeRatings) {
-        if(storeRatings == null || storeRatings.isEmpty()) {
+    public static Double calculateAverageRating(List<OrderRating> orderRatings) {
+        if(orderRatings == null || orderRatings.isEmpty()) {
             return 0.0;
         }
 
         Integer storeRatingAcc = 0;
 
-        for(StoreRating storeRating : storeRatings) {
-            storeRatingAcc += storeRating.getRating();
+        for(OrderRating orderRating : orderRatings) {
+            storeRatingAcc += orderRating.getRating();
         }
 
-        Double avgRating = (double) (storeRatingAcc / storeRatings.size());
+        Double avgRating = (double) (storeRatingAcc / orderRatings.size());
 
         return avgRating;
     }

@@ -26,6 +26,13 @@ public class Clothe {
     @UuidGenerator
     private String id;
 
+    @NotBlank(message = "Name is required.")
+    private String name;
+
+    @Nullable
+    @Size(max = 300)
+    private String description;
+
     @Nullable
     @Size(min = 1, max = 60)
     private String categoryOther;
@@ -38,15 +45,8 @@ public class Clothe {
     @Size(min = 1, max = 60)
     private String sizeOther;
 
-    @NotBlank(message = "Name is required.")
-    private String name;
-
     @NotNull(message = "Price is required.")
     private Integer priceInCents;
-
-    @Nullable
-    @Size(max = 300)
-    private String description;
 
     @NotBlank(message = "Fabric is required.")
     private String fabric;
@@ -54,10 +54,8 @@ public class Clothe {
     @NotBlank(message = "Color is required.")
     private String color;
 
-    @NotNull(message = "Length is required.")
     private Integer lengthInCm;
 
-    @NotNull(message = "Width is required.")
     private Integer widthInCm;
 
     @NotNull(message = "Category is required.")
@@ -87,7 +85,7 @@ public class Clothe {
     @OneToOne(mappedBy = "clothe")
     @JsonBackReference(value = "clothe-order")
     @Nullable
-    private CustomerOrder order;
+    private Order order;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

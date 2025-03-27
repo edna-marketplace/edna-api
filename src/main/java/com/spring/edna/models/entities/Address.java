@@ -3,7 +3,6 @@ package com.spring.edna.models.entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
@@ -43,6 +42,4 @@ public class Address {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
-
-    private boolean deleted = false;
 }

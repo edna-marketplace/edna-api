@@ -25,7 +25,7 @@ public class ClotheMapper {
                 clothe.getWidthInCm(),
                 clothe.getBrand(),
                 clothe.getCategory(),
-                store != null ? store.getStoreName() : "N/A",
+                store != null ? store.getName() : "N/A",
                 imagesUrls
         );
     }
