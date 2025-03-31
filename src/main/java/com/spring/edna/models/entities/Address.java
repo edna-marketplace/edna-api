@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UuidGenerator;
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@ToString(exclude = "store")
+@EqualsAndHashCode(exclude = "store")
 public class Address {
 
     @Id

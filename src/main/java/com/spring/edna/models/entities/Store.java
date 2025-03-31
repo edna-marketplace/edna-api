@@ -46,7 +46,7 @@ public class Store extends User{
 
     @OneToMany(mappedBy = "store")
     @JsonBackReference(value = "store-orders")
-    private List<Order> orders;
+    private List<CustomerOrder> customerOrders;
 
     @OneToMany(mappedBy = "store")
     @JsonBackReference(value = "store-images")

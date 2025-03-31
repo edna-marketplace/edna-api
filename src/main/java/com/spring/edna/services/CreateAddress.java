@@ -15,12 +15,14 @@ public class CreateAddress {
 
     public HttpStatus execute(Address address) throws EdnaException {
 
-        Address addressInDatabase = addressRepository.findByCepAndNumber(address.getCep(), address.getNumber()).orElse(null);
+        Address addressInDatabase = addressRepository
+                                    .findByCepAndNumber(address.getCep(), address.getNumber())
+                                    .orElse(null);
 
         if(addressInDatabase == null) {
             addressRepository.save(address);
         } else {
-            throw new EdnaException("Address already exists", HttpStatus.CONFLICT);
+            throw new EdnaException("Address already exists.", HttpStatus.CONFLICT);
         }
 
         return HttpStatus.CREATED;
