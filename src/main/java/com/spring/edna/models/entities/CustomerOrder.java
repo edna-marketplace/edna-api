@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-public class Order {
+public class CustomerOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -33,7 +33,7 @@ public class Order {
     @JoinColumn(name = "clothe_id")
     private Clothe clothe;
 
-    @OneToOne(mappedBy = "order")
+    @OneToOne(mappedBy = "customerOrder")
     @JsonBackReference
     private OrderRating rating;
 
