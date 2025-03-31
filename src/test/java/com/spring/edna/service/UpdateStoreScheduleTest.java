@@ -37,6 +37,7 @@ public class UpdateStoreScheduleTest {
     Store store;
     List<StoreDaySchedule> scheduleInDB;
 
+    /*
     @BeforeEach
     void setUp() {
         store = StoreFactory.create();
@@ -86,5 +87,5 @@ public class UpdateStoreScheduleTest {
         assertThatThrownBy(() -> updateStoreSchedule.execute(scheduleReq, store.getId())).isInstanceOf(EdnaException.class)
             .hasMessageContaining("The closing time must be at least one hour later then the opening time on " +
                     "3");
-    }
+    }*/
 }

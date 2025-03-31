@@ -6,10 +6,8 @@ import com.spring.edna.models.entities.Store;
 import java.util.UUID;
 
 public class AddressFactory {
-    public static Address create(Store store) {
+    public static Address create() {
         Address a = new Address();
-        a.setStore(store);
-        a.getStore().setId(UUID.randomUUID().toString());
         a.setNumber(String.valueOf((int) (Math.random() * 100)));
         a.setCep("88064-001");
         a.setStreet("Street " + UUID.randomUUID());

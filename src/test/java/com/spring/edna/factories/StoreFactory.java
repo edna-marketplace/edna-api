@@ -11,6 +11,7 @@ public class StoreFactory {
         s.setCnpj("93.544.959/0001-79");
         s.setEmail("brecho@" + UUID.randomUUID() + ".com");
         s.setPhone("123123123");
+        s.setPassword("123");
 
        return s;
     }

@@ -1,10 +1,12 @@
 package com.spring.edna.controllers;
 
+import com.spring.edna.models.dtos.CreateStoreRequestDTO;
 import com.spring.edna.models.entities.Store;
 import com.spring.edna.services.CreateStore;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,16 +17,18 @@ public class CreateStoreController {
     @Autowired
     private CreateStore createStore;
 
-    //@Autowired
-    //private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public String createStore(@Valid @RequestBody Store store) {
-        //String encryptedPassword = passwordEncoder.encode(store.getPassword());
+    public ResponseEntity<Void> createStore(@Valid @RequestBody CreateStoreRequestDTO createStoreRequestDTO) {
+        String encryptedPassword = passwordEncoder.encode(createStoreRequestDTO.getStore().getPassword());
 
-        //store.setPassword(encryptedPassword);
+        createStoreRequestDTO.getStore().setPassword(encryptedPassword);
 
-        return createStore.execute(store);
+        createStore.execute(createStoreRequestDTO);
+
+        return ResponseEntity.created(null).build();
     }
 }

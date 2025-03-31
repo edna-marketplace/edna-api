@@ -6,7 +6,7 @@ import com.spring.edna.factories.CustomerFactory;
 import com.spring.edna.factories.StoreFactory;
 import com.spring.edna.models.entities.Clothe;
 import com.spring.edna.models.entities.Customer;
-import com.spring.edna.models.entities.Order;
+import com.spring.edna.models.entities.CustomerOrder;
 import com.spring.edna.models.entities.Store;
 import com.spring.edna.models.repositories.ClotheRepository;
 import com.spring.edna.models.repositories.CustomerOrderRepository;
@@ -29,7 +29,7 @@ import static org.mockito.ArgumentMatchers.any;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class CreateOrderTest {
+public class CreateCustomerOrderTest {
 
     @Mock
     private CustomerOrderRepository customerOrderRepository;
@@ -49,7 +49,7 @@ public class CreateOrderTest {
     private Store store;
     private Clothe clothe;
     private Customer customer;
-    private Order order;
+    private CustomerOrder customerOrder;
 
     @BeforeEach
     void setUp() {
@@ -57,10 +57,10 @@ public class CreateOrderTest {
         clothe = ClotheFactory.create(store);
         customer = CustomerFactory.create();
 
-        order = new Order();
-        order.setStore(store);
-        order.setClothe(clothe);
-        order.setCustomer(customer);
+        customerOrder = new CustomerOrder();
+        customerOrder.setStore(store);
+        customerOrder.setClothe(clothe);
+        customerOrder.setCustomer(customer);
     }
 
     @Test
@@ -69,16 +69,16 @@ public class CreateOrderTest {
         when(storeRepository.findById(store.getId())).thenReturn(java.util.Optional.of(store));
         when(clotheRepository.findById(clothe.getId())).thenReturn(java.util.Optional.of(clothe));
         when(customerRepository.findById(customer.getId())).thenReturn(java.util.Optional.of(customer));
-        when(customerOrderRepository.save(any(Order.class))).thenReturn(order);
+        when(customerOrderRepository.save(any(CustomerOrder.class))).thenReturn(customerOrder);
 
-        Order result = createCustomerOrder.execute(order);
+        CustomerOrder result = createCustomerOrder.execute(customerOrder);
 
         assertThat(result).isNotNull();
         assertThat(result.getStore()).isEqualTo(store);
         assertThat(result.getClothe()).isEqualTo(clothe);
         assertThat(result.getCustomer()).isEqualTo(customer);
 
-        verify(customerOrderRepository).save(order); // Verifica se o save foi chamado
+        verify(customerOrderRepository).save(customerOrder); // Verifica se o save foi chamado
     }
 
     @Test
@@ -88,7 +88,7 @@ public class CreateOrderTest {
 
         EdnaException thrown = null;
         try {
-            createCustomerOrder.execute(order);
+            createCustomerOrder.execute(customerOrder);
         } catch (EdnaException e) {
             thrown = e;
         }
@@ -106,7 +106,7 @@ public class CreateOrderTest {
 
         EdnaException thrown = null;
         try {
-            createCustomerOrder.execute(order);
+            createCustomerOrder.execute(customerOrder);
         } catch (EdnaException e) {
             thrown = e;
         }
@@ -125,7 +125,7 @@ public class CreateOrderTest {
 
         EdnaException thrown = null;
         try {
-            createCustomerOrder.execute(order);
+            createCustomerOrder.execute(customerOrder);
         } catch (EdnaException e) {
             thrown = e;
         }

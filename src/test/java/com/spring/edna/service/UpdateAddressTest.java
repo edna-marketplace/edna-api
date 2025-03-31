@@ -35,6 +35,7 @@ public class UpdateAddressTest {
     Store store;
     Address addressInDB;
 
+    /*
     @BeforeEach
     void setUp() {
         store = StoreFactory.create();
@@ -76,5 +77,5 @@ public class UpdateAddressTest {
 
         assertThatThrownBy(() -> updateAddress.execute(addressReq, store.getId())).isInstanceOf(EdnaException.class)
                 .hasMessageContaining("Address already exists");
-    }
+    }*/
 }

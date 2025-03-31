@@ -1,28 +1,28 @@
 package com.spring.edna.models.mappers;
 
 import com.spring.edna.models.dtos.CustomerOrderSummaryDTO;
-import com.spring.edna.models.entities.Order;
+import com.spring.edna.models.entities.CustomerOrder;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class CustomerOrderMapper {
 
-    public static CustomerOrderSummaryDTO toCustomerOrderSummaryDTO(Order order) {
+    public static CustomerOrderSummaryDTO toCustomerOrderSummaryDTO(CustomerOrder customerOrder) {
         return new CustomerOrderSummaryDTO(
-                order.getCustomer().getName(),
-                order.getStatus(),
-                order.getCreatedAt(),
-                order.getClothe().getName(),
-                order.getClothe().getPriceInCents(),
-                order.getCustomer().getId(),
-                order.getClothe().getId(),
-                order.getStore().getId()
+                customerOrder.getCustomer().getName(),
+                customerOrder.getStatus(),
+                customerOrder.getCreatedAt(),
+                customerOrder.getClothe().getName(),
+                customerOrder.getClothe().getPriceInCents(),
+                customerOrder.getCustomer().getId(),
+                customerOrder.getClothe().getId(),
+                customerOrder.getStore().getId()
         );
     }
 
-    public static List<CustomerOrderSummaryDTO> toCustomerOrderSummaryDTOList(List<Order> orders) {
-        return orders.stream()
+    public static List<CustomerOrderSummaryDTO> toCustomerOrderSummaryDTOList(List<CustomerOrder> customerOrders) {
+        return customerOrders.stream()
                 .map(CustomerOrderMapper::toCustomerOrderSummaryDTO)
                 .collect(Collectors.toList());
     }
