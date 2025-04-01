@@ -12,9 +12,9 @@ import org.hibernate.validator.constraints.br.CNPJ;
 import java.util.ArrayList;
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class Store extends User{
 
     @NotBlank(message = "Store name is required.")
@@ -30,7 +30,7 @@ public class Store extends User{
     private String cnpj;
 
     @Enumerated(EnumType.STRING)
-    private TargetCustomer targetCustomer;
+    private TargetCustomer targetCustomer = TargetCustomer.ALL;
 
     @OneToOne(mappedBy = "store")
     @JsonBackReference(value = "store-address")
