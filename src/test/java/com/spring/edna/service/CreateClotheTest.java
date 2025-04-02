@@ -16,7 +16,11 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,29 +33,25 @@ public class CreateClotheTest {
     @Mock
     private ClotheRepository clotheRepository;
 
-    @Mock
-    private AuthService authService;
-
     @InjectMocks
     private CreateClothe createClothe;
 
     Store store;
-    Clothe clothe;
 
     @BeforeEach
     void setUp() {
         store = StoreFactory.create();
         store.setId(UUID.randomUUID().toString());
-
-        clothe = ClotheFactory.create(store);
     }
 
     @Test
     @DisplayName("it should be able to create a clothe")
-    public void testCreateClothe$success() throws EdnaException {
-        when(authService.getAuthenticatedUser()).thenReturn(store);
+    public void testCreateClothe$success() throws EdnaException, IOException {
+        Clothe clothe = ClotheFactory.create(store);
+        List<MultipartFile> files = new ArrayList<>();
+
         when(clotheRepository.save(clothe)).thenReturn(clothe);
-        HttpStatus result = createClothe.execute(clothe);
+        HttpStatus result = createClothe.execute(clothe, files);
 
         assertThat(result).isEqualTo(HttpStatus.CREATED);
     }

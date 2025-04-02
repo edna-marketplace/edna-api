@@ -14,7 +14,6 @@ import java.util.UUID;
 public class ClotheFactory {
     public static Clothe create(Store store) {
         Clothe clothe = new Clothe();
-        clothe.setId(UUID.randomUUID().toString());
         clothe.setName("Clothe " + UUID.randomUUID());
         clothe.setPriceInCents((int) (Math.random() * 10000));
         clothe.setFabric("Fabric " + UUID.randomUUID());
