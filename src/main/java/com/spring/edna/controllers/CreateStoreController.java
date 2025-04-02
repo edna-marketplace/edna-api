@@ -22,7 +22,7 @@ public class CreateStoreController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> createStore(@Valid @RequestBody CreateStoreRequestDTO createStoreRequestDTO) {
+    public ResponseEntity<Void> handler(@Valid @RequestBody CreateStoreRequestDTO createStoreRequestDTO) {
         String encryptedPassword = passwordEncoder.encode(createStoreRequestDTO.getStore().getPassword());
 
         createStoreRequestDTO.getStore().setPassword(encryptedPassword);
