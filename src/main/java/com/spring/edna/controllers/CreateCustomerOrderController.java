@@ -2,7 +2,8 @@ package com.spring.edna.controllers;
 
 import com.spring.edna.auth.AuthService;
 import com.spring.edna.exception.EdnaException;
-import com.spring.edna.models.entities.Order;
+import com.spring.edna.models.entities.Customer;
+import com.spring.edna.models.entities.CustomerOrder;
 import com.spring.edna.models.entities.User;
 import com.spring.edna.services.CreateCustomerOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +23,14 @@ public class CreateCustomerOrderController {
     private AuthService authService;
 
     @PostMapping
-    public Order createCustomerOrder(@RequestBody Order order) throws EdnaException {
+    public CustomerOrder createCustomerOrder(@RequestBody CustomerOrder customerOrder) throws EdnaException {
         User subject = authService.getAuthenticatedUser();
-        order.getCustomer().setId(subject.getId());
 
-        return createCustomerOrder.execute(order);
+        if (customerOrder.getCustomer() == null) {
+            customerOrder.setCustomer(new Customer());
+        }
+        customerOrder.getCustomer().setId(subject.getId());
+
+        return createCustomerOrder.execute(customerOrder);
     }
 }

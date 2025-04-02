@@ -1,8 +1,11 @@
 package com.spring.edna.models.selectors;
 
-import com.spring.edna.models.entities.Order;
+import com.spring.edna.models.entities.CustomerOrder;
 import com.spring.edna.models.enums.OrderStatus;
-import jakarta.persistence.criteria.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -11,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class CustomerOrderSelector extends BaseSelector implements Specification<Order> {
+public class CustomerOrderSelector extends BaseSelector implements Specification<CustomerOrder> {
 
     private String customerName;
     private OrderStatus status;
@@ -23,7 +26,7 @@ public class CustomerOrderSelector extends BaseSelector implements Specification
     private String clotheId;
 
     @Override
-    public Predicate toPredicate(Root<Order> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+    public Predicate toPredicate(Root<CustomerOrder> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
         List<Predicate> predicates = new ArrayList<>();
 
         if (this.getCustomerName() != null && !this.getCustomerName().trim().isEmpty()) {
