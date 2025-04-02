@@ -50,7 +50,7 @@ public class ToggleFavoriteStoreTest {
 
     @Test
     @DisplayName("it should be able to favorite store")
-    public void testExecuteAddFavoriteStore$success() throws EdnaException {
+    public void testToggleFavoriteStore$success() throws EdnaException {
         when(customerRepository.findById("customer-id")).thenReturn(Optional.of(customer));
         when(storeRepository.findById("store-id")).thenReturn(Optional.of(store));
 
@@ -58,11 +58,16 @@ public class ToggleFavoriteStoreTest {
 
         assertThat(response).isEqualTo(HttpStatus.NO_CONTENT);
         assertThat(customer.getFavoriteStores()).contains(store);
+
+        toggleFavoriteStore.execute("customer-id", "store-id");
+
+        assertThat(response).isEqualTo(HttpStatus.NO_CONTENT);
+        assertThat(customer.getFavoriteStores()).isEmpty();
     }
 
     @Test
     @DisplayName("it should not be able to favorite a store if customer does not exist")
-    public void testExecuteAddFavoriteStore$customerNotFound() {
+    public void testToggleFavoriteStore$customerNotFound() {
         when(customerRepository.findById("customer-id")).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> toggleFavoriteStore.execute("customer-id", "store-id"))
@@ -72,7 +77,7 @@ public class ToggleFavoriteStoreTest {
 
     @Test
     @DisplayName("it should not be able to favorite a store if store does not exist")
-    public void testExecuteAddFavoriteStore$storeNotFound() {
+    public void testToggleFavoriteStore$storeNotFound() {
         when(customerRepository.findById("customer-id")).thenReturn(Optional.of(customer));
         when(storeRepository.findById("store-id")).thenReturn(Optional.empty());
 

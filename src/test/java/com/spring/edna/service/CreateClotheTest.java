@@ -1,6 +1,5 @@
 package com.spring.edna.service;
 
-import com.spring.edna.auth.AuthService;
 import com.spring.edna.exception.EdnaException;
 import com.spring.edna.factories.ClotheFactory;
 import com.spring.edna.factories.StoreFactory;

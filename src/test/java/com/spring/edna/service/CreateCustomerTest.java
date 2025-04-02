@@ -27,7 +27,7 @@ public class CreateCustomerTest {
 
     @Test
     @DisplayName("it should be able to create a customer")
-    public void testCreateCustomer$sucess() {
+    public void testCreateCustomer$success() {
         Customer customer = CustomerFactory.create();
         customer.setId("customer-id");
 
