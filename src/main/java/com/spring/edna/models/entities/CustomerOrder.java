@@ -3,6 +3,7 @@ package com.spring.edna.models.entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.spring.edna.models.enums.OrderStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UuidGenerator;

@@ -41,6 +41,6 @@ public class CreateClotheController {
 
         createClothe.execute(clothe, files);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.created(null).build();
     }
 }
