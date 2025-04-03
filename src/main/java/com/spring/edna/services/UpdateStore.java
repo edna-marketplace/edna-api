@@ -19,6 +19,7 @@ public class UpdateStore {
         );
 
         store.setCnpj(storeInDatabase.getCnpj());
+        store.setPassword(storeInDatabase.getPassword());
         store.setCreatedAt(storeInDatabase.getCreatedAt());
 
         storeRepository.save(store);
