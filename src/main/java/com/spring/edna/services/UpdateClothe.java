@@ -13,7 +13,7 @@ public class UpdateClothe {
     @Autowired
     private ClotheRepository clotheRepository;
 
-    public void execute (Clothe clothe, String storeId) throws EdnaException {
+    public void execute(Clothe clothe, String storeId) throws EdnaException {
 
         Clothe clotheInDatabase = clotheRepository.findById(clothe.getId()).orElseThrow(() -> new EdnaException("Clothe not found", HttpStatus.BAD_REQUEST));
 
@@ -22,7 +22,6 @@ public class UpdateClothe {
         }
 
         clothe.setStore(clotheInDatabase.getStore());
-
         clotheRepository.save(clothe);
     }
 }

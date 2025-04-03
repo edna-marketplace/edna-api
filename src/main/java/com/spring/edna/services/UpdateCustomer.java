@@ -14,11 +14,12 @@ public class UpdateCustomer {
     private CustomerRepository customerRepository;
 
     public HttpStatus execute(Customer customer) throws EdnaException {
-        Customer customerInDatabase = customerRepository.findById(customer.getId())
-                .orElseThrow(() -> new EdnaException("Customer not found", HttpStatus.BAD_REQUEST));
+        Customer customerInDB = customerRepository.findById(customer.getId())
+                .orElseThrow(() -> new EdnaException("Customer not found.", HttpStatus.BAD_REQUEST));
 
-        customer.setCpf(customerInDatabase.getCpf());
-        customer.setCreatedAt(customerInDatabase.getCreatedAt());
+        customer.setCpf(customerInDB.getCpf());
+        customer.setPassword(customerInDB.getPassword());
+        customer.setCreatedAt(customerInDB.getCreatedAt());
 
         customerRepository.save(customer);
 

@@ -31,7 +31,7 @@ public class UpdateCustomerTest {
 
     @Test
     @DisplayName("it should be able to update a customer")
-    public void testUpdateCustomer$sucess() throws EdnaException {
+    public void testUpdateCustomer$success() throws EdnaException {
         Customer customerInDB = CustomerFactory.create();
         customerInDB.setId("customer-id");
 
