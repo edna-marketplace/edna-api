@@ -3,6 +3,7 @@ package com.spring.edna.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.spring.edna.exception.EdnaException;
 import com.spring.edna.factories.AddressFactory;
 import com.spring.edna.factories.StoreFactory;
 import com.spring.edna.factories.StoreScheduleFactory;
@@ -45,7 +46,7 @@ public class CreateStoreTest {
 
     @Test
     @DisplayName("it should be able to create a store")
-    public void testCreateStore$success() {
+    public void testCreateStore$success() throws EdnaException {
         Store store = StoreFactory.create();
         Address address = AddressFactory.create();
         List<StoreDaySchedule> schedule = StoreScheduleFactory.create();
