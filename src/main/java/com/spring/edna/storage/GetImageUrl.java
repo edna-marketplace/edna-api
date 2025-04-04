@@ -3,12 +3,17 @@ package com.spring.edna.storage;
 import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import org.hibernate.Cache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.net.URL;
 import java.util.Date;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class GetImageUrl {
@@ -19,16 +24,41 @@ public class GetImageUrl {
     @Value("${cloudfare.bucket.name}")
     private String bucketName;
 
-    public String execute(String imageUrl) {
+    private final Map<String, CachedPresignedUrl> urlCache = new ConcurrentHashMap<>();
+
+    private static final long BUFFER_TIME_MS = 5 * 60 * 1000; // 5 minutes
+
+    public String execute(String imageUniqueName) {
+        CachedPresignedUrl cachedUrl = urlCache.get(imageUniqueName);
+        long currentTime = new Date().getTime();
+
+        if(cachedUrl != null && (cachedUrl.getExpirationTime() - currentTime) > BUFFER_TIME_MS) {
+            return cachedUrl.getUrl();
+        }
+
+        String newUrl = generateUrl(imageUniqueName);
+
+        urlCache.put(imageUniqueName, new CachedPresignedUrl(newUrl, currentTime + 3600 * 1000));
+        return newUrl;
+    }
+
+    private String generateUrl(String imageUniqueName) {
         Date expiration = new Date(System.currentTimeMillis() + 3600 * 1000); // 1 hour
 
         GeneratePresignedUrlRequest presignedUrlRequest =
-                new GeneratePresignedUrlRequest(bucketName, imageUrl)
+                new GeneratePresignedUrlRequest(bucketName, imageUniqueName)
                         .withMethod(HttpMethod.GET)
                         .withExpiration(expiration);
 
         URL url = s3.generatePresignedUrl(presignedUrlRequest);
 
         return url.toString();
+    }
+
+    @AllArgsConstructor
+    @Data
+    private static class CachedPresignedUrl {
+        final String url;
+        final long expirationTime;
     }
 }
