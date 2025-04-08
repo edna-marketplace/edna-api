@@ -10,7 +10,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class CreateStoreRequestDTO {
+public class CreateUpdateStoreRequestDTO {
     Store store;
     Address address;
     List<StoreDaySchedule> schedule;

@@ -1,5 +1,6 @@
 package com.spring.edna.models.dtos;
 
+import com.spring.edna.models.entities.ClotheImage;
 import com.spring.edna.models.enums.ClotheBrand;
 import com.spring.edna.models.enums.ClotheCategory;
 import com.spring.edna.models.enums.ClotheGender;
@@ -26,5 +27,5 @@ public class ClotheDetailsDTO {
     private ClotheBrand brand;
     private ClotheCategory category;
     private String storeName;
-    private List<String> images;
+    private List<ClotheImageDTO> images;
 }

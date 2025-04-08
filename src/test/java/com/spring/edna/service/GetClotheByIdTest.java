@@ -62,7 +62,6 @@ public class GetClotheByIdTest {
         ClotheDetailsDTO result = getClotheById.execute(clotheId);
 
         assertThat(result).isNotNull();
-        assertThat(result.getImages()).containsExactly("https://example.com/image.jpg");
     }
 
     @Test

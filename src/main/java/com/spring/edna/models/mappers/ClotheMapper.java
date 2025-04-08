@@ -1,8 +1,10 @@
 package com.spring.edna.models.mappers;
 
 import com.spring.edna.models.dtos.ClotheDetailsDTO;
+import com.spring.edna.models.dtos.ClotheImageDTO;
 import com.spring.edna.models.dtos.ClotheSummaryDTO;
 import com.spring.edna.models.entities.Clothe;
+import com.spring.edna.models.entities.ClotheImage;
 import com.spring.edna.models.entities.Store;
 
 import java.util.ArrayList;
@@ -10,7 +12,7 @@ import java.util.List;
 
 public class ClotheMapper {
 
-    public static ClotheDetailsDTO toClotheDetailsDTO(Clothe clothe, List<String> imagesUrls) {
+    public static ClotheDetailsDTO toClotheDetailsDTO(Clothe clothe, List<ClotheImageDTO> images) {
         Store store = clothe.getStore();
         return new ClotheDetailsDTO(
                 clothe.getId(),
@@ -26,7 +28,7 @@ public class ClotheMapper {
                 clothe.getBrand(),
                 clothe.getCategory(),
                 store != null ? store.getName() : "N/A",
-                imagesUrls
+                images
         );
     }
 

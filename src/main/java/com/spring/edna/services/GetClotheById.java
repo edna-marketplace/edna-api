@@ -2,6 +2,7 @@ package com.spring.edna.services;
 
 import com.spring.edna.exception.EdnaException;
 import com.spring.edna.models.dtos.ClotheDetailsDTO;
+import com.spring.edna.models.dtos.ClotheImageDTO;
 import com.spring.edna.models.entities.Clothe;
 import com.spring.edna.models.entities.ClotheImage;
 import com.spring.edna.models.mappers.ClotheMapper;
@@ -34,15 +35,16 @@ public class GetClotheById {
         }
 
         List<ClotheImage> imagesInDB = clothe.getImages();
-        List<String> imagesUrls = new ArrayList<>();
+        List<ClotheImageDTO> images = new ArrayList<>();
 
         for(ClotheImage i : imagesInDB) {
             String imageUrl = getImageUrl.execute(i.getUrl());
 
-            imagesUrls.add(imageUrl);
+            ClotheImageDTO dto = new ClotheImageDTO(i.getId(), imageUrl);
+            images.add(dto);
         }
 
 
-        return ClotheMapper.toClotheDetailsDTO(clothe, imagesUrls);
+        return ClotheMapper.toClotheDetailsDTO(clothe, images);
     }
 }
