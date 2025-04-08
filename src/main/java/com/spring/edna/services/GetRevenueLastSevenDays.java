@@ -37,11 +37,11 @@ public class GetRevenueLastSevenDays {
         int currentWeekTotal = customerOrderRepository.getRevenueInPeriod(store, startOfCurrentWeek, endOfCurrentWeek);
         int lastWeekTotal = customerOrderRepository.getRevenueInPeriod(store, startOfLastWeek, endOfLastWeek);
 
-        int currentWeekRevenue = (int) (currentWeekTotal * 0.86);
-        int lastWeekRevenue = (int) (lastWeekTotal * 0.86);
+        double currentWeekRevenue = (currentWeekTotal * 0.86);
+        double lastWeekRevenue = (lastWeekTotal * 0.86);
 
-        int variation = (lastWeekRevenue > 0)
-                ? ((currentWeekRevenue - lastWeekRevenue) / lastWeekRevenue) * 100
+        double variation = (lastWeekRevenue > 0)
+                ?  (((currentWeekRevenue - lastWeekRevenue) / lastWeekRevenue) * 100)
                 : 100;
 
         return new WeekRevenueDTO(currentWeekRevenue, variation);

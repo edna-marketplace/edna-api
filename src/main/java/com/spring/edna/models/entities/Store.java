@@ -51,4 +51,14 @@ public class Store extends User{
     @OneToMany(mappedBy = "store")
     @JsonBackReference(value = "store-images")
     private List<StoreImage> images;
+
+    @Override
+    public String toString() {
+        return "Store{" +
+                "address=" + address +
+                ", cnpj='" + cnpj + '\'' +
+                ", description='" + description + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
