@@ -1,8 +1,7 @@
 package com.spring.edna.controllers;
 
 import com.spring.edna.exception.EdnaException;
-import com.spring.edna.models.dtos.CreateStoreRequestDTO;
-import com.spring.edna.models.entities.Store;
+import com.spring.edna.models.dtos.CreateUpdateStoreRequestDTO;
 import com.spring.edna.services.CreateStore;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +22,12 @@ public class CreateStoreController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> handler(@Valid @RequestBody CreateStoreRequestDTO createStoreRequestDTO) throws EdnaException {
-        String encryptedPassword = passwordEncoder.encode(createStoreRequestDTO.getStore().getPassword());
+    public ResponseEntity<Void> handler(@Valid @RequestBody CreateUpdateStoreRequestDTO createUpdateStoreRequestDTO) throws EdnaException {
+        String encryptedPassword = passwordEncoder.encode(createUpdateStoreRequestDTO.getStore().getPassword());
 
-        createStoreRequestDTO.getStore().setPassword(encryptedPassword);
+        createUpdateStoreRequestDTO.getStore().setPassword(encryptedPassword);
 
-        createStore.execute(createStoreRequestDTO);
+        createStore.execute(createUpdateStoreRequestDTO);
 
         return ResponseEntity.created(null).build();
     }
