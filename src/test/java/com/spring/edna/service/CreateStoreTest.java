@@ -7,7 +7,7 @@ import com.spring.edna.exception.EdnaException;
 import com.spring.edna.factories.AddressFactory;
 import com.spring.edna.factories.StoreFactory;
 import com.spring.edna.factories.StoreScheduleFactory;
-import com.spring.edna.models.dtos.CreateStoreRequestDTO;
+import com.spring.edna.models.dtos.CreateUpdateStoreRequestDTO;
 import com.spring.edna.models.entities.Address;
 import com.spring.edna.models.entities.Store;
 import com.spring.edna.models.entities.StoreDaySchedule;
@@ -25,7 +25,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
@@ -51,7 +50,7 @@ public class CreateStoreTest {
         Address address = AddressFactory.create();
         List<StoreDaySchedule> schedule = StoreScheduleFactory.create();
 
-        CreateStoreRequestDTO req = new CreateStoreRequestDTO(store, address, schedule);
+        CreateUpdateStoreRequestDTO req = new CreateUpdateStoreRequestDTO(store, address, schedule);
 
         store.setId("store-id");
 

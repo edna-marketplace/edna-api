@@ -7,13 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+
 @Service
 public class UpdateClothe {
 
     @Autowired
     private ClotheRepository clotheRepository;
 
-    public void execute(Clothe clothe, String storeId) throws EdnaException {
+    public HttpStatus execute(Clothe clothe, String storeId) throws EdnaException, IOException {
 
         Clothe clotheInDatabase = clotheRepository.findById(clothe.getId()).orElseThrow(() -> new EdnaException("Clothe not found", HttpStatus.BAD_REQUEST));
 
@@ -22,6 +24,9 @@ public class UpdateClothe {
         }
 
         clothe.setStore(clotheInDatabase.getStore());
+        clothe.setCreatedAt(clotheInDatabase.getCreatedAt());
+
         clotheRepository.save(clothe);
+        return HttpStatus.CREATED;
     }
 }
