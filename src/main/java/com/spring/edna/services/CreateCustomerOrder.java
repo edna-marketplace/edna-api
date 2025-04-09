@@ -5,6 +5,7 @@ import com.spring.edna.models.entities.Clothe;
 import com.spring.edna.models.entities.Customer;
 import com.spring.edna.models.entities.CustomerOrder;
 import com.spring.edna.models.entities.Store;
+import com.spring.edna.models.enums.OrderStatus;
 import com.spring.edna.models.repositories.ClotheRepository;
 import com.spring.edna.models.repositories.CustomerOrderRepository;
 import com.spring.edna.models.repositories.CustomerRepository;
@@ -30,15 +31,17 @@ public class CreateCustomerOrder {
 
     public CustomerOrder execute(CustomerOrder customerOrder) throws EdnaException {
 
-        System.out.println(customerOrder.getCustomer().getId());
+        Store store = storeRepository.findById(customerOrder.getStore().getId()).orElseThrow(() -> new EdnaException("Store not found", HttpStatus.BAD_REQUEST));
+        Clothe clothe = clotheRepository.findById(customerOrder.getClothe().getId()).orElseThrow(() -> new EdnaException("Clothe not found", HttpStatus.BAD_REQUEST));
+        Customer customer = customerRepository.findById(customerOrder.getCustomer().getId()).orElseThrow(() -> new EdnaException("Customer not found", HttpStatus.BAD_REQUEST));
 
-        Store store = storeRepository.findById(customerOrder.getStore().getId()).orElseThrow(() -> new EdnaException("Store not found",HttpStatus.BAD_REQUEST));
-        Clothe clothe = clotheRepository.findById(customerOrder.getClothe().getId()).orElseThrow(() -> new EdnaException("Clothe not found",HttpStatus.BAD_REQUEST));
-        Customer customer = customerRepository.findById(customerOrder.getCustomer().getId()).orElseThrow(() -> new EdnaException("Customer not found",HttpStatus.BAD_REQUEST));
+        boolean alreadyOrdered = customerOrderRepository.existsByCustomerIdAndStoreId(customerOrder.getCustomer().getId(), customerOrder.getStore().getId());
+        customerOrder.setFirstOrder(!alreadyOrdered);
 
         customerOrder.setStore(store);
         customerOrder.setClothe(clothe);
         customerOrder.setCustomer(customer);
+        customerOrder.setStatus(OrderStatus.PENDING);
 
         return customerOrderRepository.save(customerOrder);
     }

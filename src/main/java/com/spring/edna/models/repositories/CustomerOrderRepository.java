@@ -15,12 +15,26 @@ public interface CustomerOrderRepository extends JpaRepository<CustomerOrder, St
 
     long countByStoreIdAndCreatedAtBetween(String storeId, LocalDateTime start, LocalDateTime end);
 
-    @Query("SELECT SUM(clothe.priceInCents) FROM CustomerOrder o " +
-            "JOIN o.clothe c " +
-            "WHERE o.store = :store " +
-            "AND o.status = 'COMPLETED' " +
-            "AND o.createdAt BETWEEN :start AND :end")
+    @Query("SELECT SUM(clothe.priceInCents) FROM CustomerOrder co " +
+            "JOIN co.clothe c " +
+            "WHERE co.store = :store " +
+            "AND co.status = 'COMPLETED' " +
+            "AND co.createdAt BETWEEN :start AND :end")
     Integer getRevenueInPeriod(@Param("store") Store store,
-                              @Param("start") LocalDateTime start,
-                              @Param("end") LocalDateTime end);
+                               @Param("start") LocalDateTime start,
+                               @Param("end") LocalDateTime end);
+
+    boolean existsByCustomerIdAndStoreId(String customerId, String storeId);
+
+    @Query("""
+                SELECT COUNT(DISTINCT co.customer.id)
+                FROM CustomerOrder co
+                WHERE co.store.id = :storeId
+                AND co.createdAt BETWEEN :start AND :end
+                AND co.isFirstOrder = true
+            """)
+    long countNewCustomersByStoreIdAndDateRange(
+            @Param("storeId") String storeId,
+            @Param("start") LocalDateTime start,
+            @Param("end") LocalDateTime end);
 }

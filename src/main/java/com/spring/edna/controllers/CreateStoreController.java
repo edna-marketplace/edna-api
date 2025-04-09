@@ -15,15 +15,15 @@ public class CreateStoreController {
     @Autowired
     private CreateStore createStore;
 
-    //@Autowired
-    //private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public String createStore(@Valid @RequestBody Store store) {
-        //String encryptedPassword = passwordEncoder.encode(store.getPassword());
+        String encryptedPassword = passwordEncoder.encode(store.getPassword());
 
-        //store.setPassword(encryptedPassword);
+        store.setPassword(encryptedPassword);
 
         return createStore.execute(store);
     }
