@@ -14,7 +14,7 @@ public class GetCustomerByIdController {
     private GetCustomerById getCustomerById;
 
     @GetMapping("/{customerId}")
-    public CustomerDetailsDTO getCustomerById(@PathVariable String customerId) throws EdnaException {
+    public CustomerDetailsDTO handle(@PathVariable String customerId) throws EdnaException {
         return getCustomerById.execute(customerId);
     }
 }

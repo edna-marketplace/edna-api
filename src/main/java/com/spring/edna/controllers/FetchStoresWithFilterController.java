@@ -20,7 +20,7 @@ public class FetchStoresWithFilterController {
     private AuthService authService;
 
     @PostMapping("/filter")
-    public FetchStoresWithFilterPresenter fetchStoresWithFilter(@RequestBody StoreSelector selector) throws EdnaException {
+    public FetchStoresWithFilterPresenter handle(@RequestBody StoreSelector selector) throws EdnaException {
         User subject = authService.getAuthenticatedUser();
 
         return fetchStoresWithFilter.execute(selector, subject.getId());

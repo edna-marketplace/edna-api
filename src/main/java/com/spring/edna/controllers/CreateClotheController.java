@@ -29,7 +29,7 @@ public class CreateClotheController {
     private AuthService authService;
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<Void> handler(
+    public ResponseEntity<Void> handle(
             @RequestPart("clothe") String clotheString,
             @RequestPart(value = "files", required = false) List<MultipartFile> files
     ) throws EdnaException, IOException {

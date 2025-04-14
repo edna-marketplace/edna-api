@@ -25,7 +25,7 @@ public class UpdateClotheController {
     private AuthService authService;
 
     @PutMapping
-    public void updateClothe(@Valid @RequestBody Clothe clothe) throws EdnaException, IOException {
+    public void handle(@Valid @RequestBody Clothe clothe) throws EdnaException, IOException {
         User subject = authService.getAuthenticatedUser();
 
         updateClothe.execute(clothe, subject.getId());

@@ -23,7 +23,7 @@ public class UpdateStoreController {
 
     @PutMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> handler(@Valid @RequestBody Store store) throws EdnaException {
+    public ResponseEntity<Void> handle(@Valid @RequestBody Store store) throws EdnaException {
         User subject = authService.getAuthenticatedUser();
 
         store.setId(subject.getId());

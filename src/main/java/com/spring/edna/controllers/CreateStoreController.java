@@ -22,7 +22,7 @@ public class CreateStoreController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> handler(@Valid @RequestBody CreateUpdateStoreRequestDTO createUpdateStoreRequestDTO) throws EdnaException {
+    public ResponseEntity<Void> handle(@Valid @RequestBody CreateUpdateStoreRequestDTO createUpdateStoreRequestDTO) throws EdnaException {
         String encryptedPassword = passwordEncoder.encode(createUpdateStoreRequestDTO.getStore().getPassword());
 
         createUpdateStoreRequestDTO.getStore().setPassword(encryptedPassword);

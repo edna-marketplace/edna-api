@@ -20,7 +20,7 @@ public class DeleteStoreController {
     private AuthService authService;
 
     @DeleteMapping("/{storeId}")
-    public ResponseEntity<Void> deleteStore(@PathVariable String storeId) throws EdnaException {
+    public ResponseEntity<Void> handle(@PathVariable String storeId) throws EdnaException {
         User subject = authService.getAuthenticatedUser();
 
         if(subject.getId().equals(storeId)) {

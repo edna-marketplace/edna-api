@@ -14,7 +14,7 @@ public class GetStoreByIdController {
     private GetStoreById getStoreById;
 
     @GetMapping("/{storeId}")
-    public StoreDetailsDTO getStoreById(@PathVariable String storeId) throws EdnaException {
+    public StoreDetailsDTO handle(@PathVariable String storeId) throws EdnaException {
         return getStoreById.execute(storeId);
     }
 }

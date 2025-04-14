@@ -26,7 +26,7 @@ public class UpdateStoreScheduleController {
 
     @PutMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> updateSchedule(@Valid @RequestBody List<StoreDaySchedule> schedule) throws EdnaException {
+    public ResponseEntity<Void> handle(@Valid @RequestBody List<StoreDaySchedule> schedule) throws EdnaException {
         User subject = authService.getAuthenticatedUser();
 
         for(StoreDaySchedule ds : schedule) {

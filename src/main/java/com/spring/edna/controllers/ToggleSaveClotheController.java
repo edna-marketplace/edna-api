@@ -22,7 +22,7 @@ public class ToggleSaveClotheController {
     private AuthService authService;
 
     @PostMapping("/{clotheId}")
-    public ResponseEntity<Void> handler(@PathVariable String clotheId) throws EdnaException {
+    public ResponseEntity<Void> handle(@PathVariable String clotheId) throws EdnaException {
         User subject = authService.getAuthenticatedUser();
 
         toggleSaveClothe.execute(clotheId, subject.getId());

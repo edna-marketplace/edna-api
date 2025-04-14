@@ -19,7 +19,7 @@ public class ToggleFavoriteStoreController {
     private AuthService authService;
 
     @PostMapping("/{storeId}")
-    public ResponseEntity<Void> handler(@PathVariable String storeId) throws EdnaException {
+    public ResponseEntity<Void> handle(@PathVariable String storeId) throws EdnaException {
         User subject = authService.getAuthenticatedUser();
 
         toggleFavoriteStore.execute(subject.getId(), storeId);
