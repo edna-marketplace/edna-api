@@ -1,7 +1,10 @@
 package com.spring.edna.models.repositories;
 
+import com.spring.edna.models.dtos.PendingOrdersDTO;
+import com.spring.edna.models.entities.Customer;
 import com.spring.edna.models.entities.CustomerOrder;
 import com.spring.edna.models.entities.Store;
+import com.spring.edna.models.enums.OrderStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -9,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public interface CustomerOrderRepository extends JpaRepository<CustomerOrder, String>, JpaSpecificationExecutor<CustomerOrder> {
@@ -37,4 +41,5 @@ public interface CustomerOrderRepository extends JpaRepository<CustomerOrder, St
             @Param("storeId") String storeId,
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end);
+
 }
