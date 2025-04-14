@@ -12,16 +12,23 @@ import java.util.List;
 
 public class StoreMapper {
 
-    public static StoreDetailsDTO toStoreDetailsDTO(Store store, String bannerImageUrl, String profileImageUrl) {
+    public static StoreDetailsDTO toStoreDetailsDTO(
+            Store store,
+            String distanceInKilometers,
+            Double avgRating,
+            boolean isFavorite,
+            String bannerImageUrl,
+            String profileImageUrl
+    ) {
         return new StoreDetailsDTO(
                 store.getId(),
                 bannerImageUrl,
                 profileImageUrl,
                 store.getName(),
                 store.getTargetCustomer(),
-                5000, // Mock value; TODO: Create logic to calculate the distance
-                5.0,
-                false, // Mock value; TODO: Create logic with authenticated user id
+                distanceInKilometers,
+                avgRating,
+                isFavorite,
                 store.getDescription(),
                 store.getCnpj(),
                 AddressMapper.toAddressDetailsDTO(store.getAddress()),

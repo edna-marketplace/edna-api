@@ -14,7 +14,7 @@ public class StoreDetailsDTO {
     private String profileImageUrl;
     private String storeName;
     private TargetCustomer targetCustomer;
-    private Integer distanceToCustomerInMeters;
+    private String distanceInKilometers;
     private Double avgRating;
     private boolean isFavorite;
     private String storeDescription;

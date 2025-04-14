@@ -8,6 +8,7 @@ import com.spring.edna.models.enums.StoreImageType;
 import com.spring.edna.models.mappers.StoreMapper;
 import com.spring.edna.models.repositories.StoreRepository;
 import com.spring.edna.storage.GetImageUrl;
+import com.spring.edna.utils.StoreRatingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -29,14 +30,23 @@ public class GetStoreById {
                 HttpStatus.BAD_REQUEST
         ));
 
-        if(store.isDeleted()) {
+        if (store.isDeleted()) {
             throw new EdnaException("This store was deleted", HttpStatus.BAD_REQUEST);
         }
 
+        Double avgRating = StoreRatingUtils.calculateAverageRating(store.getCustomerOrders());
+
         List<StoreImage> imagesInDB = store.getImages();
 
-        if(imagesInDB == null || imagesInDB.isEmpty()) {
-            return StoreMapper.toStoreDetailsDTO(store, null, null);
+        if (imagesInDB == null || imagesInDB.isEmpty()) {
+            return StoreMapper.toStoreDetailsDTO(
+                    store,
+                    "5km",
+                    avgRating,
+                    true,
+                    null,
+                    null
+            );
         }
 
         StoreImage bannerImageInDB = imagesInDB.stream().filter(image -> image.getType().equals(StoreImageType.BANNER))
@@ -48,6 +58,13 @@ public class GetStoreById {
         String profileImageUrl = (profileImageInDB != null) ? getImageUrl.execute(profileImageInDB.getUrl()) : null;
 
 
-        return StoreMapper.toStoreDetailsDTO(store, bannerImageUrl, profileImageUrl);
+        return StoreMapper.toStoreDetailsDTO(
+                store,
+                "5km",
+                avgRating,
+                true,
+                bannerImageUrl,
+                profileImageUrl
+        );
     }
 }
