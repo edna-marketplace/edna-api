@@ -2,6 +2,7 @@ package com.spring.edna.controllers;
 
 import com.spring.edna.auth.AuthService;
 import com.spring.edna.exception.EdnaException;
+import com.spring.edna.models.entities.Store;
 import com.spring.edna.models.entities.StoreDaySchedule;
 import com.spring.edna.models.entities.User;
 import com.spring.edna.services.UpdateStoreSchedule;
@@ -27,7 +28,11 @@ public class UpdateStoreScheduleController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> updateSchedule(@Valid @RequestBody List<StoreDaySchedule> schedule) throws EdnaException {
         User subject = authService.getAuthenticatedUser();
-        schedule.forEach(ds -> ds.getStore().setId(subject.getId()));
+
+        for(StoreDaySchedule ds : schedule) {
+            ds.setStore(new Store());
+            ds.getStore().setId(subject.getId());
+        }
 
         updateStoreSchedule.execute(schedule, subject.getId());
 
