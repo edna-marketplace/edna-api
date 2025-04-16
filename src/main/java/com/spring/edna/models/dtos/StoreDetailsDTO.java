@@ -12,12 +12,12 @@ public class StoreDetailsDTO {
     private String id;
     private String bannerImageUrl;
     private String profileImageUrl;
-    private String storeName;
+    private String name;
     private TargetCustomer targetCustomer;
     private String distanceInKilometers;
     private Double avgRating;
     private boolean isFavorite;
-    private String storeDescription;
+    private String description;
     private String cnpj;
     private AddressDetailsDTO address;
     private List<StoreDayScheduleDTO> schedule;

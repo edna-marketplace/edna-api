@@ -16,7 +16,7 @@ public class StoreMapper {
             Store store,
             String distanceInKilometers,
             Double avgRating,
-            boolean isFavorite,
+            List<Store> customerFavoriteStores,
             String bannerImageUrl,
             String profileImageUrl
     ) {
@@ -28,7 +28,7 @@ public class StoreMapper {
                 store.getTargetCustomer(),
                 distanceInKilometers,
                 avgRating,
-                isFavorite,
+                customerFavoriteStores.contains(store),
                 store.getDescription(),
                 store.getCnpj(),
                 AddressMapper.toAddressDetailsDTO(store.getAddress()),
