@@ -8,6 +8,7 @@ import com.spring.edna.exception.EdnaException;
 import com.spring.edna.factories.StoreFactory;
 import com.spring.edna.models.dtos.StoreDetailsDTO;
 import com.spring.edna.models.entities.Store;
+import com.spring.edna.models.repositories.CustomerRepository;
 import com.spring.edna.models.repositories.StoreRepository;
 import com.spring.edna.services.GetStoreById;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,6 +28,9 @@ public class GetStoreByIdTest {
     @Mock
     private StoreRepository storeRepository;
 
+    @Mock
+    private CustomerRepository customerRepository;
+
     @InjectMocks
     private GetStoreById getStoreById;
 
@@ -43,12 +47,13 @@ public class GetStoreByIdTest {
     @DisplayName("it should be able to get a store by its id")
     public void testGetStoreById$success() throws EdnaException {
         when(storeRepository.findById("store-id")).thenReturn(Optional.of(store));
+        when(storeRepository.findById("customer-id")).thenReturn(null);
 
-        StoreDetailsDTO result = getStoreById.execute("store-id");
+        StoreDetailsDTO result = getStoreById.execute("store-id", "customer-id", null);
 
         assertThat(result).isNotNull();
         assertThat(result.getId()).isEqualTo("store-id");
-        assertThat(result.getStoreName()).isEqualTo("store-name");
+        assertThat(result.getName()).isEqualTo("store-name");
     }
 
     @Test
@@ -56,7 +61,7 @@ public class GetStoreByIdTest {
     public void testGetStoreById$storeDoesntExists() throws EdnaException {
         when(storeRepository.findById("store-id")).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> getStoreById.execute("store-id")).isInstanceOf(EdnaException.class)
+        assertThatThrownBy(() -> getStoreById.execute("store-id", null, null)).isInstanceOf(EdnaException.class)
                 .hasMessageContaining("Store not found");
     }
 
@@ -66,7 +71,7 @@ public class GetStoreByIdTest {
         store.setDeleted(true);
         when(storeRepository.findById("store-id")).thenReturn(Optional.of(store));
 
-        assertThatThrownBy(() -> getStoreById.execute("store-id")).isInstanceOf(EdnaException.class)
+        assertThatThrownBy(() -> getStoreById.execute("store-id", null, null)).isInstanceOf(EdnaException.class)
                 .hasMessageContaining("This store was deleted");
     }
 }

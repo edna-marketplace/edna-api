@@ -16,15 +16,10 @@ public class GoogleDistanceMatrix {
 
     public String getDistance(String origin, String destination) {
 
-        destination = destination.replaceAll(" ", "+");
-
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(baseUrl)
                 .queryParam("origins", origin)
                 .queryParam("destinations", destination)
                 .queryParam("key", apiKey);
-
-        System.out.println(origin);
-        System.out.println(destination);
 
         DistanceMatrixResponse distanceMatrixResponse = restTemplate.getForObject(builder.toUriString(), DistanceMatrixResponse.class);
 

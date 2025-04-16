@@ -16,4 +16,5 @@ public class ClotheSummaryDTO {
     private Integer priceInCents;
     private ClotheSize size;
     private ClotheBrand brand;
+
 }
