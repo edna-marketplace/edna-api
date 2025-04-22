@@ -22,13 +22,13 @@ public class StoreRatingUtils {
             ratings.add(rating);
         }
 
-        Integer storeRatingAcc = 0;
+        Double storeRatingAcc = 0.0;
 
         for(OrderRating orderRating : ratings) {
             storeRatingAcc += orderRating.getRating();
         }
 
-        Double avgRating = (double) (storeRatingAcc / ratings.size());
+        Double avgRating = storeRatingAcc / ratings.size();
 
         return avgRating;
     }
