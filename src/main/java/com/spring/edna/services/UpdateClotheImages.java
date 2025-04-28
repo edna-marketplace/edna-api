@@ -49,7 +49,7 @@ public class UpdateClotheImages {
             deleteImageFromR2.execute(image.getUrl());
         }
 
-        if(newImages.isEmpty()) {
+        if(newImages == null || newImages.isEmpty()) {
             return HttpStatus.NO_CONTENT;
         }
 

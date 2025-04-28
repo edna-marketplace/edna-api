@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ClotheDetailsDTO {
 
-    private String clotheId;
+    private String id;
     private String name;
     private Integer priceInCents;
     private String description;
