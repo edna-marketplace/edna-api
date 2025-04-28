@@ -14,8 +14,10 @@ public class ClotheSummaryDTO {
     private String id;
     private String name;
     private Integer priceInCents;
-    private ClotheSize size;
     private ClotheBrand brand;
+    private String brandOther;
+    private ClotheSize size;
+    private String sizeOther;
     private String imageURL;
     private String storeImageURL;
 

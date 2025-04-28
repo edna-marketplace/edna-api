@@ -6,6 +6,8 @@ import com.spring.edna.models.dtos.PaginationMetaDTO;
 import com.spring.edna.models.entities.Clothe;
 import com.spring.edna.models.entities.Store;
 import com.spring.edna.models.entities.User;
+import com.spring.edna.models.enums.ClotheBrand;
+import com.spring.edna.models.enums.ClotheSize;
 import com.spring.edna.models.enums.StoreImageType;
 import com.spring.edna.models.repositories.ClotheRepository;
 import com.spring.edna.models.repositories.StoreRepository;
@@ -60,8 +62,10 @@ public class FetchClothesWithFilter {
                     clothe.getId(),
                     clothe.getName(),
                     clothe.getPriceInCents(),
-                    clothe.getSize(),
                     clothe.getBrand(),
+                    getOtherBrand(clothe),
+                    clothe.getSize(),
+                    getOtherSize(clothe),
                     getClotheFirstImage(clothe),
                     isSubjectStore ? null : getStoreProfileImageUrl(store)
             );
@@ -108,5 +112,27 @@ public class FetchClothesWithFilter {
                 .orElse(null);
 
         return getImageUrl.execute(firstImageUrl);
+    }
+
+    private String getOtherBrand(Clothe clothe) {
+        if (clothe.getBrand() == ClotheBrand.OTHER) {
+            if (clothe.getBrandOther() != null) {
+                return clothe.getBrandOther();
+            } else {
+                return ClotheBrand.OTHER.toString();
+            }
+        }
+        return null;
+    }
+
+    private String getOtherSize(Clothe clothe) {
+        if (clothe.getSize() == ClotheSize.OTHER) {
+            if (clothe.getSizeOther() != null) {
+                return clothe.getSizeOther();
+            } else {
+                return ClotheSize.OTHER.toString();
+            }
+        }
+        return null;
     }
 }

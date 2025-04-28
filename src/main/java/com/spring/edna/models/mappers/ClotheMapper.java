@@ -21,31 +21,17 @@ public class ClotheMapper {
                 clothe.getPriceInCents(),
                 clothe.getDescription(),
                 clothe.getSize(),
+                clothe.getSizeOther(),
                 clothe.getGender(),
                 clothe.getFabric(),
                 clothe.getColor(),
                 clothe.getLengthInCm(),
                 clothe.getWidthInCm(),
                 clothe.getBrand(),
+                clothe.getBrandOther(),
                 clothe.getCategory(),
                 store != null ? store.getName() : "N/A",
                 images
-        );
-    }
-
-    public static ClotheSummaryDTO toClotheSummaryDTO(
-            Clothe clothe,
-            String storeProfileImageUrl,
-            String clotheImageUrl
-    ) {
-        return new ClotheSummaryDTO(
-                clothe.getId(),
-                clothe.getName(),
-                clothe.getPriceInCents(),
-                clothe.getSize(),
-                clothe.getBrand(),
-                clotheImageUrl,
-                storeProfileImageUrl
         );
     }
 }
