@@ -20,7 +20,7 @@ public class VerifyDuplicateStoreController {
     private VerifyDuplicateStore verifyDuplicateStore;
 
     @GetMapping
-    public ResponseEntity<VerifyDuplicateStorePresenter> verifyDuplicateStore(@Valid @RequestBody Store store) {
+    public ResponseEntity<VerifyDuplicateStorePresenter> handle(@Valid @RequestBody Store store) {
         VerifyDuplicateStorePresenter response = verifyDuplicateStore.verifyDuplicateStore(store);
 
         if (response.getStatus() == HttpStatus.CONFLICT) {

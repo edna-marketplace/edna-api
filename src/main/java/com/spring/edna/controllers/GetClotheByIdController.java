@@ -17,7 +17,7 @@ public class GetClotheByIdController {
     private GetClotheById getClotheById;
 
     @GetMapping("/{clotheId}")
-    public ClotheDetailsDTO getClotheById(@PathVariable String clotheId) throws EdnaException {
+    public ClotheDetailsDTO handle(@PathVariable String clotheId) throws EdnaException {
         return getClotheById.execute(clotheId);
     }
 }

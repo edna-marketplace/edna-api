@@ -9,6 +9,7 @@ import com.spring.edna.models.entities.Store;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ClotheMapper {
 
@@ -20,36 +21,17 @@ public class ClotheMapper {
                 clothe.getPriceInCents(),
                 clothe.getDescription(),
                 clothe.getSize(),
+                clothe.getSizeOther(),
                 clothe.getGender(),
                 clothe.getFabric(),
                 clothe.getColor(),
                 clothe.getLengthInCm(),
                 clothe.getWidthInCm(),
                 clothe.getBrand(),
+                clothe.getBrandOther(),
                 clothe.getCategory(),
                 store != null ? store.getName() : "N/A",
                 images
         );
-    }
-
-    public static List<ClotheSummaryDTO> toClotheSummaryDTOList(List<Clothe> clothes) {
-        List<ClotheSummaryDTO> clotheSummaryDTOList = new ArrayList<>();
-
-        for (Clothe c : clothes) {
-            Store store = c.getStore();
-            ClotheSummaryDTO dto = new ClotheSummaryDTO(
-                    c.getId(),
-                    c.getImages() != null && !c.getImages().isEmpty() ? c.getImages().get(0).getUrl() : null,
-                    c.getName(),
-                    c.getStore().getImages() != null && !c.getStore().getImages().isEmpty() ? c.getStore().getImages().get(0).getUrl() : null,
-                    c.getPriceInCents(),
-                    c.getSize(),
-                    c.getBrand()
-            );
-
-            clotheSummaryDTOList.add(dto);
-        }
-
-        return clotheSummaryDTOList;
     }
 }

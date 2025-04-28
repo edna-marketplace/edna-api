@@ -27,27 +27,44 @@ public class UpdateClotheImages {
     @Autowired
     private UploadImageToR2 uploadImageToR2;
 
-    public HttpStatus execute(List<MultipartFile> files, String clotheId, String storeId) throws EdnaException, IOException {
-        if(files.size() > 5) {
+    @Autowired
+    private DeleteImageFromR2 deleteImageFromR2;
+
+    public HttpStatus execute(List<String> removedImages, List<MultipartFile> newImages, String clotheId, String storeId) throws EdnaException, IOException {
+
+        Clothe clothe = clotheRepository.findById(clotheId).orElseThrow(() -> new EdnaException(
+                "Clothe not found", HttpStatus.BAD_REQUEST
+        ));
+
+        if(!clothe.getStore().getId().equals(storeId)) {
+            throw new EdnaException("You can only update clothes from your store.", HttpStatus.BAD_REQUEST);
+        }
+
+        for(String imageId : removedImages) {
+            ClotheImage image = clotheImageRepository.findById(imageId).orElseThrow(() -> new EdnaException(
+                    "Image not found", HttpStatus.BAD_REQUEST
+            ));
+
+            clotheImageRepository.deleteById(imageId);
+            deleteImageFromR2.execute(image.getUrl());
+        }
+
+        if(newImages == null || newImages.isEmpty()) {
+            return HttpStatus.NO_CONTENT;
+        }
+
+        if(newImages.size() > 5) {
             throw new EdnaException("The max amount of files is 5 per clothe.", HttpStatus.BAD_REQUEST);
         }
 
-        Clothe clothe = clotheRepository.findById(clotheId).orElseThrow(() ->
-                new EdnaException("Clothe not found", HttpStatus.BAD_REQUEST)
-        );
-
-        if(!clothe.getStore().getId().equals(storeId)) {
-            throw new EdnaException("You cant update clothe images from another store.", HttpStatus.BAD_REQUEST);
-        }
-
-        if((5 - clothe.getImages().size()) < files.size()) {
+        if((5 - clothe.getImages().size()) < newImages.size()) {
             throw new EdnaException("The max amount of files is 5 per clothe, this clothe already have "
                     + clothe.getImages().size() + " images.", HttpStatus.BAD_REQUEST
             );
         }
 
-        for(MultipartFile file : files) {
-            String uniqueImageUrl = uploadImageToR2.execute(file);
+        for(MultipartFile image : newImages) {
+            String uniqueImageUrl = uploadImageToR2.execute(image);
 
             ClotheImage clotheImage = new ClotheImage();
             clotheImage.setClothe(clothe);
@@ -56,6 +73,6 @@ public class UpdateClotheImages {
             clotheImageRepository.save(clotheImage);
         }
 
-        return HttpStatus.CREATED;
+        return HttpStatus.NO_CONTENT;
     }
 }

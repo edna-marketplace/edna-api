@@ -23,7 +23,7 @@ public class UpdateCustomerController {
     private AuthService authService;
 
     @PutMapping
-    public void updateCustomer(@Valid @RequestBody Customer customer) throws EdnaException {
+    public void handle(@Valid @RequestBody Customer customer) throws EdnaException {
         User subject = authService.getAuthenticatedUser();
         customer.setId(subject.getId());
 

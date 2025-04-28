@@ -3,9 +3,15 @@ package com.spring.edna.models.enums;
 public enum ClotheCategory {
     T_SHIRT,
     SOCIAL_SHIRT,
+    SUIT,
+    ACTIVEWEAR,
     DRESS,
     PANTS,
     SHORTS,
-    HOODIE,
-    OTHER,
+    JACKET_HOODIE,
+    UNDERWEAR,
+    FOOTWEAR,
+    ACCESSORIES,
+    SLEEPWEAR,
+    SWIMWEAR,
 }

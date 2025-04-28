@@ -5,15 +5,20 @@ import com.spring.edna.models.enums.ClotheSize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.Optional;
+
 @Data
 @AllArgsConstructor
 public class ClotheSummaryDTO {
 
-    private String clotheId;
-    private String imageURL;
+    private String id;
     private String name;
-    private String storeImageURL;
     private Integer priceInCents;
-    private ClotheSize size;
     private ClotheBrand brand;
+    private String brandOther;
+    private ClotheSize size;
+    private String sizeOther;
+    private String imageURL;
+    private String storeImageURL;
+
 }

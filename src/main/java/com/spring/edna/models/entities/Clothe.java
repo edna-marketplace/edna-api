@@ -34,15 +34,12 @@ public class Clothe {
     private String description;
 
     @Nullable
-    @Size(min = 1, max = 60)
     private String categoryOther;
 
     @Nullable
-    @Size(min = 1, max = 60)
     private String brandOther;
 
     @Nullable
-    @Size(min = 1, max = 60)
     private String sizeOther;
 
     @NotNull(message = "Price is required.")

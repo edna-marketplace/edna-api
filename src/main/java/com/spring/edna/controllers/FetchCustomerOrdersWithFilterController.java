@@ -23,7 +23,7 @@ public class FetchCustomerOrdersWithFilterController {
     private AuthService authService;
 
     @PostMapping(path = "/filter")
-    public FetchCustomerOrdersWithFilterPresenter fetchClothesWithFilter(@RequestBody CustomerOrderSelector selector) throws EdnaException {
+    public FetchCustomerOrdersWithFilterPresenter handle(@RequestBody CustomerOrderSelector selector) throws EdnaException {
         User subject = authService.getAuthenticatedUser();
 
         return fetchCustomerOrdersWithFilter.execute(selector, subject.getId());

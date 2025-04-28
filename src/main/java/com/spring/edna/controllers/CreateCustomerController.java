@@ -19,7 +19,7 @@ public class CreateCustomerController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping
-    public ResponseEntity<Void> handler(@Valid @RequestBody Customer customer) {
+    public ResponseEntity<Void> handle(@Valid @RequestBody Customer customer) {
         String encryptedPassword = passwordEncoder.encode(customer.getPassword());
 
         customer.setPassword(encryptedPassword);

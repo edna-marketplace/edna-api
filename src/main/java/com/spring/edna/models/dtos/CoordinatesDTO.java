@@ -5,8 +5,9 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class PaginationMetaDTO {
-    private int pageIndex;
-    private int perPage;
-    private long totalCount;
+public class CoordinatesDTO {
+
+    private String latitude;
+    private String longitude;
+
 }

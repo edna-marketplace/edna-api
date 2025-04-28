@@ -14,17 +14,19 @@ import java.util.List;
 @AllArgsConstructor
 public class ClotheDetailsDTO {
 
-    private String clotheId;
+    private String id;
     private String name;
     private Integer priceInCents;
     private String description;
     private ClotheSize size;
+    private String sizeOther;
     private ClotheGender gender;
     private String fabric;
     private String color;
     private Integer lengthInCm;
     private Integer widthInCm;
     private ClotheBrand brand;
+    private String brandOther;
     private ClotheCategory category;
     private String storeName;
     private List<ClotheImageDTO> images;
