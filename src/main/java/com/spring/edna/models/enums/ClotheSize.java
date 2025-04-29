@@ -1,6 +1,7 @@
 package com.spring.edna.models.enums;
 
 public enum ClotheSize {
+    ALL,
     XS,
     S,
     M,

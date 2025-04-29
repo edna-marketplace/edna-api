@@ -1,6 +1,7 @@
 package com.spring.edna.models.enums;
 
 public enum ClotheCategory {
+    ALL,
     T_SHIRT,
     SOCIAL_SHIRT,
     SUIT,

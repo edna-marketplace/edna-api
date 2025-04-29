@@ -36,13 +36,14 @@ public class ClotheSelector extends BaseSelector implements Specification<Clothe
         if (this.getName() != null && !this.getName().trim().isEmpty()) {
             predicates.add(cb.like(cb.lower(root.get("name")), "%" + this.getName().toLowerCase() + "%"));
         }
-        if (this.getCategory() != null) {
+        if (this.getCategory() != null && this.getCategory() != ClotheCategory.ALL) {
+            System.out.println("Category: " + this.getCategory());
             predicates.add(cb.like(root.get("category"), "%" + this.getCategory() + "%"));
         }
-        if (this.getBrand() != null) {
+        if (this.getBrand() != null && this.getBrand() != ClotheBrand.ALL) {
             predicates.add(cb.like(root.get("brand"), "%" + this.getBrand() + "%"));
         }
-        if (this.getSize() != null) {
+        if (this.getSize() != null && this.getSize() != ClotheSize.ALL) {
             predicates.add(cb.like(root.get("size"), "%" + this.getSize() + "%"));
         }
         if (this.getFabric() != null && !this.getFabric().trim().isEmpty()) {
