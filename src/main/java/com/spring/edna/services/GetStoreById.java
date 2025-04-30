@@ -11,8 +11,8 @@ import com.spring.edna.models.mappers.StoreMapper;
 import com.spring.edna.models.repositories.CustomerRepository;
 import com.spring.edna.models.repositories.StoreRepository;
 import com.spring.edna.utils.GetDistanceBetweenCustomerAndStore;
-import com.spring.edna.utils.GetStoreImagesUrls;
-import com.spring.edna.utils.GetStoreImagesUrls.GetStoreImagesUrlsResponse;
+import com.spring.edna.utils.StoreImageUtils;
+import com.spring.edna.utils.StoreImageUtils.GetStoreImagesUrlsResponse;
 import com.spring.edna.utils.StoreRatingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +31,7 @@ public class GetStoreById {
     private CustomerRepository customerRepository;
 
     @Autowired
-    private GetStoreImagesUrls getStoreImagesUrls;
+    private StoreImageUtils storeImageUtils;
 
     @Autowired
     private GetDistanceBetweenCustomerAndStore getDistanceBetweenCustomerAndStore;
@@ -56,26 +56,15 @@ public class GetStoreById {
 
         List<StoreImage> imagesInDB = store.getImages();
 
-        if (imagesInDB == null || imagesInDB.isEmpty()) {
-            return StoreMapper.toStoreDetailsDTO(
-                    store,
-                    distanceInKilometers,
-                    avgRating,
-                    customer != null ? customer.getFavoriteStores() : new ArrayList<>(),
-                    null,
-                    null
-            );
-        } else {
-            GetStoreImagesUrlsResponse imagesUrls = getStoreImagesUrls.execute(imagesInDB);
+        GetStoreImagesUrlsResponse imagesUrls = storeImageUtils.getStoreImagesUrls(imagesInDB);
 
-            return StoreMapper.toStoreDetailsDTO(
-                    store,
-                    distanceInKilometers,
-                    avgRating,
-                    customer != null ? customer.getFavoriteStores() : new ArrayList<>(),
-                    imagesUrls.getBannerImageUrl(),
-                    imagesUrls.getProfileImageUrl()
-            );
-        }
+        return StoreMapper.toStoreDetailsDTO(
+                store,
+                distanceInKilometers,
+                avgRating,
+                customer != null ? customer.getFavoriteStores() : new ArrayList<>(),
+                imagesUrls.getBannerImageUrl(),
+                imagesUrls.getProfileImageUrl()
+        );
     }
 }

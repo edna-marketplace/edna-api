@@ -1,5 +1,6 @@
 package com.spring.edna.utils;
 
+import com.spring.edna.models.entities.Store;
 import com.spring.edna.models.entities.StoreImage;
 import com.spring.edna.models.enums.StoreImageType;
 import com.spring.edna.storage.GetImageUrl;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class GetStoreImagesUrls {
+public class StoreImageUtils {
 
     @Data
     @AllArgsConstructor
@@ -23,8 +24,7 @@ public class GetStoreImagesUrls {
     @Autowired
     private GetImageUrl getImageUrl;
 
-    public GetStoreImagesUrlsResponse execute(List<StoreImage> images) {
-
+    public GetStoreImagesUrlsResponse getStoreImagesUrls(List<StoreImage> images) {
         StoreImage bannerImageInDB = images.stream().filter(image -> image.getType().equals(StoreImageType.BANNER))
                 .findFirst().orElse(null);
         StoreImage profileImageInDB = images.stream().filter(image -> image.getType().equals(StoreImageType.PROFILE))
@@ -34,5 +34,17 @@ public class GetStoreImagesUrls {
         String profileImageUrl = (profileImageInDB != null) ? getImageUrl.execute(profileImageInDB.getUrl()) : null;
 
         return new GetStoreImagesUrlsResponse(bannerImageUrl, profileImageUrl);
+    }
+
+    public String getStoreProfileImageUrl(Store store) {
+        String profileImage = store
+                .getImages()
+                .stream()
+                .filter(image -> image.getType() == StoreImageType.PROFILE)
+                .findFirst()
+                .map(image -> image.getUrl())
+                .orElse(null);
+
+        return profileImage != null ? getImageUrl.execute(profileImage) : null;
     }
 }
