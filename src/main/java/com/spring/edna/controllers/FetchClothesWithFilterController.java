@@ -23,6 +23,6 @@ public class FetchClothesWithFilterController {
     public FetchClothesWithFilterResponse handle(@RequestBody ClotheSelector selector) throws EdnaException {
         User subject = authService.getAuthenticatedUser();
 
-        return fetchClothesWithFilter.execute(selector, subject);
+        return fetchClothesWithFilter.execute(selector, subject.getId());
     }
 }
