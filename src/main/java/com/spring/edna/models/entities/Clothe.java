@@ -51,10 +51,6 @@ public class Clothe {
     @NotBlank(message = "Color is required.")
     private String color;
 
-    private Integer lengthInCm;
-
-    private Integer widthInCm;
-
     @NotNull(message = "Category is required.")
     @Enumerated(EnumType.STRING)
     private ClotheCategory category;

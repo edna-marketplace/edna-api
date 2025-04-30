@@ -9,5 +9,6 @@ public enum ClotheBrand {
     FARM,
     CEA,
     RENNER,
+    NO_BRAND,
     OTHER
 }
