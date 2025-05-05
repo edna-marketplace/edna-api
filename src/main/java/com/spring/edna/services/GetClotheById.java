@@ -1,7 +1,6 @@
 package com.spring.edna.services;
 
 import com.spring.edna.exception.EdnaException;
-import com.spring.edna.models.dtos.ClotheImageDTO;
 import com.spring.edna.models.entities.Clothe;
 import com.spring.edna.models.entities.ClotheImage;
 import com.spring.edna.models.enums.ClotheBrand;
@@ -61,14 +60,18 @@ public class GetClotheById {
         boolean isSubjectStore = verifySubjectStore.execute(subjectId);
 
         Clothe clothe = clotheRepository.findById(clotheId).orElseThrow(() -> new EdnaException(
-                "Clothe not found",
+                "Clothe not found.",
                 HttpStatus.BAD_REQUEST
         ));
 
         if(clothe.isDeleted()) {
-            throw new EdnaException("This clothe was deleted", HttpStatus.BAD_REQUEST);
+            throw new EdnaException("This clothe was deleted.", HttpStatus.BAD_REQUEST);
         }
 
+        return toGetClotheByIdResponse(clothe, isSubjectStore);
+    }
+
+    private GetClotheByIdResponse toGetClotheByIdResponse(Clothe clothe, boolean isSubjectStore) {
         return new GetClotheByIdResponse(
                 clothe.getId(),
                 clothe.getName(),

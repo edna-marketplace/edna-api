@@ -5,8 +5,6 @@ import com.spring.edna.models.enums.ClotheSize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.Optional;
-
 @Data
 @AllArgsConstructor
 public class ClotheSummaryDTO {
@@ -20,5 +18,4 @@ public class ClotheSummaryDTO {
     private String sizeOther;
     private String imageURL;
     private String storeImageURL;
-
 }

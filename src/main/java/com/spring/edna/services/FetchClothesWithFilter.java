@@ -5,7 +5,6 @@ import com.spring.edna.models.dtos.ClotheSummaryDTO;
 import com.spring.edna.models.dtos.PaginationMetaDTO;
 import com.spring.edna.models.entities.Clothe;
 import com.spring.edna.models.entities.Store;
-import com.spring.edna.models.enums.StoreImageType;
 import com.spring.edna.models.repositories.ClotheRepository;
 import com.spring.edna.models.repositories.StoreRepository;
 import com.spring.edna.models.selectors.ClotheSelector;
@@ -51,10 +50,25 @@ public class FetchClothesWithFilter {
         boolean isSubjectStore = verifySubjectStore.execute(subjectId);
 
         long totalCount = clotheRepository.count(selector);
-        PageRequest page = PageRequest.of(selector.getPage() - 1, selector.getLimit());
 
+        PageRequest page = PageRequest.of(selector.getPage() - 1, selector.getLimit());
         List<Clothe> clothes = clotheRepository.findAll(selector, page).toList();
 
+        List<ClotheSummaryDTO> clothesSummaries = toCotheSummaryDTOList(clothes, isSubjectStore);
+
+        PaginationMetaDTO meta = new PaginationMetaDTO(
+                selector.getPage(),
+                clothes.size(),
+                totalCount
+        );
+
+        return new FetchClothesWithFilterResponse(
+                clothesSummaries,
+                meta
+        );
+    }
+
+    private List<ClotheSummaryDTO> toCotheSummaryDTOList(List<Clothe> clothes, boolean isSubjectStore) throws EdnaException {
         List<ClotheSummaryDTO> clothesSummaries = new ArrayList<>();
 
         for (Clothe clothe : clothes) {
@@ -77,16 +91,7 @@ public class FetchClothesWithFilter {
             clothesSummaries.add(clotheSummary);
         }
 
-        PaginationMetaDTO meta = new PaginationMetaDTO(
-                selector.getPage(),
-                clothes.size(),
-                totalCount
-        );
-
-        return new FetchClothesWithFilterResponse(
-                clothesSummaries,
-                meta
-        );
+        return clothesSummaries;
     }
 
     private String getClotheFirstImage(Clothe clothe) {

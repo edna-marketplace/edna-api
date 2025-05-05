@@ -60,7 +60,7 @@ public class GetClotheByIdTest {
         when(clotheRepository.findById(clotheId)).thenReturn(Optional.of(clothe));
         when(getImageUrl.execute("image-url")).thenReturn("https://example.com/image.jpg");
 
-        GetClotheByIdResponse result = getClotheById.execute(clotheId);
+        GetClotheByIdResponse result = getClotheById.execute(clotheId, null);
 
         assertThat(result).isNotNull();
     }
@@ -70,7 +70,7 @@ public class GetClotheByIdTest {
     public void testGetClotheById$clotheNotFound() {
         when(clotheRepository.findById(clotheId)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> getClotheById.execute(clotheId))
+        assertThatThrownBy(() -> getClotheById.execute(clotheId, null))
                 .isInstanceOf(EdnaException.class)
                 .hasMessageContaining("Clothe not found");
     }
@@ -81,7 +81,7 @@ public class GetClotheByIdTest {
         clothe.setDeleted(true);
         when(clotheRepository.findById(clotheId)).thenReturn(Optional.of(clothe));
 
-        assertThatThrownBy(() -> getClotheById.execute(clotheId))
+        assertThatThrownBy(() -> getClotheById.execute(clotheId, null))
                 .isInstanceOf(EdnaException.class)
                 .hasMessageContaining("This clothe was deleted");
     }

@@ -2,10 +2,9 @@ package com.spring.edna.services;
 
 import com.spring.edna.exception.EdnaException;
 import com.spring.edna.models.entities.Clothe;
-import com.spring.edna.models.entities.ClotheImage;
 import com.spring.edna.models.repositories.ClotheImageRepository;
 import com.spring.edna.models.repositories.ClotheRepository;
-import com.spring.edna.storage.UploadImageToR2;
+import com.spring.edna.utils.ClotheImageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -21,31 +20,20 @@ public class CreateClothe {
     private ClotheRepository clotheRepository;
 
     @Autowired
-    private UploadImageToR2 uploadImageToR2;
+    private ClotheImageUtils clotheImageUtils;
 
-    @Autowired
-    private ClotheImageRepository clotheImageRepository;
+    public HttpStatus execute(Clothe clothe, List<MultipartFile> images) throws EdnaException, IOException {
+        if (images == null || images.isEmpty()) {
+            throw new EdnaException("The clothe needs at least one image.", HttpStatus.BAD_REQUEST);
+        }
 
-    public HttpStatus execute(Clothe clothe, List<MultipartFile> files) throws EdnaException, IOException {
+        if (images.size() > 5) {
+            throw new EdnaException("The max amount of images is 5 per clothe.", HttpStatus.BAD_REQUEST);
+        }
+
         Clothe savedClothe = clotheRepository.save(clothe);
 
-        if (files == null || files.isEmpty()) {
-            return HttpStatus.CREATED;
-        }
-
-        if (files.size() > 5) {
-            throw new EdnaException("The max amount of files is 5 per clothe.", HttpStatus.BAD_REQUEST);
-        }
-
-        for (MultipartFile file : files) {
-            String uniqueImageUrl = uploadImageToR2.execute(file);
-
-            ClotheImage clotheImage = new ClotheImage();
-            clotheImage.setClothe(savedClothe);
-            clotheImage.setUrl(uniqueImageUrl);
-
-            clotheImageRepository.save(clotheImage);
-        }
+        clotheImageUtils.addImages(savedClothe, images);
 
         return HttpStatus.CREATED;
     }

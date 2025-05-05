@@ -6,7 +6,7 @@ import com.spring.edna.models.entities.ClotheImage;
 import com.spring.edna.models.repositories.ClotheImageRepository;
 import com.spring.edna.models.repositories.ClotheRepository;
 import com.spring.edna.storage.DeleteImageFromR2;
-import com.spring.edna.storage.UploadImageToR2;
+import com.spring.edna.utils.ClotheImageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -25,21 +25,35 @@ public class UpdateClotheImages {
     private ClotheRepository clotheRepository;
 
     @Autowired
-    private UploadImageToR2 uploadImageToR2;
+    private ClotheImageUtils clotheImageUtils;
 
     @Autowired
     private DeleteImageFromR2 deleteImageFromR2;
 
-    public HttpStatus execute(List<String> removedImages, List<MultipartFile> newImages, String clotheId, String storeId) throws EdnaException, IOException {
+    public HttpStatus execute(List<String> removedImages, List<MultipartFile> newImages, String clotheId, String subjectId) throws EdnaException, IOException {
 
         Clothe clothe = clotheRepository.findById(clotheId).orElseThrow(() -> new EdnaException(
                 "Clothe not found", HttpStatus.BAD_REQUEST
         ));
 
-        if(!clothe.getStore().getId().equals(storeId)) {
+        if(!clothe.getStore().getId().equals(subjectId)) {
             throw new EdnaException("You can only update clothes from your store.", HttpStatus.BAD_REQUEST);
         }
 
+        removeOldImages(removedImages);
+
+        if(newImages == null || newImages.isEmpty()) {
+            return HttpStatus.NO_CONTENT;
+        }
+
+        validateMaxImagesAmount(clothe, newImages);
+
+        clotheImageUtils.addImages(clothe, newImages);
+
+        return HttpStatus.NO_CONTENT;
+    }
+
+    private void removeOldImages(List<String> removedImages) throws EdnaException {
         for(String imageId : removedImages) {
             ClotheImage image = clotheImageRepository.findById(imageId).orElseThrow(() -> new EdnaException(
                     "Image not found", HttpStatus.BAD_REQUEST
@@ -48,11 +62,9 @@ public class UpdateClotheImages {
             clotheImageRepository.deleteById(imageId);
             deleteImageFromR2.execute(image.getUrl());
         }
+    }
 
-        if(newImages == null || newImages.isEmpty()) {
-            return HttpStatus.NO_CONTENT;
-        }
-
+    private void validateMaxImagesAmount(Clothe clothe, List<MultipartFile> newImages) throws EdnaException {
         if(newImages.size() > 5) {
             throw new EdnaException("The max amount of files is 5 per clothe.", HttpStatus.BAD_REQUEST);
         }
@@ -62,17 +74,7 @@ public class UpdateClotheImages {
                     + clothe.getImages().size() + " images.", HttpStatus.BAD_REQUEST
             );
         }
-
-        for(MultipartFile image : newImages) {
-            String uniqueImageUrl = uploadImageToR2.execute(image);
-
-            ClotheImage clotheImage = new ClotheImage();
-            clotheImage.setClothe(clothe);
-            clotheImage.setUrl(uniqueImageUrl);
-
-            clotheImageRepository.save(clotheImage);
-        }
-
-        return HttpStatus.NO_CONTENT;
     }
+
+
 }

@@ -18,8 +18,6 @@ public class ClotheFactory {
         clothe.setPriceInCents((int) (Math.random() * 10000));
         clothe.setFabric("Fabric " + UUID.randomUUID());
         clothe.setColor("Color " + UUID.randomUUID());
-        clothe.setLengthInCm((int) (Math.random() * 200));
-        clothe.setWidthInCm((int) (Math.random() * 100));
         clothe.setCategory(ClotheCategory.values()[(int) (Math.random() * ClotheCategory.values().length)]);
         clothe.setSize(ClotheSize.values()[(int) (Math.random() * ClotheSize.values().length)]);
         clothe.setGender(ClotheGender.values()[(int) (Math.random() * ClotheGender.values().length)]);

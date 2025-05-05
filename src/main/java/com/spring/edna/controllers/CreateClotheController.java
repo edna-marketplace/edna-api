@@ -31,7 +31,7 @@ public class CreateClotheController {
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Void> handle(
             @RequestPart("clothe") String clotheString,
-            @RequestPart(value = "files", required = false) List<MultipartFile> files
+            @RequestPart(value = "images", required = false) List<MultipartFile> images
     ) throws EdnaException, IOException {
 
         ObjectMapper mapper = new ObjectMapper();
@@ -40,7 +40,7 @@ public class CreateClotheController {
         User subject = authService.getAuthenticatedUser();
         clothe.getStore().setId(subject.getId());
 
-        createClothe.execute(clothe, files);
+        createClothe.execute(clothe, images);
 
         return ResponseEntity.created(null).build();
     }
