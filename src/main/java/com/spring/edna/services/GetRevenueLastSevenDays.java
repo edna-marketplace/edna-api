@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.temporal.WeekFields;
 import java.util.Locale;
+import java.util.Optional;
 
 @Service
 public class GetRevenueLastSevenDays {
@@ -34,8 +35,8 @@ public class GetRevenueLastSevenDays {
         LocalDateTime startOfLastWeek = startOfCurrentWeek.minusWeeks(1);
         LocalDateTime endOfLastWeek = endOfCurrentWeek.minusWeeks(1);
 
-        int currentWeekTotal = customerOrderRepository.getRevenueInPeriod(store, startOfCurrentWeek, endOfCurrentWeek);
-        int lastWeekTotal = customerOrderRepository.getRevenueInPeriod(store, startOfLastWeek, endOfLastWeek);
+        int currentWeekTotal = Optional.ofNullable(customerOrderRepository.getRevenueInPeriod(store, startOfCurrentWeek, endOfCurrentWeek)).orElse(0);
+        int lastWeekTotal = Optional.ofNullable(customerOrderRepository.getRevenueInPeriod(store, startOfLastWeek, endOfLastWeek)).orElse(0);
 
         double currentWeekRevenue = (currentWeekTotal * 0.86);
         double lastWeekRevenue = (lastWeekTotal * 0.86);
@@ -44,6 +45,8 @@ public class GetRevenueLastSevenDays {
                 ?  (((currentWeekRevenue - lastWeekRevenue) / lastWeekRevenue) * 100)
                 : 100;
 
-        return new WeekRevenueDTO(currentWeekRevenue, variation);
+        double variationRounded = Math.round(variation * 100.0) / 100.0;
+
+        return new WeekRevenueDTO(currentWeekRevenue, variationRounded);
     }
 }

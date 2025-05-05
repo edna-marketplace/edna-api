@@ -1,7 +1,5 @@
 package com.spring.edna.models.repositories;
 
-import com.spring.edna.models.dtos.PendingOrdersDTO;
-import com.spring.edna.models.entities.Customer;
 import com.spring.edna.models.entities.CustomerOrder;
 import com.spring.edna.models.entities.Store;
 import com.spring.edna.models.enums.OrderStatus;
@@ -12,12 +10,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Repository
 public interface CustomerOrderRepository extends JpaRepository<CustomerOrder, String>, JpaSpecificationExecutor<CustomerOrder> {
 
-    long countByStoreIdAndCreatedAtBetween(String storeId, LocalDateTime start, LocalDateTime end);
+    long countByStoreIdAndStatusAndCreatedAtBetween(String storeId, OrderStatus status, LocalDateTime start, LocalDateTime end);
 
     @Query("SELECT SUM(clothe.priceInCents) FROM CustomerOrder co " +
             "JOIN co.clothe c " +
