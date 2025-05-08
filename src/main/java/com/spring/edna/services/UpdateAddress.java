@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UpdateAddress {
 
@@ -14,32 +16,25 @@ public class UpdateAddress {
     private AddressRepository addressRepository;
 
     public HttpStatus execute(Address address, String storeId) throws EdnaException {
+        Optional<Address> existingAddressWithCepAndNumber = addressRepository.findByCepAndNumber(
+                address.getCep(), address.getNumber());
 
-        Address addressWithSameCepAndNumber = addressRepository.findByCepAndNumber(address.getCep(), address.getNumber())
-                .orElse(null);
+        Address addressToUpdate = addressRepository.findById(address.getId())
+                .orElseThrow(() -> new EdnaException("Address not found", HttpStatus.BAD_REQUEST));
 
-        if (addressWithSameCepAndNumber == null || addressWithSameCepAndNumber.getId().equals(address.getId())) {
+        if (!addressToUpdate.getStore().getId().equals(storeId)) {
+            throw new EdnaException("You can only update the address from your store.", HttpStatus.BAD_REQUEST);
+        }
 
-            Address addressInDB;
-
-            if (addressWithSameCepAndNumber != null) {
-                addressInDB = addressWithSameCepAndNumber;
-            } else {
-                addressInDB = addressRepository.findById(address.getId()).orElseThrow(() -> new EdnaException(
-                        "Address not found", HttpStatus.BAD_REQUEST)
-                );
-                if (!addressInDB.getStore().getId().equals(storeId)) {
-                    throw new EdnaException("You can only update the address from your store.", HttpStatus.BAD_REQUEST);
-                }
-            }
-
-            address.setStore(addressInDB.getStore());
-            address.setCreatedAt(addressInDB.getCreatedAt());
-
-            addressRepository.save(address);
-        } else {
+        if (existingAddressWithCepAndNumber.isPresent() &&
+                !existingAddressWithCepAndNumber.get().getId().equals(address.getId())) {
             throw new EdnaException("Address already exists", HttpStatus.CONFLICT);
         }
+
+        address.setStore(addressToUpdate.getStore());
+        address.setCreatedAt(addressToUpdate.getCreatedAt());
+
+        addressRepository.save(address);
 
         return HttpStatus.NO_CONTENT;
     }
