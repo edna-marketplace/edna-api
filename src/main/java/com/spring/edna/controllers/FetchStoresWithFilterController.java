@@ -2,10 +2,11 @@ package com.spring.edna.controllers;
 
 import com.spring.edna.auth.AuthService;
 import com.spring.edna.exception.EdnaException;
+import com.spring.edna.models.dtos.CoordinatesDTO;
 import com.spring.edna.models.entities.User;
 import com.spring.edna.models.selectors.StoreSelector;
 import com.spring.edna.services.FetchStoresWithFilter;
-import com.spring.edna.services.presenters.FetchStoresWithFilterPresenter;
+import com.spring.edna.services.FetchStoresWithFilter.FetchStoresWithFilterResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,10 +21,18 @@ public class FetchStoresWithFilterController {
     private AuthService authService;
 
     @PostMapping("/filter")
-    public FetchStoresWithFilterPresenter handle(@RequestBody StoreSelector selector) throws EdnaException {
+    public FetchStoresWithFilterResponse handle(
+            @RequestBody StoreSelector selector,
+            @RequestParam(required = false) String latitude,
+            @RequestParam(required = false) String longitude
+    ) throws EdnaException {
         User subject = authService.getAuthenticatedUser();
 
-        return fetchStoresWithFilter.execute(selector, subject.getId());
+        CoordinatesDTO customerCoordinates = (latitude != null && longitude != null)
+                ? new CoordinatesDTO(latitude, longitude)
+                : null;
+
+        return fetchStoresWithFilter.execute(selector, subject.getId(), customerCoordinates);
     }
 }
 

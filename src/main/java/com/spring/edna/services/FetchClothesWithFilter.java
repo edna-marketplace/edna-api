@@ -85,7 +85,7 @@ public class FetchClothesWithFilter {
                     clothe.getSize(),
                     clothe.getSizeOther(),
                     getClotheFirstImage(clothe),
-                    isSubjectStore ? null : storeImageUtils.getStoreProfileImageUrl(store)
+                    isSubjectStore ? null : storeImageUtils.getProfileImageUrl(store)
             );
 
             clothesSummaries.add(clotheSummary);

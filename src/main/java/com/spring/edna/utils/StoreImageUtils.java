@@ -24,7 +24,7 @@ public class StoreImageUtils {
     @Autowired
     private GetImageUrl getImageUrl;
 
-    public GetStoreImagesUrlsResponse getStoreImagesUrls(List<StoreImage> images) {
+    public GetStoreImagesUrlsResponse getImagesUrls(List<StoreImage> images) {
         StoreImage bannerImageInDB = images.stream().filter(image -> image.getType().equals(StoreImageType.BANNER))
                 .findFirst().orElse(null);
         StoreImage profileImageInDB = images.stream().filter(image -> image.getType().equals(StoreImageType.PROFILE))
@@ -36,7 +36,7 @@ public class StoreImageUtils {
         return new GetStoreImagesUrlsResponse(bannerImageUrl, profileImageUrl);
     }
 
-    public String getStoreProfileImageUrl(Store store) {
+    public String getProfileImageUrl(Store store) {
         String profileImage = store
                 .getImages()
                 .stream()

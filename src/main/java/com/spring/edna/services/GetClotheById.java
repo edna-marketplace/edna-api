@@ -87,7 +87,7 @@ public class GetClotheById {
                 clothe.getCategory(),
                 isSubjectStore ? null : clothe.getStore().getId(),
                 isSubjectStore ? null : clothe.getStore().getName(),
-                isSubjectStore ? null : storeImageUtils.getStoreProfileImageUrl(clothe.getStore()),
+                isSubjectStore ? null : storeImageUtils.getProfileImageUrl(clothe.getStore()),
                 getClotheImagesUrls(clothe.getImages())
         );
     }

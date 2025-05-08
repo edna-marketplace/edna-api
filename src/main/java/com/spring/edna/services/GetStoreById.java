@@ -76,7 +76,7 @@ public class GetStoreById {
         Double avgRating = StoreRatingUtils.calculateAverageRating(store.getCustomerOrders());
 
         List<StoreImage> imagesInDB = store.getImages();
-        GetStoreImagesUrlsResponse imagesUrls = storeImageUtils.getStoreImagesUrls(imagesInDB);
+        GetStoreImagesUrlsResponse imagesUrls = storeImageUtils.getImagesUrls(imagesInDB);
 
         return toGetStoreByIdResponse(
                 store,
