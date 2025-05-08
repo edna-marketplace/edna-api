@@ -3,9 +3,9 @@ package com.spring.edna.controllers;
 import com.spring.edna.auth.AuthService;
 import com.spring.edna.exception.EdnaException;
 import com.spring.edna.models.dtos.CoordinatesDTO;
-import com.spring.edna.models.dtos.StoreDetailsDTO;
 import com.spring.edna.models.entities.User;
 import com.spring.edna.services.GetStoreById;
+import com.spring.edna.services.GetStoreById.GetStoreByIdResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +20,7 @@ public class GetStoreByIdController {
     private AuthService authService;
 
     @GetMapping("/{storeId}")
-    public StoreDetailsDTO handle(
+    public GetStoreByIdResponse handle(
             @PathVariable String storeId,
             @RequestParam(required = false) String latitude,
             @RequestParam(required = false) String longitude

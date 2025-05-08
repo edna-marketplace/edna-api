@@ -17,7 +17,6 @@ public class GetClotheByIdController {
 
     @Autowired
     private GetClotheById getClotheById;
-
     @Autowired
     private AuthService authService;
 

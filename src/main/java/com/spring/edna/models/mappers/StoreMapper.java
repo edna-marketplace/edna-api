@@ -1,40 +1,12 @@
 package com.spring.edna.models.mappers;
 
-import com.spring.edna.models.dtos.StoreDetailsDTO;
 import com.spring.edna.models.dtos.StoreSummaryDTO;
 import com.spring.edna.models.entities.Store;
-import com.spring.edna.storage.GetImageUrl;
-import com.spring.edna.utils.StoreRatingUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class StoreMapper {
-
-    public static StoreDetailsDTO toStoreDetailsDTO(
-            Store store,
-            String distanceInKilometers,
-            Double avgRating,
-            List<Store> customerFavoriteStores,
-            String bannerImageUrl,
-            String profileImageUrl
-    ) {
-        return new StoreDetailsDTO(
-                store.getId(),
-                bannerImageUrl,
-                profileImageUrl,
-                store.getName(),
-                store.getTargetCustomer(),
-                distanceInKilometers,
-                avgRating,
-                customerFavoriteStores.contains(store),
-                store.getDescription(),
-                store.getCnpj(),
-                AddressMapper.toAddressDetailsDTO(store.getAddress()),
-                StoreScheduleMapper.toStoreDayScheduleDTOList(store.getSchedule())
-        );
-    }
 
     public static List<StoreSummaryDTO> toStoreSummaryDTOList(List<Store> stores, List<Store> customerFavoriteStores) {
         List<StoreSummaryDTO> storeSummaryDTOList = new ArrayList<>();
