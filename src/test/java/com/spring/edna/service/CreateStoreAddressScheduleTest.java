@@ -1,20 +1,17 @@
 package com.spring.edna.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 import com.spring.edna.exception.EdnaException;
 import com.spring.edna.factories.AddressFactory;
 import com.spring.edna.factories.StoreFactory;
 import com.spring.edna.factories.StoreScheduleFactory;
-import com.spring.edna.models.dtos.CreateUpdateStoreRequestDTO;
 import com.spring.edna.models.entities.Address;
 import com.spring.edna.models.entities.Store;
 import com.spring.edna.models.entities.StoreDaySchedule;
 import com.spring.edna.models.repositories.AddressRepository;
 import com.spring.edna.models.repositories.StoreDayScheduleRepository;
 import com.spring.edna.models.repositories.StoreRepository;
-import com.spring.edna.services.CreateStore;
+import com.spring.edna.services.CreateStoreAddressSchedule;
+import com.spring.edna.services.CreateStoreAddressSchedule.CreateStoreAddressScheduleRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -23,13 +20,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 
-import static org.mockito.Mockito.when;
-
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class CreateStoreTest {
+public class CreateStoreAddressScheduleTest {
 
     @Mock
     private StoreRepository storeRepository;
@@ -41,7 +39,7 @@ public class CreateStoreTest {
     private StoreDayScheduleRepository storeDayScheduleRepository;
 
     @InjectMocks
-    private CreateStore createStore;
+    private CreateStoreAddressSchedule createStoreAddressSchedule;
 
     @Test
     @DisplayName("it should be able to create a store")
@@ -50,7 +48,7 @@ public class CreateStoreTest {
         Address address = AddressFactory.create();
         List<StoreDaySchedule> schedule = StoreScheduleFactory.create();
 
-        CreateUpdateStoreRequestDTO req = new CreateUpdateStoreRequestDTO(store, address, schedule);
+        CreateStoreAddressScheduleRequest req = new CreateStoreAddressScheduleRequest(store, address, schedule);
 
         store.setId("store-id");
 
@@ -58,7 +56,7 @@ public class CreateStoreTest {
         when(addressRepository.saveAndFlush(address)).thenReturn(address);
         when(storeDayScheduleRepository.saveAllAndFlush(schedule)).thenReturn(schedule);
 
-        HttpStatus result = createStore.execute(req);
+        HttpStatus result = createStoreAddressSchedule.execute(req);
 
         assertThat(result).isEqualTo(HttpStatus.CREATED);
         assertThat(address.getStore().getId()).isEqualTo("store-id");

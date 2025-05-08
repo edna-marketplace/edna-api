@@ -1,8 +1,8 @@
 package com.spring.edna.controllers;
 
 import com.spring.edna.exception.EdnaException;
-import com.spring.edna.models.dtos.CreateUpdateStoreRequestDTO;
-import com.spring.edna.services.CreateStore;
+import com.spring.edna.services.CreateStoreAddressSchedule;
+import com.spring.edna.services.CreateStoreAddressSchedule.CreateStoreAddressScheduleRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,22 +12,22 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/public/stores")
-public class CreateStoreController {
+public class CreateStoreAddressScheduleController {
 
     @Autowired
-    private CreateStore createStore;
+    private CreateStoreAddressSchedule createStoreAddressSchedule;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> handle(@Valid @RequestBody CreateUpdateStoreRequestDTO createUpdateStoreRequestDTO) throws EdnaException {
-        String encryptedPassword = passwordEncoder.encode(createUpdateStoreRequestDTO.getStore().getPassword());
+    public ResponseEntity<Void> handle(@Valid @RequestBody CreateStoreAddressScheduleRequest request) throws EdnaException {
+        String hashedPassword = passwordEncoder.encode(request.getStore().getPassword());
 
-        createUpdateStoreRequestDTO.getStore().setPassword(encryptedPassword);
+        request.getStore().setPassword(hashedPassword);
 
-        createStore.execute(createUpdateStoreRequestDTO);
+        createStoreAddressSchedule.execute(request);
 
         return ResponseEntity.created(null).build();
     }
