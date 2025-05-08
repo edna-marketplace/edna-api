@@ -18,6 +18,8 @@ public class StoreDaySchedule {
 
     private Integer dayOfWeek;
 
+    private boolean enabled;
+
     private Integer openingTimeInMinutes;
 
     private Integer closingTimeInMinutes;

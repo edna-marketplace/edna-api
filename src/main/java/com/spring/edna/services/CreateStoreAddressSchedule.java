@@ -7,6 +7,7 @@ import com.spring.edna.models.entities.StoreDaySchedule;
 import com.spring.edna.models.repositories.AddressRepository;
 import com.spring.edna.models.repositories.StoreDayScheduleRepository;
 import com.spring.edna.models.repositories.StoreRepository;
+import com.spring.edna.utils.StoreScheduleUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,14 +40,16 @@ public class CreateStoreAddressSchedule {
 
         verifyDuplicateAddress(request.getAddress());
 
+        StoreScheduleUtils.validateSchedule(request.getSchedule());
+
         Store store = storeRepository.saveAndFlush(request.getStore());
 
-        validateSchedule(request.getSchedule(), store);
+        request.getSchedule().forEach(daySchedule -> daySchedule.setStore(store));
+        storeDayScheduleRepository.saveAllAndFlush(request.getSchedule());
 
         request.getAddress().setStore(store);
         addressRepository.saveAndFlush(request.getAddress());
 
-        storeDayScheduleRepository.saveAllAndFlush(request.getSchedule());
 
         return HttpStatus.CREATED;
     }
@@ -58,18 +61,6 @@ public class CreateStoreAddressSchedule {
 
         if (addressWithSameCepAndNumber != null) {
             throw new EdnaException("Address already exists", HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    private void validateSchedule(List<StoreDaySchedule> schedule, Store store) throws EdnaException {
-        for (StoreDaySchedule ds : schedule) {
-            if (ds.getClosingTimeInMinutes() - 60 < ds.getOpeningTimeInMinutes()) {
-                storeRepository.delete(store);
-                throw new EdnaException("The closing time must be at least one hour later then the opening time on "
-                        + ds.getDayOfWeek(), HttpStatus.BAD_REQUEST);
-            }
-
-            ds.setStore(store);
         }
     }
 }
