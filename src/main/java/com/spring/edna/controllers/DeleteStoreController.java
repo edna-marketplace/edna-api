@@ -19,16 +19,12 @@ public class DeleteStoreController {
     @Autowired
     private AuthService authService;
 
-    @DeleteMapping("/{storeId}")
-    public ResponseEntity<Void> deleteStore(@PathVariable String storeId) throws EdnaException {
+    @DeleteMapping()
+    public ResponseEntity<Void> handle() throws EdnaException {
         User subject = authService.getAuthenticatedUser();
 
-        if(subject.getId().equals(storeId)) {
-            deleteStore.execute(storeId);
+        deleteStore.execute(subject.getId());
 
-            return ResponseEntity.ok().build();
-        } else {
-            throw new EdnaException("You cant delete another store's account.", HttpStatus.BAD_REQUEST);
-        }
+        return ResponseEntity.ok().build();
     }
 }

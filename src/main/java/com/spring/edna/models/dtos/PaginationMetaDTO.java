@@ -8,5 +8,5 @@ import lombok.Data;
 public class PaginationMetaDTO {
     private int pageIndex;
     private int perPage;
-    private int totalCount;
+    private long totalCount;
 }

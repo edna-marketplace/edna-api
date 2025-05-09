@@ -23,7 +23,7 @@ public class UpdateAddressController {
 
     @PutMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> updateAddress(@Valid @RequestBody Address address) throws EdnaException {
+    public ResponseEntity<Void> handle(@Valid @RequestBody Address address) throws EdnaException {
         User subject = authService.getAuthenticatedUser();
 
         updateAddress.execute(address, subject.getId());

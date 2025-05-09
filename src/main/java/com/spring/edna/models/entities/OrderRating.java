@@ -26,7 +26,7 @@ public class OrderRating {
     @OneToOne
     @JoinColumn(name = "order_id")
     @JsonBackReference
-    private Order order;
+    private ClotheOrder clotheOrder;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

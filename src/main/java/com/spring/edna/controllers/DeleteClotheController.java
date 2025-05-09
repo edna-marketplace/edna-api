@@ -22,7 +22,7 @@ public class DeleteClotheController {
     private AuthService authService;
 
     @DeleteMapping("/{clotheId}")
-    public ResponseEntity<Void> deleteClothe(@PathVariable String clotheId) throws EdnaException {
+    public ResponseEntity<Void> handle(@PathVariable String clotheId) throws EdnaException {
         User subject = authService.getAuthenticatedUser();
 
         deleteClothe.execute(clotheId, subject.getId());

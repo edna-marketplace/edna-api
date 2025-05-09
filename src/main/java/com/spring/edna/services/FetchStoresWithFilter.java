@@ -1,29 +1,39 @@
 package com.spring.edna.services;
 
 import com.spring.edna.exception.EdnaException;
+import com.spring.edna.models.dtos.CoordinatesDTO;
 import com.spring.edna.models.dtos.PaginationMetaDTO;
 import com.spring.edna.models.dtos.StoreSummaryDTO;
+import com.spring.edna.models.entities.ClotheOrder;
 import com.spring.edna.models.entities.Customer;
 import com.spring.edna.models.entities.Store;
-import com.spring.edna.models.entities.StoreImage;
-import com.spring.edna.models.enums.StoreImageType;
-import com.spring.edna.models.mappers.StoreMapper;
+import com.spring.edna.models.enums.OrderStatus;
 import com.spring.edna.models.repositories.CustomerRepository;
 import com.spring.edna.models.repositories.StoreRepository;
 import com.spring.edna.models.selectors.StoreSelector;
-import com.spring.edna.services.presenters.FetchStoresWithFilterPresenter;
-import com.spring.edna.storage.GetImageUrl;
+import com.spring.edna.utils.GetDistanceBetweenCustomerAndStore;
+import com.spring.edna.utils.StoreImageUtils;
+import com.spring.edna.utils.StoreRatingUtils;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
 public class FetchStoresWithFilter {
+
+    @Data
+    @AllArgsConstructor
+    public static class FetchStoresWithFilterResponse {
+        private List<StoreSummaryDTO> stores;
+        private PaginationMetaDTO meta;
+    }
 
     @Autowired
     private StoreRepository storeRepository;
@@ -32,47 +42,61 @@ public class FetchStoresWithFilter {
     private CustomerRepository customerRepository;
 
     @Autowired
-    private GetImageUrl getImageUrl;
+    private StoreImageUtils storeImageUtils;
 
-    public FetchStoresWithFilterPresenter execute(StoreSelector selector, String customerId) throws EdnaException {
-        if (!selector.hasPagination()) {
-            throw new EdnaException("Missing page index and page limit", HttpStatus.BAD_REQUEST);
-        }
+    @Autowired
+    private GetDistanceBetweenCustomerAndStore getDistanceBetweenCustomerAndStore;
 
+    public FetchStoresWithFilterResponse execute(StoreSelector selector, String customerId, CoordinatesDTO customerCoordinates) throws EdnaException {
         selector.setCustomerId(customerId);
 
-        int totalCount = (int) storeRepository.count(selector);
+        long totalCount = (int) storeRepository.count(selector);
+
         PageRequest page = PageRequest.of(selector.getPage() - 1, selector.getLimit());
         List<Store> stores = storeRepository.findAll(selector, page).toList();
 
-        Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new EdnaException(
-                        "Customer not found! Verify the authentication token and try to authenticate again.",
-                        HttpStatus.NOT_FOUND
-                ));
+        Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new EdnaException(
+                "Customer not found! Verify the authentication token and try again.", HttpStatus.NOT_FOUND
+        ));
 
-        for(Store s : stores) {
-            List<StoreImage> images = s.getImages().stream().filter(image -> image.getType()
-                    .equals(StoreImageType.PROFILE)).collect(Collectors.toList());
+        List<StoreSummaryDTO> storesSummary = toStoreSummaryDTOList(stores, customer, customerCoordinates);
 
-            StoreImage profileImage = images.size() > 0 ? images.get(0) : null;
+        PaginationMetaDTO meta = new PaginationMetaDTO(
+                selector.getPage(),
+                stores.size(),
+                totalCount
+        );
 
-            String profileImageUrl = (profileImage != null) ? getImageUrl.execute(profileImage.getUrl()) : null;
+        return new FetchStoresWithFilterResponse(storesSummary, meta);
+    }
 
-            if(images.size() > 0) {
-                images.get(0).setUrl(profileImageUrl);
-            } else {
-                StoreImage storeImage = new StoreImage();
-                storeImage.setUrl(null);
-                images.add(storeImage);
-            }
+    private List<StoreSummaryDTO> toStoreSummaryDTOList(List<Store> stores, Customer customer, CoordinatesDTO customerCoordinates) {
+        List<StoreSummaryDTO> storesSummaries = new ArrayList<>();
 
-            s.setImages(images);
+        for (Store store : stores) {
+            String distanceInKilometers = customerCoordinates != null
+                    ? getDistanceBetweenCustomerAndStore.execute(customerCoordinates, store.getAddress())
+                    : null;
+
+            boolean isFavorite = customer.getFavoriteStores().contains(store);
+            List<ClotheOrder> completedOrders = store.getClotheOrders()
+                    .stream()
+                    .filter(order -> order.getStatus() == OrderStatus.COMPLETED)
+                    .toList();
+
+            StoreSummaryDTO storeSummary = new StoreSummaryDTO(
+                    store.getId(),
+                    storeImageUtils.getProfileImageUrl(store),
+                    store.getName(),
+                    StoreRatingUtils.calculateAverageRating(completedOrders),
+                    store.getTargetCustomer(),
+                    distanceInKilometers,
+                    isFavorite
+            );
+
+            storesSummaries.add(storeSummary);
         }
 
-        PaginationMetaDTO meta = new PaginationMetaDTO(selector.getPage(), stores.size(), totalCount);
-        List<StoreSummaryDTO> storesSummary = StoreMapper.toStoreSummaryDTOList(stores, customer.getFavoriteStores());
-
-        return new FetchStoresWithFilterPresenter(storesSummary, meta);
+        return storesSummaries;
     }
 }

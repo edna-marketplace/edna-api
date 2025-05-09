@@ -23,7 +23,7 @@ public class UpdateStoreImageController {
     private AuthService authService;
 
     @PostMapping("/{imageType}")
-    public ResponseEntity<Void> handler(@RequestParam("file") MultipartFile file, @PathVariable("imageType") String imageType) throws EdnaException, IOException {
+    public ResponseEntity<Void> handle(@RequestParam("file") MultipartFile file, @PathVariable("imageType") String imageType) throws EdnaException, IOException {
         User subject = authService.getAuthenticatedUser();
 
         updateStoreImage.execute(file, imageType, subject.getId());

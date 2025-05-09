@@ -1,6 +1,7 @@
 package com.spring.edna.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.spring.edna.models.enums.TargetCustomer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -10,9 +11,9 @@ import org.hibernate.validator.constraints.br.CPF;
 import java.util.ArrayList;
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class Customer extends User {
 
     @NotBlank(message = "Name is required.")
@@ -25,11 +26,14 @@ public class Customer extends User {
 
     @OneToMany(mappedBy = "customer")
     @JsonBackReference(value = "customer-orders")
-    private List<Order> orders;
+    private List<ClotheOrder> clotheOrders;
 
     @OneToMany(mappedBy = "customer")
     @JsonBackReference(value = "customer-saved-clothes")
     private List<SavedClothe> savedClothes;
+
+    @Enumerated(EnumType.STRING)
+    private TargetCustomer stylePreference = TargetCustomer.ALL;
 
     @ManyToMany
     @JoinTable(name = "favorite_store", joinColumns = @JoinColumn(name = "customer_id"), inverseJoinColumns = @JoinColumn(name = "store_id"))

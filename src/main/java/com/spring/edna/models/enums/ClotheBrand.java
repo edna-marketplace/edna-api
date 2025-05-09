@@ -1,6 +1,7 @@
 package com.spring.edna.models.enums;
 
 public enum ClotheBrand {
+    ALL,
     NIKE,
     ADIDAS,
     HERING,
@@ -8,5 +9,6 @@ public enum ClotheBrand {
     FARM,
     CEA,
     RENNER,
+    NO_BRAND,
     OTHER
 }

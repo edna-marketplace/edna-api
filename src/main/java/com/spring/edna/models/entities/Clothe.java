@@ -34,15 +34,12 @@ public class Clothe {
     private String description;
 
     @Nullable
-    @Size(min = 1, max = 60)
     private String categoryOther;
 
     @Nullable
-    @Size(min = 1, max = 60)
     private String brandOther;
 
     @Nullable
-    @Size(min = 1, max = 60)
     private String sizeOther;
 
     @NotNull(message = "Price is required.")
@@ -53,10 +50,6 @@ public class Clothe {
 
     @NotBlank(message = "Color is required.")
     private String color;
-
-    private Integer lengthInCm;
-
-    private Integer widthInCm;
 
     @NotNull(message = "Category is required.")
     @Enumerated(EnumType.STRING)
@@ -85,10 +78,12 @@ public class Clothe {
     @OneToOne(mappedBy = "clothe")
     @JsonBackReference(value = "clothe-order")
     @Nullable
-    private Order order;
+    private ClotheOrder clotheOrder;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    private boolean ordered = false;
 
     private boolean deleted = false;
 }

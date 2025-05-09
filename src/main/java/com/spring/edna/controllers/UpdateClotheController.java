@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping(path = "/clothes")
 public class UpdateClotheController {
@@ -23,7 +25,7 @@ public class UpdateClotheController {
     private AuthService authService;
 
     @PutMapping
-    public void updateClothe(@Valid @RequestBody Clothe clothe) throws EdnaException {
+    public void handle(@Valid @RequestBody Clothe clothe) throws EdnaException, IOException {
         User subject = authService.getAuthenticatedUser();
 
         updateClothe.execute(clothe, subject.getId());

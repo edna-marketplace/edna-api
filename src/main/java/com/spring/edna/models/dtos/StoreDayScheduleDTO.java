@@ -8,6 +8,7 @@ import lombok.Data;
 public class StoreDayScheduleDTO {
     private String id;
     private Integer dayOfWeek;
+    private boolean enabled;
     private Integer openingTimeInMinutes;
     private Integer closingTimeInMinutes;
 }
