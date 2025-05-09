@@ -2,7 +2,8 @@ package com.spring.edna.services;
 
 import com.spring.edna.models.entities.Store;
 import com.spring.edna.models.repositories.StoreRepository;
-import com.spring.edna.services.presenters.VerifyDuplicateStorePresenter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,20 @@ import java.util.List;
 @Service
 public class VerifyDuplicateStore {
 
+    @Data
+    @AllArgsConstructor
+    public class VerifyDuplicateStoreResponse {
+        private boolean isDuplicateName;
+        private boolean isDuplicateEmail;
+        private boolean isDuplicateCnpj;
+        private boolean isDuplicatePhone;
+        private HttpStatus status;
+    }
+
     @Autowired
     private StoreRepository storeRepository;
 
-    public VerifyDuplicateStorePresenter verifyDuplicateStore(Store store) {
+    public VerifyDuplicateStoreResponse verifyDuplicateStore(Store store) {
         List<Store> duplicates = storeRepository.findByNameOrEmailOrCnpjOrPhone(
                 store.getName(),
                 store.getEmail(),
@@ -47,7 +58,7 @@ public class VerifyDuplicateStore {
                             ? HttpStatus.CONFLICT
                             : HttpStatus.OK;
 
-        VerifyDuplicateStorePresenter response = new VerifyDuplicateStorePresenter(
+        VerifyDuplicateStoreResponse response = new VerifyDuplicateStoreResponse(
                 isDuplicateName,
                 isDuplicateEmail,
                 isDuplicateCnpj,

@@ -2,7 +2,7 @@ package com.spring.edna.controllers;
 
 import com.spring.edna.models.entities.Store;
 import com.spring.edna.services.VerifyDuplicateStore;
-import com.spring.edna.services.presenters.VerifyDuplicateStorePresenter;
+import com.spring.edna.services.VerifyDuplicateStore.VerifyDuplicateStoreResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,8 +20,8 @@ public class VerifyDuplicateStoreController {
     private VerifyDuplicateStore verifyDuplicateStore;
 
     @GetMapping
-    public ResponseEntity<VerifyDuplicateStorePresenter> handle(@Valid @RequestBody Store store) {
-        VerifyDuplicateStorePresenter response = verifyDuplicateStore.verifyDuplicateStore(store);
+    public ResponseEntity<VerifyDuplicateStoreResponse> handle(@Valid @RequestBody Store store) {
+        VerifyDuplicateStoreResponse response = verifyDuplicateStore.verifyDuplicateStore(store);
 
         if (response.getStatus() == HttpStatus.CONFLICT) {
             return new ResponseEntity<>(response, HttpStatus.CONFLICT);

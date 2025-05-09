@@ -83,5 +83,7 @@ public class Clothe {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    private boolean ordered = false;
+
     private boolean deleted = false;
 }

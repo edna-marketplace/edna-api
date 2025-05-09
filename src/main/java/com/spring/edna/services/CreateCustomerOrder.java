@@ -44,6 +44,9 @@ public class CreateCustomerOrder {
 
         customerOrderRepository.save(customerOrder);
 
+        clothe.setOrdered(true);
+        clotheRepository.save(clothe);
+
         return HttpStatus.CREATED;
     }
 }

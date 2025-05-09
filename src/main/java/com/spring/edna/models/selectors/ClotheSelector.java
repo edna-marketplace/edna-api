@@ -33,6 +33,8 @@ public class ClotheSelector extends BaseSelector implements Specification<Clothe
     public Predicate toPredicate(Root<Clothe> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
         List<Predicate> predicates = new ArrayList<>();
 
+        predicates.add(cb.equal(root.get("ordered"), false));
+
         if (this.getName() != null && !this.getName().trim().isEmpty()) {
             predicates.add(cb.like(cb.lower(root.get("name")), "%" + this.getName().toLowerCase() + "%"));
         }
