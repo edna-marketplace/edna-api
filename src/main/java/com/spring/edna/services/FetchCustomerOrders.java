@@ -3,10 +3,11 @@ package com.spring.edna.services;
 import com.spring.edna.exception.EdnaException;
 import com.spring.edna.models.dtos.CustomerOrderDTO;
 import com.spring.edna.models.dtos.PaginationMetaDTO;
+import com.spring.edna.models.dtos.StoreOrderDTO;
 import com.spring.edna.models.entities.ClotheOrder;
 import com.spring.edna.models.enums.OrderStatus;
 import com.spring.edna.models.mappers.AddressMapper;
-import com.spring.edna.models.repositories.CustomerOrderRepository;
+import com.spring.edna.models.repositories.ClotheOrderRepository;
 import com.spring.edna.models.selectors.ClotheOrderSelector;
 import com.spring.edna.utils.StoreImageUtils;
 import lombok.AllArgsConstructor;
@@ -29,7 +30,7 @@ public class FetchCustomerOrders {
     }
 
     @Autowired
-    private CustomerOrderRepository customerOrderRepository;
+    private ClotheOrderRepository clotheOrderRepository;
 
     @Autowired
     private StoreImageUtils storeImageUtils;
@@ -37,10 +38,10 @@ public class FetchCustomerOrders {
     public FetchCustomerOrdersResponse execute(ClotheOrderSelector selector, String subjectId) throws EdnaException {
         selector.setCustomerId(subjectId);
 
-        int totalCount = (int) customerOrderRepository.count(selector);
+        int totalCount = (int) clotheOrderRepository.count(selector);
 
         PageRequest page = PageRequest.of(selector.getPage() - 1, selector.getLimit());
-        List<ClotheOrder> clotheOrders = customerOrderRepository.findAll(selector, page).toList();
+        List<ClotheOrder> clotheOrders = clotheOrderRepository.findAll(selector, page).toList();
 
         PaginationMetaDTO meta = new PaginationMetaDTO(selector.getPage(), clotheOrders.size(), totalCount);
 

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface CustomerOrderRepository extends JpaRepository<ClotheOrder, String>, JpaSpecificationExecutor<ClotheOrder> {
+public interface ClotheOrderRepository extends JpaRepository<ClotheOrder, String>, JpaSpecificationExecutor<ClotheOrder> {
 
     Optional<ClotheOrder> findByClotheId(String clotheId);
 }

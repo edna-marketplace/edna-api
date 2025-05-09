@@ -8,7 +8,7 @@ import com.spring.edna.models.entities.Customer;
 import com.spring.edna.models.entities.ClotheOrder;
 import com.spring.edna.models.entities.Store;
 import com.spring.edna.models.repositories.ClotheRepository;
-import com.spring.edna.models.repositories.CustomerOrderRepository;
+import com.spring.edna.models.repositories.ClotheOrderRepository;
 import com.spring.edna.models.repositories.CustomerRepository;
 import com.spring.edna.services.CreateClotheOrder;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,7 +38,7 @@ public class CreateClotheOrderTest {
     private CustomerRepository customerRepository;
 
     @Mock
-    private CustomerOrderRepository customerOrderRepository;
+    private ClotheOrderRepository clotheOrderRepository;
 
     @InjectMocks
     private CreateClotheOrder createClotheOrder;
@@ -66,20 +66,20 @@ public class CreateClotheOrderTest {
     @Test
     @DisplayName("it should be able to create an order")
     public void testCreateCustomerOrder$success() throws EdnaException {
-        when(customerOrderRepository.findByClotheId("clothe-id")).thenReturn(Optional.empty());
+        when(clotheOrderRepository.findByClotheId("clothe-id")).thenReturn(Optional.empty());
         when(clotheRepository.findById("clothe-id")).thenReturn(Optional.of(clothe));
         when(customerRepository.findById("customer-id")).thenReturn(Optional.of(customer));
 
         HttpStatus result = createClotheOrder.execute("clothe-id", "customer-id");
 
         assertEquals(result, HttpStatus.CREATED);
-        verify(customerOrderRepository, times(1)).save(any(ClotheOrder.class));
+        verify(clotheOrderRepository, times(1)).save(any(ClotheOrder.class));
     }
 
     @Test
     @DisplayName("it should not be able to create two orders for the same clothe")
     public void testCreateCustomerOrder$clotheAlreadyBeenOrdered() {
-        when(customerOrderRepository.findByClotheId("clothe-id")).thenReturn(Optional.of(clotheOrder));
+        when(clotheOrderRepository.findByClotheId("clothe-id")).thenReturn(Optional.of(clotheOrder));
 
         assertThatThrownBy(() -> createClotheOrder.execute("clothe-id", "customer-id"))
                 .isInstanceOf(EdnaException.class)

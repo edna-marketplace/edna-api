@@ -5,7 +5,7 @@ import com.spring.edna.models.entities.Clothe;
 import com.spring.edna.models.entities.Customer;
 import com.spring.edna.models.entities.ClotheOrder;
 import com.spring.edna.models.repositories.ClotheRepository;
-import com.spring.edna.models.repositories.CustomerOrderRepository;
+import com.spring.edna.models.repositories.ClotheOrderRepository;
 import com.spring.edna.models.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,10 +21,10 @@ public class CreateClotheOrder {
     private CustomerRepository customerRepository;
 
     @Autowired
-    private CustomerOrderRepository customerOrderRepository;
+    private ClotheOrderRepository clotheOrderRepository;
 
     public HttpStatus execute(String clotheId, String customerId) throws EdnaException {
-        ClotheOrder clotheOrderInDB = customerOrderRepository.findByClotheId(clotheId).orElse(null);
+        ClotheOrder clotheOrderInDB = clotheOrderRepository.findByClotheId(clotheId).orElse(null);
 
         if(clotheOrderInDB != null) {
             throw new EdnaException("This clothe already have an order.", HttpStatus.CONFLICT);
@@ -42,7 +42,7 @@ public class CreateClotheOrder {
         clotheOrder.setClothe(clothe);
         clotheOrder.setStore(clothe.getStore());
 
-        customerOrderRepository.save(clotheOrder);
+        clotheOrderRepository.save(clotheOrder);
 
         clothe.setOrdered(true);
         clotheRepository.save(clothe);

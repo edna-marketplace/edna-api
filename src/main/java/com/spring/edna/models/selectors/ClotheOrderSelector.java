@@ -14,11 +14,12 @@ import java.util.List;
 public class ClotheOrderSelector extends BaseSelector implements Specification<ClotheOrder> {
 
     private String customerName;
-    private OrderStatus status;
+    private OrderStatus orderStatus;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private String clotheName;
     private Integer price;
+    private String storeId;
     private String customerId;
     private String clotheId;
 
@@ -30,8 +31,8 @@ public class ClotheOrderSelector extends BaseSelector implements Specification<C
             predicates.add(cb.like(root.get("customer").get("name"), "%%" + this.getCustomerName() + "%%"));
         }
 
-        if (this.getStatus() != null) {
-            predicates.add(cb.equal(root.get("status"), this.getStatus()));
+        if (this.getOrderStatus() != null) {
+            predicates.add(cb.equal(root.get("status"), this.getOrderStatus()));
         }
 
         applyDateRangeFilter(root, cb, predicates, this.getStartDate(), this.getEndDate(), "createdAt");
@@ -46,6 +47,10 @@ public class ClotheOrderSelector extends BaseSelector implements Specification<C
 
         if (this.getCustomerId() != null) {
             predicates.add(cb.equal(root.get("customer").get("id"), this.getCustomerId()));
+        }
+
+        if (this.getStoreId() != null) {
+            predicates.add(cb.equal(root.get("store").get("id"), this.getStoreId()));
         }
 
         if (this.getClotheId() != null) {
