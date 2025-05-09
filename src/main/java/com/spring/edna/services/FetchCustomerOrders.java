@@ -3,7 +3,6 @@ package com.spring.edna.services;
 import com.spring.edna.exception.EdnaException;
 import com.spring.edna.models.dtos.CustomerOrderDTO;
 import com.spring.edna.models.dtos.PaginationMetaDTO;
-import com.spring.edna.models.dtos.StoreOrderDTO;
 import com.spring.edna.models.entities.ClotheOrder;
 import com.spring.edna.models.enums.OrderStatus;
 import com.spring.edna.models.mappers.AddressMapper;
