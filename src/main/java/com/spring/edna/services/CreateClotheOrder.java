@@ -3,7 +3,7 @@ package com.spring.edna.services;
 import com.spring.edna.exception.EdnaException;
 import com.spring.edna.models.entities.Clothe;
 import com.spring.edna.models.entities.Customer;
-import com.spring.edna.models.entities.CustomerOrder;
+import com.spring.edna.models.entities.ClotheOrder;
 import com.spring.edna.models.repositories.ClotheRepository;
 import com.spring.edna.models.repositories.CustomerOrderRepository;
 import com.spring.edna.models.repositories.CustomerRepository;
@@ -12,7 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CreateCustomerOrder {
+public class CreateClotheOrder {
 
     @Autowired
     private ClotheRepository clotheRepository;
@@ -24,9 +24,9 @@ public class CreateCustomerOrder {
     private CustomerOrderRepository customerOrderRepository;
 
     public HttpStatus execute(String clotheId, String customerId) throws EdnaException {
-        CustomerOrder customerOrderInDB = customerOrderRepository.findByClotheId(clotheId).orElse(null);
+        ClotheOrder clotheOrderInDB = customerOrderRepository.findByClotheId(clotheId).orElse(null);
 
-        if(customerOrderInDB != null) {
+        if(clotheOrderInDB != null) {
             throw new EdnaException("This clothe already have an order.", HttpStatus.CONFLICT);
         }
 
@@ -37,12 +37,12 @@ public class CreateCustomerOrder {
                 () -> new EdnaException("Customer not found.",HttpStatus.BAD_REQUEST)
         );
 
-        CustomerOrder customerOrder = new CustomerOrder();
-        customerOrder.setCustomer(customer);
-        customerOrder.setClothe(clothe);
-        customerOrder.setStore(clothe.getStore());
+        ClotheOrder clotheOrder = new ClotheOrder();
+        clotheOrder.setCustomer(customer);
+        clotheOrder.setClothe(clothe);
+        clotheOrder.setStore(clothe.getStore());
 
-        customerOrderRepository.save(customerOrder);
+        customerOrderRepository.save(clotheOrder);
 
         clothe.setOrdered(true);
         clotheRepository.save(clothe);

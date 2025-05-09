@@ -26,7 +26,7 @@ public class Customer extends User {
 
     @OneToMany(mappedBy = "customer")
     @JsonBackReference(value = "customer-orders")
-    private List<CustomerOrder> customerOrders;
+    private List<ClotheOrder> clotheOrders;
 
     @OneToMany(mappedBy = "customer")
     @JsonBackReference(value = "customer-saved-clothes")

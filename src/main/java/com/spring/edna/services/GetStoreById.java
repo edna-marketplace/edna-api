@@ -73,7 +73,7 @@ public class GetStoreById {
                 ? getDistanceBetweenCustomerAndStore.execute(customerCoordinates, store.getAddress())
                 : null;
 
-        Double avgRating = StoreRatingUtils.calculateAverageRating(store.getCustomerOrders());
+        Double avgRating = StoreRatingUtils.calculateAverageRating(store.getClotheOrders());
 
         List<StoreImage> imagesInDB = store.getImages();
         GetStoreImagesUrlsResponse imagesUrls = storeImageUtils.getImagesUrls(imagesInDB);

@@ -82,7 +82,7 @@ public class FetchStoresWithFilter {
                 store.getId(),
                 storeImageUtils.getProfileImageUrl(store),
                 store.getName(),
-                StoreRatingUtils.calculateAverageRating(store.getCustomerOrders()),
+                StoreRatingUtils.calculateAverageRating(store.getClotheOrders()),
                 store.getTargetCustomer(),
                 distanceInKilometers,
                 isFavorite

@@ -3,7 +3,6 @@ package com.spring.edna.models.entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.spring.edna.models.enums.OrderStatus;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UuidGenerator;
@@ -12,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-public class CustomerOrder {
+public class ClotheOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -34,7 +33,7 @@ public class CustomerOrder {
     @JoinColumn(name = "clothe_id")
     private Clothe clothe;
 
-    @OneToOne(mappedBy = "customerOrder")
+    @OneToOne(mappedBy = "clotheOrder")
     @JsonBackReference
     private OrderRating rating;
 

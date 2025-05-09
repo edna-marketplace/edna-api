@@ -78,7 +78,7 @@ public class Clothe {
     @OneToOne(mappedBy = "clothe")
     @JsonBackReference(value = "clothe-order")
     @Nullable
-    private CustomerOrder customerOrder;
+    private ClotheOrder clotheOrder;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

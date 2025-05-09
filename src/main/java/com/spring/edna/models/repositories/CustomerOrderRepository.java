@@ -1,7 +1,6 @@
 package com.spring.edna.models.repositories;
 
-import com.spring.edna.models.entities.Clothe;
-import com.spring.edna.models.entities.CustomerOrder;
+import com.spring.edna.models.entities.ClotheOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
@@ -9,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface CustomerOrderRepository extends JpaRepository<CustomerOrder, String>, JpaSpecificationExecutor<CustomerOrder> {
+public interface CustomerOrderRepository extends JpaRepository<ClotheOrder, String>, JpaSpecificationExecutor<ClotheOrder> {
 
-    Optional<CustomerOrder> findByClotheId(String clotheId);
+    Optional<ClotheOrder> findByClotheId(String clotheId);
 }
