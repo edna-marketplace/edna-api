@@ -4,8 +4,10 @@ import com.spring.edna.exception.EdnaException;
 import com.spring.edna.models.dtos.CoordinatesDTO;
 import com.spring.edna.models.dtos.PaginationMetaDTO;
 import com.spring.edna.models.dtos.StoreSummaryDTO;
+import com.spring.edna.models.entities.ClotheOrder;
 import com.spring.edna.models.entities.Customer;
 import com.spring.edna.models.entities.Store;
+import com.spring.edna.models.enums.OrderStatus;
 import com.spring.edna.models.repositories.CustomerRepository;
 import com.spring.edna.models.repositories.StoreRepository;
 import com.spring.edna.models.selectors.StoreSelector;
@@ -54,8 +56,8 @@ public class FetchStoresWithFilter {
         List<Store> stores = storeRepository.findAll(selector, page).toList();
 
         Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new EdnaException(
-                        "Customer not found! Verify the authentication token and try again.", HttpStatus.NOT_FOUND
-                ));
+                "Customer not found! Verify the authentication token and try again.", HttpStatus.NOT_FOUND
+        ));
 
         List<StoreSummaryDTO> storesSummary = toStoreSummaryDTOList(stores, customer, customerCoordinates);
 
@@ -77,15 +79,19 @@ public class FetchStoresWithFilter {
                     : null;
 
             boolean isFavorite = customer.getFavoriteStores().contains(store);
+            List<ClotheOrder> completedOrders = store.getClotheOrders()
+                    .stream()
+                    .filter(order -> order.getStatus() == OrderStatus.COMPLETED)
+                    .toList();
 
             StoreSummaryDTO storeSummary = new StoreSummaryDTO(
-                store.getId(),
-                storeImageUtils.getProfileImageUrl(store),
-                store.getName(),
-                StoreRatingUtils.calculateAverageRating(store.getClotheOrders()),
-                store.getTargetCustomer(),
-                distanceInKilometers,
-                isFavorite
+                    store.getId(),
+                    storeImageUtils.getProfileImageUrl(store),
+                    store.getName(),
+                    StoreRatingUtils.calculateAverageRating(completedOrders),
+                    store.getTargetCustomer(),
+                    distanceInKilometers,
+                    isFavorite
             );
 
             storesSummaries.add(storeSummary);
