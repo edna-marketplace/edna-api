@@ -38,9 +38,8 @@ public class CreateClotheController {
         Clothe clothe = mapper.readValue(clotheString, Clothe.class);
 
         User subject = authService.getAuthenticatedUser();
-        clothe.getStore().setId(subject.getId());
 
-        createClothe.execute(clothe, images);
+        createClothe.execute(clothe, images, subject.getId());
 
         return ResponseEntity.created(null).build();
     }

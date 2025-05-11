@@ -2,6 +2,7 @@ package com.spring.edna.services;
 
 import com.spring.edna.exception.EdnaException;
 import com.spring.edna.models.entities.Clothe;
+import com.spring.edna.models.entities.Store;
 import com.spring.edna.models.repositories.ClotheImageRepository;
 import com.spring.edna.models.repositories.ClotheRepository;
 import com.spring.edna.utils.ClotheImageUtils;
@@ -22,7 +23,7 @@ public class CreateClothe {
     @Autowired
     private ClotheImageUtils clotheImageUtils;
 
-    public HttpStatus execute(Clothe clothe, List<MultipartFile> images) throws EdnaException, IOException {
+    public HttpStatus execute(Clothe clothe, List<MultipartFile> images, String subjectId) throws EdnaException, IOException {
         if (images == null || images.isEmpty()) {
             throw new EdnaException("The clothe needs at least one image.", HttpStatus.BAD_REQUEST);
         }
@@ -30,6 +31,11 @@ public class CreateClothe {
         if (images.size() > 5) {
             throw new EdnaException("The max amount of images is 5 per clothe.", HttpStatus.BAD_REQUEST);
         }
+
+        Store store = new Store();
+        store.setId(subjectId);
+
+        clothe.setStore(store);
 
         Clothe savedClothe = clotheRepository.save(clothe);
 
