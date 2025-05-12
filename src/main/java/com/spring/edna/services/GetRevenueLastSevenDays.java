@@ -3,7 +3,7 @@ package com.spring.edna.services;
 import com.spring.edna.exception.EdnaException;
 import com.spring.edna.models.dtos.WeekRevenueDTO;
 import com.spring.edna.models.entities.Store;
-import com.spring.edna.models.repositories.CustomerOrderRepository;
+import com.spring.edna.models.repositories.ClotheOrderRepository;
 import com.spring.edna.models.repositories.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,7 @@ import java.util.Optional;
 public class GetRevenueLastSevenDays {
 
     @Autowired
-    private CustomerOrderRepository customerOrderRepository;
+    private ClotheOrderRepository clotheOrderRepository;
 
     @Autowired
     private StoreRepository storeRepository;
@@ -35,8 +35,8 @@ public class GetRevenueLastSevenDays {
         LocalDateTime startOfLastWeek = startOfCurrentWeek.minusWeeks(1);
         LocalDateTime endOfLastWeek = endOfCurrentWeek.minusWeeks(1);
 
-        int currentWeekTotal = Optional.ofNullable(customerOrderRepository.getRevenueInPeriod(store, startOfCurrentWeek, endOfCurrentWeek)).orElse(0);
-        int lastWeekTotal = Optional.ofNullable(customerOrderRepository.getRevenueInPeriod(store, startOfLastWeek, endOfLastWeek)).orElse(0);
+        int currentWeekTotal = Optional.ofNullable(clotheOrderRepository.getRevenueInPeriod(store, startOfCurrentWeek, endOfCurrentWeek)).orElse(0);
+        int lastWeekTotal = Optional.ofNullable(clotheOrderRepository.getRevenueInPeriod(store, startOfLastWeek, endOfLastWeek)).orElse(0);
 
         double currentWeekRevenue = (currentWeekTotal * 0.86);
         double lastWeekRevenue = (lastWeekTotal * 0.86);

@@ -1,9 +1,9 @@
 package com.spring.edna.services;
 
 import com.spring.edna.models.dtos.PendingOrdersDTO;
-import com.spring.edna.models.entities.CustomerOrder;
+import com.spring.edna.models.entities.ClotheOrder;
 import com.spring.edna.models.enums.OrderStatus;
-import com.spring.edna.models.repositories.CustomerOrderRepository;
+import com.spring.edna.models.repositories.ClotheOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,16 +16,16 @@ import java.util.List;
 public class GetPendingOrders {
 
     @Autowired
-    private CustomerOrderRepository customerOrderRepository;
+    private ClotheOrderRepository clotheOrderRepository;
 
     public List<PendingOrdersDTO> execute(String storeId) {
 
-        List<CustomerOrder> orders = customerOrderRepository.findAll();
+        List<ClotheOrder> orders = clotheOrderRepository.findAll();
         List<PendingOrdersDTO> pendingOrdersDTOList = new ArrayList<>();
 
-        orders.sort(Comparator.comparing(CustomerOrder::getCreatedAt));
+        orders.sort(Comparator.comparing(ClotheOrder::getCreatedAt));
 
-        for (CustomerOrder order : orders) {
+        for (ClotheOrder order : orders) {
             if (order.getStatus() == OrderStatus.PENDING
                     && order.getStore() != null
                     && order.getStore().getId().equals(storeId)) {

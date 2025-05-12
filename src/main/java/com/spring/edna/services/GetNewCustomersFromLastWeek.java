@@ -2,11 +2,9 @@ package com.spring.edna.services;
 
 import com.spring.edna.exception.EdnaException;
 import com.spring.edna.models.dtos.WeekCustomerDTO;
-import com.spring.edna.models.entities.Store;
-import com.spring.edna.models.repositories.CustomerOrderRepository;
+import com.spring.edna.models.repositories.ClotheOrderRepository;
 import com.spring.edna.models.repositories.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,7 +15,7 @@ import java.util.Locale;
 public class GetNewCustomersFromLastWeek {
 
     @Autowired
-    private CustomerOrderRepository customerOrderRepository;
+    private ClotheOrderRepository clotheOrderRepository;
 
     @Autowired
     private StoreRepository storeRepository;
@@ -32,8 +30,8 @@ public class GetNewCustomersFromLastWeek {
         LocalDateTime startOfLastWeek = startOfCurrentWeek.minusWeeks(1);
         LocalDateTime endOfLastWeek = endOfCurrentWeek.minusWeeks(1);
 
-        long lastWeekCustomers = customerOrderRepository.countNewCustomersByStoreIdAndDateRange(storeId, startOfLastWeek, endOfLastWeek);
-        long currentWeekCustomers = customerOrderRepository.countNewCustomersByStoreIdAndDateRange(storeId, startOfCurrentWeek, endOfCurrentWeek);
+        long lastWeekCustomers = clotheOrderRepository.countNewCustomersByStoreIdAndDateRange(storeId, startOfLastWeek, endOfLastWeek);
+        long currentWeekCustomers = clotheOrderRepository.countNewCustomersByStoreIdAndDateRange(storeId, startOfCurrentWeek, endOfCurrentWeek);
 
         double variation = (lastWeekCustomers > 0)
                 ? ((double) (currentWeekCustomers - lastWeekCustomers) / lastWeekCustomers) * 100

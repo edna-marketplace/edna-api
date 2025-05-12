@@ -2,7 +2,7 @@ package com.spring.edna.services;
 
 import com.spring.edna.models.dtos.WeekOrderDTO;
 import com.spring.edna.models.enums.OrderStatus;
-import com.spring.edna.models.repositories.CustomerOrderRepository;
+import com.spring.edna.models.repositories.ClotheOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ import java.util.Locale;
 public class GetOrdersLastSevenDays {
 
     @Autowired
-    private CustomerOrderRepository customerOrderRepository;
+    private ClotheOrderRepository clotheOrderRepository;
 
     public WeekOrderDTO execute(String storeId) {
 
@@ -26,8 +26,8 @@ public class GetOrdersLastSevenDays {
         LocalDateTime startOfLastWeek = startOfCurrentWeek.minusWeeks(1);
         LocalDateTime endOfLastWeek = endOfCurrentWeek.minusWeeks(1);
 
-        long currentWeekOrders = customerOrderRepository.countByStoreIdAndStatusAndCreatedAtBetween(storeId, OrderStatus.COMPLETED, startOfCurrentWeek, endOfCurrentWeek);
-        long lastWeekOrders = customerOrderRepository.countByStoreIdAndStatusAndCreatedAtBetween(storeId, OrderStatus.COMPLETED, startOfLastWeek, endOfLastWeek);
+        long currentWeekOrders = clotheOrderRepository.countByStoreIdAndStatusAndCreatedAtBetween(storeId, OrderStatus.COMPLETED, startOfCurrentWeek, endOfCurrentWeek);
+        long lastWeekOrders = clotheOrderRepository.countByStoreIdAndStatusAndCreatedAtBetween(storeId, OrderStatus.COMPLETED, startOfLastWeek, endOfLastWeek);
 
         double variation = (lastWeekOrders > 0)
                 ? ((double) (currentWeekOrders - lastWeekOrders) / lastWeekOrders) * 100
