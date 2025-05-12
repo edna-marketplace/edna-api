@@ -1,9 +1,5 @@
 package com.spring.edna.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.when;
-
 import com.spring.edna.exception.EdnaException;
 import com.spring.edna.factories.StoreFactory;
 import com.spring.edna.models.entities.Store;
@@ -18,6 +14,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -50,7 +50,7 @@ public class UpdateStoreTest {
 
     @Test
     @DisplayName("it should not be able to update a store that doesnt exists")
-    public void testUpdateStore$storeDoesntExists() throws EdnaException {
+    public void testUpdateStore$storeDoesntExists() {
         Store storeReq = StoreFactory.create();
         storeReq.setId("store-id");
 

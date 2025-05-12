@@ -2,10 +2,10 @@ package com.spring.edna.service;
 
 import com.spring.edna.exception.EdnaException;
 import com.spring.edna.factories.CustomerFactory;
-import com.spring.edna.models.dtos.CustomerDetailsDTO;
 import com.spring.edna.models.entities.Customer;
 import com.spring.edna.models.repositories.CustomerRepository;
 import com.spring.edna.services.GetCustomerById;
+import com.spring.edna.services.GetCustomerById.CustomerDetailsResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,7 +44,7 @@ public class GetCustomerByIdTest {
     public void testGetCustomerById$success() throws EdnaException {
         when(customerRepository.findById("customer-id")).thenReturn(Optional.of(customer));
 
-        CustomerDetailsDTO result = getCustomerById.execute("customer-id");
+        CustomerDetailsResponse result = getCustomerById.execute("customer-id");
 
         assertThat(result).isNotNull();
         assertThat(result.getId()).isEqualTo("customer-id");

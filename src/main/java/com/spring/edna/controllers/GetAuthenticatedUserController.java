@@ -16,7 +16,7 @@ public class GetAuthenticatedUserController {
     private AuthService authService;
 
     @GetMapping
-    public User getAuthenticatedUser() throws EdnaException {
+    public User handle() throws EdnaException {
         return authService.getAuthenticatedUser();
     }
 }

@@ -9,9 +9,9 @@ import lombok.Data;
 public class StoreSummaryDTO {
     private String id;
     private String profileImageUrl;
-    private String storeName;
+    private String name;
     private Double avgRating;
     private TargetCustomer targetCustomer;
-    private Integer distanceToCustomerInMeters;
+    private String distanceToCustomerInMeters;
     private boolean isFavorite;
 }

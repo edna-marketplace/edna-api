@@ -17,6 +17,7 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @SpringBootTest
@@ -31,7 +32,7 @@ public class UpdateClotheTest {
 
     @Test
     @DisplayName("it should be able to update a clothe")
-    public void testUpdateClothe$success() throws EdnaException {
+    public void testUpdateClothe$success() throws EdnaException, IOException {
         Store store = StoreFactory.create();
         store.setId("store-id");
 

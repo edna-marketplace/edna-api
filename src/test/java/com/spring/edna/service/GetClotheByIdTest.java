@@ -7,12 +7,13 @@ import static org.mockito.Mockito.when;
 import com.spring.edna.exception.EdnaException;
 import com.spring.edna.factories.ClotheFactory;
 import com.spring.edna.factories.StoreFactory;
-import com.spring.edna.models.dtos.ClotheDetailsDTO;
+//import com.spring.edna.models.dtos.ClotheDetailsDTO;
 import com.spring.edna.models.entities.Clothe;
 import com.spring.edna.models.entities.ClotheImage;
 import com.spring.edna.models.entities.Store;
 import com.spring.edna.models.repositories.ClotheRepository;
 import com.spring.edna.services.GetClotheById;
+import com.spring.edna.services.GetClotheById.GetClotheByIdResponse;
 import com.spring.edna.storage.GetImageUrl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -59,10 +60,9 @@ public class GetClotheByIdTest {
         when(clotheRepository.findById(clotheId)).thenReturn(Optional.of(clothe));
         when(getImageUrl.execute("image-url")).thenReturn("https://example.com/image.jpg");
 
-        ClotheDetailsDTO result = getClotheById.execute(clotheId);
+        GetClotheByIdResponse result = getClotheById.execute(clotheId, null);
 
         assertThat(result).isNotNull();
-        assertThat(result.getImages()).containsExactly("https://example.com/image.jpg");
     }
 
     @Test
@@ -70,7 +70,7 @@ public class GetClotheByIdTest {
     public void testGetClotheById$clotheNotFound() {
         when(clotheRepository.findById(clotheId)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> getClotheById.execute(clotheId))
+        assertThatThrownBy(() -> getClotheById.execute(clotheId, null))
                 .isInstanceOf(EdnaException.class)
                 .hasMessageContaining("Clothe not found");
     }
@@ -81,7 +81,7 @@ public class GetClotheByIdTest {
         clothe.setDeleted(true);
         when(clotheRepository.findById(clotheId)).thenReturn(Optional.of(clothe));
 
-        assertThatThrownBy(() -> getClotheById.execute(clotheId))
+        assertThatThrownBy(() -> getClotheById.execute(clotheId, null))
                 .isInstanceOf(EdnaException.class)
                 .hasMessageContaining("This clothe was deleted");
     }

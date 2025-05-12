@@ -11,12 +11,13 @@ public class StoreScheduleMapper {
     public static List<StoreDayScheduleDTO> toStoreDayScheduleDTOList(List<StoreDaySchedule> schedule) {
         List<StoreDayScheduleDTO> storeDayScheduleDTOList = new ArrayList<>();
 
-        for (StoreDaySchedule ds : schedule) {
+        for (StoreDaySchedule daySchedule : schedule) {
             StoreDayScheduleDTO dto = new StoreDayScheduleDTO(
-                    ds.getId(),
-                    ds.getDayOfWeek(),
-                    ds.getOpeningTimeInMinutes(),
-                    ds.getClosingTimeInMinutes()
+                    daySchedule.getId(),
+                    daySchedule.getDayOfWeek(),
+                    daySchedule.isEnabled(),
+                    daySchedule.getOpeningTimeInMinutes(),
+                    daySchedule.getClosingTimeInMinutes()
             );
 
             storeDayScheduleDTOList.add(dto);

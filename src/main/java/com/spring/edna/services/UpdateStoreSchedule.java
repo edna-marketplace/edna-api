@@ -3,6 +3,7 @@ package com.spring.edna.services;
 import com.spring.edna.exception.EdnaException;
 import com.spring.edna.models.entities.StoreDaySchedule;
 import com.spring.edna.models.repositories.StoreDayScheduleRepository;
+import com.spring.edna.utils.StoreScheduleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -15,31 +16,38 @@ public class UpdateStoreSchedule {
     @Autowired
     private StoreDayScheduleRepository storeDayScheduleRepository;
 
-    public HttpStatus execute(List<StoreDaySchedule> schedule, String storeId) throws EdnaException {
-        StoreDaySchedule dayScheduleInDb = storeDayScheduleRepository.findById(schedule.get(0).getId()).orElseThrow(
-                () -> new EdnaException("Day schedule not found.", HttpStatus.BAD_REQUEST)
-        );
+    public HttpStatus execute(List<StoreDaySchedule> requestSchedule, String subjectId) throws EdnaException {
 
-        if(!dayScheduleInDb.getStore().getId().equals(storeId)) {
-            throw new EdnaException("You cant update another store's schedule.", HttpStatus.BAD_REQUEST);
-        }
+        verifyStoreOwnership(requestSchedule, subjectId);
 
-        List<StoreDaySchedule> scheduleInDB = storeDayScheduleRepository.findByStoreId(storeId);
+        StoreScheduleUtils.validateSchedule(requestSchedule);
 
-        for(StoreDaySchedule ds : schedule) {
-            if(ds.getClosingTimeInMinutes() - 60 < ds.getOpeningTimeInMinutes()) {
-                throw new EdnaException("The closing time must be at least one hour later then the opening time on "
-                            + ds.getDayOfWeek(), HttpStatus.BAD_REQUEST);
-            }
+        List<StoreDaySchedule> scheduleInDB = storeDayScheduleRepository.findByStoreId(subjectId);
 
-            for(StoreDaySchedule dsInDb : scheduleInDB) {
-                if(ds.getId().equals(dsInDb.getId())) {
-                    ds.setDayOfWeek(dsInDb.getDayOfWeek());
+        // esse loop força o dia que esta sendo atualizado a ser o mesmo do banco para evitar dias duplicados
+        for (StoreDaySchedule daySchedule : requestSchedule) {
+            for (StoreDaySchedule dayScheduleInDB : scheduleInDB) {
+                if (daySchedule.getId() != null && daySchedule.getId().equals(dayScheduleInDB.getId())) {
+                    daySchedule.setDayOfWeek(dayScheduleInDB.getDayOfWeek());
                 }
             }
         }
-        storeDayScheduleRepository.saveAll(schedule);
+
+        storeDayScheduleRepository.saveAll(requestSchedule);
 
         return HttpStatus.NO_CONTENT;
+    }
+
+    private void verifyStoreOwnership(List<StoreDaySchedule> requestSchedule, String subjectId) throws EdnaException {
+        for (StoreDaySchedule daySchedule : requestSchedule) {
+            StoreDaySchedule dayScheduleInDB = storeDayScheduleRepository.findById(daySchedule.getId())
+                    .orElseThrow(() -> new EdnaException(
+                            "Could not find day schedule with ID: " + daySchedule.getId(), HttpStatus.BAD_REQUEST
+                    ));
+
+            if (!dayScheduleInDB.getStore().getId().equals(subjectId)) {
+                throw new EdnaException("You cant update another store's schedule.", HttpStatus.BAD_REQUEST);
+            }
+        }
     }
 }

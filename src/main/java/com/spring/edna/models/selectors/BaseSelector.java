@@ -23,10 +23,6 @@ public abstract class BaseSelector {
         return this.limit > 0 && this.page > 0;
     }
 
-    public boolean isValidString(String text) {
-        return text != null && !text.isBlank();
-    }
-
     public static void applyDateRangeFilter(Root root,
                                             CriteriaBuilder cb, List<Predicate> predicates,
                                             LocalDateTime startDate, LocalDateTime endDate, String attributeName) {

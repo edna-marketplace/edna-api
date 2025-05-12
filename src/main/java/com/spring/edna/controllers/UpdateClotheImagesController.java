@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -22,13 +24,22 @@ public class UpdateClotheImagesController {
     @Autowired
     private AuthService authService;
 
-    @PostMapping("/{clotheId}")
-    public ResponseEntity<Void> handle(@RequestParam List<MultipartFile> files, @PathVariable String clotheId) throws EdnaException, IOException {
+    @PutMapping("/{clotheId}")
+    public ResponseEntity<Void> handle(
+            @RequestPart(value = "removedImages", required = false) String removedImagesString,
+            @RequestPart(value = "newImages", required = false) List<MultipartFile> newImages,
+            @PathVariable String clotheId
+    ) throws EdnaException, IOException {
+
+        List<String> removedImages = removedImagesString != null
+                ? Arrays.asList(removedImagesString.split(","))
+                : new ArrayList<>();
+
         User subject = authService.getAuthenticatedUser();
 
-        updateClotheImages.execute(files, clotheId, subject.getId());
+        updateClotheImages.execute(removedImages, newImages, clotheId, subject.getId());
 
-        return ResponseEntity.created(null).build();
+        return ResponseEntity.noContent().build();
     }
 
 }
