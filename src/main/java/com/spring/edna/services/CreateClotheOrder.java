@@ -4,9 +4,11 @@ import com.spring.edna.exception.EdnaException;
 import com.spring.edna.models.entities.Clothe;
 import com.spring.edna.models.entities.Customer;
 import com.spring.edna.models.entities.ClotheOrder;
+import com.spring.edna.models.entities.Store;
 import com.spring.edna.models.repositories.ClotheRepository;
 import com.spring.edna.models.repositories.ClotheOrderRepository;
 import com.spring.edna.models.repositories.CustomerRepository;
+import com.spring.edna.models.repositories.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -41,6 +43,10 @@ public class CreateClotheOrder {
         clotheOrder.setCustomer(customer);
         clotheOrder.setClothe(clothe);
         clotheOrder.setStore(clothe.getStore());
+
+        boolean alreadyOrdered = clotheOrderRepository.existsByCustomerIdAndStoreId(clotheOrder.getCustomer().getId(),
+                clotheOrder.getStore().getId());
+        clotheOrder.setFirstOrder(!alreadyOrdered);
 
         clotheOrderRepository.save(clotheOrder);
 

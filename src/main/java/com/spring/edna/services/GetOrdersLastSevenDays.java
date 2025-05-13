@@ -19,6 +19,7 @@ public class GetOrdersLastSevenDays {
     public WeekOrderDTO execute(String storeId) {
 
         LocalDateTime now = LocalDateTime.now();
+        double variation = 0.0;
 
         LocalDateTime startOfCurrentWeek = now.with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 1).toLocalDate().atStartOfDay();
         LocalDateTime endOfCurrentWeek = startOfCurrentWeek.plusDays(6).withHour(23).withMinute(59).withSecond(59);
@@ -29,9 +30,14 @@ public class GetOrdersLastSevenDays {
         long currentWeekOrders = clotheOrderRepository.countByStoreIdAndStatusAndCreatedAtBetween(storeId, OrderStatus.COMPLETED, startOfCurrentWeek, endOfCurrentWeek);
         long lastWeekOrders = clotheOrderRepository.countByStoreIdAndStatusAndCreatedAtBetween(storeId, OrderStatus.COMPLETED, startOfLastWeek, endOfLastWeek);
 
-        double variation = (lastWeekOrders > 0)
-                ? ((double) (currentWeekOrders - lastWeekOrders) / lastWeekOrders) * 100
-                : 100;
+
+        if (lastWeekOrders == 0 && currentWeekOrders == 0) {
+            variation = 0;
+        } else if (lastWeekOrders > 0) {
+            variation = ((double) (currentWeekOrders - lastWeekOrders) / lastWeekOrders) * 100;
+        } else {
+            variation = 100;
+        }
 
         return new WeekOrderDTO(currentWeekOrders, variation);
 
