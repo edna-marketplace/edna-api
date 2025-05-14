@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CancelOrder {
+public class CompleteOrder {
 
     @Autowired
     private ClotheOrderRepository clotheOrderRepository;
@@ -17,9 +17,9 @@ public class CancelOrder {
     public HttpStatus execute(String orderId) throws EdnaException {
 
         ClotheOrder order = clotheOrderRepository.findById(orderId).
-                orElseThrow(() -> new EdnaException("Clothe Order not found.", HttpStatus.NOT_FOUND));
+                orElseThrow(() -> new EdnaException("Order not found.", HttpStatus.NOT_FOUND));
 
-        order.setStatus(OrderStatus.CANCELED);
+        order.setStatus(OrderStatus.COMPLETED);
         clotheOrderRepository.save(order);
 
         return HttpStatus.CREATED;
