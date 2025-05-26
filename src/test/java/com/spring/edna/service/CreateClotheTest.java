@@ -50,7 +50,7 @@ public class CreateClotheTest {
         List<MultipartFile> files = new ArrayList<>();
 
         when(clotheRepository.save(clothe)).thenReturn(clothe);
-        HttpStatus result = createClothe.execute(clothe, files);
+        HttpStatus result = createClothe.execute(clothe, files, null);
 
         assertThat(result).isEqualTo(HttpStatus.CREATED);
     }

@@ -16,8 +16,8 @@ public class AuthService {
 
     private final JwtService jwtService;
 
-//    @Autowired
-//    private LoadUserByUsername loadUserByUsername;
+    @Autowired
+    private LoadUserByUsername loadUserByUsername;
 
     @Autowired
     private LoadUserById loadUserById;

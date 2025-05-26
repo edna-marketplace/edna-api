@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.mockito.Mockito.when;
@@ -32,7 +33,7 @@ public class CreateCustomerTest {
         customer.setId("customer-id");
 
         when(customerRepository.save(customer)).thenReturn(customer);
-        String result = createCustomer.execute(customer);
+        HttpStatus result = createCustomer.execute(customer);
 
         assertThat(result).isEqualTo("customer-id");
     }
