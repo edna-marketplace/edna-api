@@ -49,6 +49,10 @@ public class FetchClothesWithFilter {
     public FetchClothesWithFilterResponse execute(ClotheSelector selector, String subjectId) throws EdnaException {
         boolean isSubjectStore = verifySubjectStore.execute(subjectId);
 
+        if (isSubjectStore) {
+            selector.setStoreId(subjectId);
+        }
+
         long totalCount = clotheRepository.count(selector);
 
         PageRequest page = PageRequest.of(selector.getPage() - 1, selector.getLimit());

@@ -7,7 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +19,7 @@ public class VerifyDuplicateStoreController {
     @Autowired
     private VerifyDuplicateStore verifyDuplicateStore;
 
-    @GetMapping
+    @PostMapping
     public ResponseEntity<VerifyDuplicateStoreResponse> handle(@Valid @RequestBody Store store) {
         VerifyDuplicateStoreResponse response = verifyDuplicateStore.verifyDuplicateStore(store);
 
