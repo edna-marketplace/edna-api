@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class VerifyDuplicateStore {
@@ -16,17 +18,15 @@ public class VerifyDuplicateStore {
     @Data
     @AllArgsConstructor
     public class VerifyDuplicateStoreResponse {
-        private boolean isDuplicateName;
-        private boolean isDuplicateEmail;
-        private boolean isDuplicateCnpj;
-        private boolean isDuplicatePhone;
+        private String message;
         private HttpStatus status;
+
     }
 
     @Autowired
     private StoreRepository storeRepository;
 
-    public VerifyDuplicateStoreResponse verifyDuplicateStore(Store store) {
+    public VerifyDuplicateStoreResponse execute(Store store) {
         List<Store> duplicates = storeRepository.findByNameOrEmailOrCnpjOrPhone(
                 store.getName(),
                 store.getEmail(),
@@ -54,18 +54,32 @@ public class VerifyDuplicateStore {
             }
         }
 
-        HttpStatus status = (isDuplicateName || isDuplicateEmail || isDuplicateCnpj || isDuplicatePhone)
-                            ? HttpStatus.CONFLICT
-                            : HttpStatus.OK;
+        boolean hasConflict = isDuplicateName || isDuplicateEmail || isDuplicateCnpj || isDuplicatePhone;
+        HttpStatus status = hasConflict ? HttpStatus.CONFLICT : HttpStatus.OK;
+        String message = null;
 
-        VerifyDuplicateStoreResponse response = new VerifyDuplicateStoreResponse(
-                isDuplicateName,
-                isDuplicateEmail,
-                isDuplicateCnpj,
-                isDuplicatePhone,
+        if (hasConflict) {
+            List<String> duplicateFields = new ArrayList<>();
+
+            if (isDuplicateName) {
+                duplicateFields.add("Nome");
+            }
+            if (isDuplicateEmail) {
+                duplicateFields.add("Email");
+            }
+            if (isDuplicateCnpj) {
+                duplicateFields.add("CNPJ");
+            }
+            if (isDuplicatePhone) {
+                duplicateFields.add("Telefone");
+            }
+
+            message = "As seguintes informações já estão sendo utilizadas: " + String.join(", ", duplicateFields);
+        }
+
+        return new VerifyDuplicateStoreResponse(
+                message,
                 status
         );
-
-        return response;
     }
 }

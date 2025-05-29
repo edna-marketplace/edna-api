@@ -54,7 +54,7 @@ public class CreateStoreAddressSchedule {
         return HttpStatus.CREATED;
     }
 
-    private void verifyDuplicateAddress(Address address) throws EdnaException {
+    public void verifyDuplicateAddress(Address address) throws EdnaException {
         Address addressWithSameCepAndNumber = addressRepository
                 .findByCepAndNumber(address.getCep(), address.getNumber())
                 .orElse(null);
