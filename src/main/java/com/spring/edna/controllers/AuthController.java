@@ -1,11 +1,13 @@
 package com.spring.edna.controllers;
 
 import com.spring.edna.auth.AuthService;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,20 +15,29 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthController {
 
+
+    @Data
+    public static class SignInRequest {
+        private String email;
+        private String password;
+    }
+
     @Autowired
     private AuthService authService;
 
-    @PostMapping
-    public String handle(Authentication authentication, HttpServletResponse response) {
-        String token = authService.authenticate(authentication);
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-        Cookie cookie = new Cookie("authToken", token);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        cookie.setMaxAge(60 * 60 * 10); // 10 hours
-        response.addCookie(cookie);
-        response.setHeader("Authorization", "Bearer " + token);
+    @PostMapping
+    public String handle(@RequestBody SignInRequest credentials) {
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                credentials.getEmail(),
+                credentials.getPassword()
+        );
+
+        Authentication authenticated = authenticationManager.authenticate(authentication);
+
+        String token = authService.authenticate(authenticated);
 
         return token;
     }

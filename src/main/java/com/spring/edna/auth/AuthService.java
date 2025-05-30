@@ -5,7 +5,6 @@ import com.spring.edna.models.entities.User;
 import com.spring.edna.services.LoadUserById;
 import com.spring.edna.services.LoadUserByUsername;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -16,8 +15,8 @@ public class AuthService {
 
     private final JwtService jwtService;
 
-//    @Autowired
-//    private LoadUserByUsername loadUserByUsername;
+    @Autowired
+    private LoadUserByUsername loadUserByUsername;
 
     @Autowired
     private LoadUserById loadUserById;
