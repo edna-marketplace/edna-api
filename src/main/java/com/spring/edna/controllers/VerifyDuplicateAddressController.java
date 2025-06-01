@@ -1,8 +1,9 @@
 package com.spring.edna.controllers;
 
-import com.spring.edna.models.entities.Store;
-import com.spring.edna.services.VerifyDuplicateStore;
-import com.spring.edna.services.VerifyDuplicateStore.VerifyDuplicateStoreResponse;
+import com.spring.edna.exception.EdnaException;
+import com.spring.edna.models.entities.Address;
+import com.spring.edna.services.VerifyDuplicateAddress;
+import com.spring.edna.services.VerifyDuplicateAddress.VerifyDuplicateAddressResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,15 +14,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "/public/stores/verify-duplicate")
-public class VerifyDuplicateStoreController {
+@RequestMapping(path = "/public/addresses/verify-duplicate")
+public class VerifyDuplicateAddressController {
 
     @Autowired
-    private VerifyDuplicateStore verifyDuplicateStore;
+    private VerifyDuplicateAddress verifyDuplicateAddress;
 
     @PostMapping
-    public ResponseEntity<VerifyDuplicateStoreResponse> handle(@Valid @RequestBody Store store) {
-        VerifyDuplicateStoreResponse response = verifyDuplicateStore.execute(store);
+    public ResponseEntity<VerifyDuplicateAddressResponse> handle(@Valid @RequestBody Address address) throws EdnaException {
+        VerifyDuplicateAddressResponse response = verifyDuplicateAddress.execute(address);
 
         if (response.getStatus() == HttpStatus.CONFLICT) {
             return new ResponseEntity<>(response, HttpStatus.CONFLICT);
