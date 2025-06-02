@@ -41,4 +41,28 @@ public interface ClotheOrderRepository extends JpaRepository<ClotheOrder, String
             @Param("storeId") String storeId,
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end);
+
+/*
+@Query("""
+    SELECT new com.seuprojeto.dto.MonthlyRevenueDTO(
+        FUNCTION('YEAR', co.createdAt),
+        FUNCTION('MONTH', co.createdAt),
+        SUM(c.priceInCents)
+    )
+    FROM ClotheOrder co
+    JOIN co.clothe c
+    WHERE co.store = :store
+      AND co.status = 'COMPLETED'
+      AND co.createdAt BETWEEN :start AND :end
+    GROUP BY FUNCTION('YEAR', co.createdAt), FUNCTION('MONTH', co.createdAt)
+    ORDER BY FUNCTION('YEAR', co.createdAt), FUNCTION('MONTH', co.createdAt)
+""")
+List<MonthlyRevenueDTO> findMonthlyRevenueByStore(
+    @Param("store") Store store,
+    @Param("start") LocalDateTime start,
+    @Param("end") LocalDateTime end
+);
+*/
+
+
 }

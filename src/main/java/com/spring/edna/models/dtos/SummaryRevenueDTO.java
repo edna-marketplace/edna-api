@@ -5,8 +5,8 @@ import lombok.Data;
 
 @AllArgsConstructor
 @Data
-public class WeekRevenueDTO {
+public class SummaryRevenueDTO {
 
-    private double weekRevenue;
+    private long weekRevenue;
     private double percentageChange;
 }
