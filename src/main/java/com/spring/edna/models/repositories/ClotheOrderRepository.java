@@ -1,5 +1,6 @@
 package com.spring.edna.models.repositories;
 
+import com.spring.edna.models.dtos.RevenuePeriodDTO;
 import com.spring.edna.models.entities.ClotheOrder;
 import com.spring.edna.models.entities.Store;
 import com.spring.edna.models.enums.OrderStatus;
@@ -10,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -42,27 +44,17 @@ public interface ClotheOrderRepository extends JpaRepository<ClotheOrder, String
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end);
 
-/*
-@Query("""
-    SELECT new com.seuprojeto.dto.MonthlyRevenueDTO(
-        FUNCTION('YEAR', co.createdAt),
-        FUNCTION('MONTH', co.createdAt),
-        SUM(c.priceInCents)
-    )
-    FROM ClotheOrder co
-    JOIN co.clothe c
-    WHERE co.store = :store
-      AND co.status = 'COMPLETED'
-      AND co.createdAt BETWEEN :start AND :end
-    GROUP BY FUNCTION('YEAR', co.createdAt), FUNCTION('MONTH', co.createdAt)
-    ORDER BY FUNCTION('YEAR', co.createdAt), FUNCTION('MONTH', co.createdAt)
-""")
-List<MonthlyRevenueDTO> findMonthlyRevenueByStore(
-    @Param("store") Store store,
-    @Param("start") LocalDateTime start,
-    @Param("end") LocalDateTime end
-);
-*/
+    @Query("""
+                SELECT co
+                FROM ClotheOrder co
+                WHERE co.store = :store
+                  AND co.status = 'COMPLETED'
+                  AND co.createdAt BETWEEN :start AND :end
+            """)
+    List<ClotheOrder> findCompletedOrdersByStoreAndPeriod(
+            @Param("store") Store store,
+            @Param("start") LocalDateTime start,
+            @Param("end") LocalDateTime end);
 
 
 }
