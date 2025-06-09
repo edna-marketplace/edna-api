@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -31,13 +31,11 @@ public class GetMonthlyRevenueByPeriod {
 
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime start;
+        LocalDateTime end;
 
-        if (period == 3) {
-            start = now.minusMonths(3);
-        } else if (period == 6) {
-            start = now.minusMonths(6);
-        } else if (period == 12) {
-            start = now.minusMonths(12);
+        if (period == 3 || period == 6 || period == 12) {
+            start = now.minusMonths(period - 1).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
+            end = now.withDayOfMonth(1).plusMonths(1).minusNanos(1);
         } else {
             throw new EdnaException("Período inválido", HttpStatus.BAD_REQUEST);
         }
@@ -54,18 +52,19 @@ public class GetMonthlyRevenueByPeriod {
                         Collectors.summingLong(co -> co.getClothe().getPriceInCents())
                 ));
 
-        List<RevenuePeriodDTO> result = revenueByYearMonth.entrySet().stream()
-                .map(e -> {
-                    String[] parts = e.getKey().split("-");
-                    int year = Integer.parseInt(parts[0]);
-                    int month = Integer.parseInt(parts[1]);
-                    long totalPrice = Math.round(e.getValue() * 0.86);;
-                    return new RevenuePeriodDTO(year, month, totalPrice);
-                })
-                .sorted(Comparator.comparing(RevenuePeriodDTO::getYear)
-                        .thenComparing(RevenuePeriodDTO::getMonth))
-                .toList();
+        List<RevenuePeriodDTO> result = new java.util.ArrayList<>();
 
+        for (int i = 0; i < period; i++) {
+            LocalDateTime monthDate = start.plusMonths(i);
+            int year = monthDate.getYear();
+            int month = monthDate.getMonthValue();
+            String key = year + "-" + String.format("%02d", month);
+
+            long totalPrice = Math.round(revenueByYearMonth.getOrDefault(key, 0L) * 0.86);
+            result.add(new RevenuePeriodDTO(year, month, totalPrice));
+        }
+
+        Collections.reverse(result);
         return result;
     }
 }
