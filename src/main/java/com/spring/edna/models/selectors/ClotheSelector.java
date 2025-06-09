@@ -54,7 +54,7 @@ public class ClotheSelector extends BaseSelector implements Specification<Clothe
         if (this.getColor() != null && !this.getColor().trim().isEmpty()) {
             predicates.add(cb.like(cb.lower(root.get("color")), "%" + this.getColor().toLowerCase() + "%"));
         }
-        if (this.getGender() != null) {
+        if (this.getGender() != null && this.getGender() != ClotheGender.ALL) {
             predicates.add(cb.equal(root.get("gender"), this.getGender()));
         }
         if (this.getStoreId() != null) {

@@ -39,4 +39,6 @@ public class ClotheOrder {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    private boolean isFirstOrder;
 }
