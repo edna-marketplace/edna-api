@@ -26,7 +26,7 @@ public class DeleteClothe {
         Clothe clothe = clotheRepository.findById(clotheId).orElseThrow(() -> new EdnaException("Clothe not found", HttpStatus.BAD_REQUEST));
 
         if (!clothe.getStore().getId().equals(storeId)) {
-            throw new EdnaException("You can only delete clothes from your store.", HttpStatus.BAD_REQUEST);
+            throw new EdnaException("Você só pode deletar peças da sua loja.", HttpStatus.BAD_REQUEST);
         }
 
         for (ClotheImage clotheImage : clothe.getImages()) {

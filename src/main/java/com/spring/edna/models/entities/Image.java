@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Data
 public abstract class Image {
 
-    @NotNull(message = "Url is required.")
+    @NotNull(message = "é obrigatória.")
     private String url;
 
     @CreationTimestamp

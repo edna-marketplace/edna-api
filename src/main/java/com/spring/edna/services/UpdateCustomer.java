@@ -15,7 +15,7 @@ public class UpdateCustomer {
 
     public HttpStatus execute(Customer customer) throws EdnaException {
         Customer customerInDB = customerRepository.findById(customer.getId())
-                .orElseThrow(() -> new EdnaException("Customer not found.", HttpStatus.BAD_REQUEST));
+                .orElseThrow(() -> new EdnaException("Cliente não encontrado.", HttpStatus.BAD_REQUEST));
 
         customer.setCpf(customerInDB.getCpf());
         customer.setPassword(customerInDB.getPassword());

@@ -33,11 +33,11 @@ public class UpdateStoreImage {
 
     public HttpStatus execute(MultipartFile file, String imageTypeString, String storeId) throws EdnaException, IOException {
         if(!imageTypeString.equalsIgnoreCase("BANNER") && !imageTypeString.equalsIgnoreCase("PROFILE")) {
-            throw new EdnaException("Invalid image type! The type must be 'banner' or 'profile'.", HttpStatus.BAD_REQUEST);
+            throw new EdnaException("Tipo de imagem inválido! O tipo deve ser 'banner' or 'perfil'.", HttpStatus.BAD_REQUEST);
         }
 
         Store store = storeRepository.findById(storeId).orElseThrow(() ->
-                new EdnaException("Store not found", HttpStatus.BAD_REQUEST)
+                new EdnaException("Loja não encontrada", HttpStatus.BAD_REQUEST)
         );
         StoreImageType imageType = StoreImageType.valueOf(imageTypeString.toUpperCase());
 

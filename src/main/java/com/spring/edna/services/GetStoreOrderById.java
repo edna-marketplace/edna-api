@@ -39,11 +39,11 @@ public class GetStoreOrderById {
 
     public GetStoreOrderByIdResponse execute(String orderId, String subjectId) throws EdnaException {
         ClotheOrder order = clotheOrderRepository.findById(orderId).orElseThrow(() ->
-                new EdnaException("Order not found", HttpStatus.BAD_REQUEST)
+                new EdnaException("Pedido não encontrado", HttpStatus.BAD_REQUEST)
         );
 
         if(!order.getStore().getId().equals(subjectId)) {
-            throw new EdnaException("This order does not belong to this store", HttpStatus.BAD_REQUEST);
+            throw new EdnaException("Esse pedido não pertence a essa loja", HttpStatus.BAD_REQUEST);
         }
 
         return toGetStoreOrderByIdResponse(order);

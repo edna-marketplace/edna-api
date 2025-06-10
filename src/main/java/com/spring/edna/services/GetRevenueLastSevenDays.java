@@ -26,7 +26,7 @@ public class GetRevenueLastSevenDays {
     public SummaryRevenueDTO execute(String storeId) throws EdnaException {
 
         Store store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new EdnaException("Store not found", HttpStatus.BAD_REQUEST));
+                .orElseThrow(() -> new EdnaException("Loja não encontrada", HttpStatus.BAD_REQUEST));
 
         LocalDateTime now = LocalDateTime.now();
 

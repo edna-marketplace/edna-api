@@ -26,7 +26,7 @@ public class Clothe {
     @UuidGenerator
     private String id;
 
-    @NotBlank(message = "Name is required.")
+    @NotBlank(message = "É obrigatório.")
     private String name;
 
     @Nullable
@@ -42,28 +42,28 @@ public class Clothe {
     @Nullable
     private String sizeOther;
 
-    @NotNull(message = "Price is required.")
+    @NotNull(message = "É obrigatório.")
     private Integer priceInCents;
 
-    @NotBlank(message = "Fabric is required.")
+    @NotBlank(message = "É obrigatório.")
     private String fabric;
 
-    @NotBlank(message = "Color is required.")
+    @NotBlank(message = "É obrigatório.")
     private String color;
 
-    @NotNull(message = "Category is required.")
+    @NotNull(message = "É obrigatório.")
     @Enumerated(EnumType.STRING)
     private ClotheCategory category;
 
-    @NotNull(message = "Size is required.")
+    @NotNull(message = "É obrigatório.")
     @Enumerated(EnumType.STRING)
     private ClotheSize size;
 
-    @NotNull(message = "Gender is required.")
+    @NotNull(message = "É obrigatório.")
     @Enumerated(EnumType.STRING)
     private ClotheGender gender;
 
-    @NotNull(message = "Brand is required.")
+    @NotNull(message = "É obrigatório.")
     @Enumerated(EnumType.STRING)
     private ClotheBrand brand;
 

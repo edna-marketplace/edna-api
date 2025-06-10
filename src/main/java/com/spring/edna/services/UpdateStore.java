@@ -15,7 +15,7 @@ public class UpdateStore {
 
     public HttpStatus execute(Store store) throws EdnaException {
         Store storeInDatabase = storeRepository.findById(store.getId()).orElseThrow(() ->
-                new EdnaException("Store not found", HttpStatus.BAD_REQUEST)
+                new EdnaException("Loja não encontrada", HttpStatus.BAD_REQUEST)
         );
 
         store.setCnpj(storeInDatabase.getCnpj());

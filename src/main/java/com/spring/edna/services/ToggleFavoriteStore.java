@@ -19,9 +19,9 @@ public class ToggleFavoriteStore {
 
     public HttpStatus execute(String customerId, String storeId) throws EdnaException {
         Customer customer = customerRepository.findById(customerId).orElseThrow(() ->
-                new EdnaException("Customer not found", HttpStatus.BAD_REQUEST));
+                new EdnaException("Cliente não encontrado", HttpStatus.BAD_REQUEST));
         Store store = storeRepository.findById(storeId).orElseThrow(() ->
-                new EdnaException("Store not found", HttpStatus.BAD_REQUEST));
+                new EdnaException("Loja não encontrada", HttpStatus.BAD_REQUEST));
 
         if (customer.getFavoriteStores().contains(store)) {
             customer.getFavoriteStores().remove(store);
