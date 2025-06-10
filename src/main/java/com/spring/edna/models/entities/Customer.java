@@ -1,6 +1,7 @@
 package com.spring.edna.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.spring.edna.models.enums.ClotheGender;
 import com.spring.edna.models.enums.TargetCustomer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -33,7 +34,7 @@ public class Customer extends User {
     private List<SavedClothe> savedClothes;
 
     @Enumerated(EnumType.STRING)
-    private TargetCustomer stylePreference = TargetCustomer.ALL;
+    private ClotheGender stylePreference = ClotheGender.ALL;
 
     @ManyToMany
     @JoinTable(name = "favorite_store", joinColumns = @JoinColumn(name = "customer_id"), inverseJoinColumns = @JoinColumn(name = "store_id"))

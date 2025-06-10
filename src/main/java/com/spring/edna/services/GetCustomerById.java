@@ -2,6 +2,7 @@ package com.spring.edna.services;
 
 import com.spring.edna.exception.EdnaException;
 import com.spring.edna.models.entities.Customer;
+import com.spring.edna.models.enums.ClotheGender;
 import com.spring.edna.models.enums.TargetCustomer;
 import com.spring.edna.models.repositories.CustomerRepository;
 import lombok.AllArgsConstructor;
@@ -21,7 +22,7 @@ public class GetCustomerById {
         private String email;
         private String phone;
         private String cpf;
-        private TargetCustomer stylePreference;
+        private ClotheGender stylePreference;
     }
 
     @Autowired
