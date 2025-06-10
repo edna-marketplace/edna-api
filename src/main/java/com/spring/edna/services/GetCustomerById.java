@@ -30,12 +30,12 @@ public class GetCustomerById {
 
     public CustomerDetailsResponse execute(String customerId) throws EdnaException {
         Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new EdnaException(
-                "Customer not found",
+                "Cliente não encontrado",
                 HttpStatus.BAD_REQUEST
         ));
 
         if (customer.isDeleted()) {
-            throw new EdnaException("This customer was deleted", HttpStatus.BAD_REQUEST);
+            throw new EdnaException("Cliente já foi excluído", HttpStatus.BAD_REQUEST);
         }
 
         return toCustomerDetailsResponse(customer);

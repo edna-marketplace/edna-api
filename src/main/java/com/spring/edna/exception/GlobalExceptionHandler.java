@@ -1,7 +1,9 @@
 package com.spring.edna.exception;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -15,22 +17,30 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(EdnaException.class)
-    public ResponseEntity<String> handleEdnaException(EdnaException ex) {
-        return new ResponseEntity<>(ex.getMessage(), ex.getStatusCode());
+    public ResponseEntity<Map<String, String>> handleEdnaException(EdnaException ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("message", ex.getMessage());
+        return new ResponseEntity<>(errorResponse, ex.getStatusCode());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
+        Map<String, String> errorResponse = new HashMap<>();
 
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
+        // Collect all validation errors into a single message with translated field names
+        String validationErrors = ex.getBindingResult().getAllErrors().stream()
+                .map(error -> {
+                    String fieldName = ((FieldError) error).getField();
+                    String translatedField = FIELD_NAME_TRANSLATIONS.getOrDefault(fieldName, fieldName);
+                    String errorMessage = error.getDefaultMessage();
+                    return translatedField + ": " + errorMessage;
+                })
+                .collect(Collectors.joining("; "));
 
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+        errorResponse.put("message", "Falha na validação: " + validationErrors);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Map<String, String>> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
@@ -52,16 +62,46 @@ public class GlobalExceptionHandler {
             value = message.substring(startValue, endValue);
         }
 
-        // Build a user-friendly error response
+        // Build a user-friendly error message
         if (field != null && value != null) {
-            errorResponse.put("error", "Duplicate value found");
-            errorResponse.put("field", field);
-            errorResponse.put("value", value);
+            errorResponse.put("message", "Valor duplicado '" + value + "' encontrado no campo '" + field + "'");
         } else {
-            errorResponse.put("error", "Data integrity violation occurred");
+            errorResponse.put("message", "Violação de integração de dados ocorreu");
         }
 
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
-}
 
+    // Generic exception handler for any other unhandled exceptions
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Map<String, String>> handleGenericException(Exception ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("message", "Um erro inexsperado ocorreu: " + ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    private static final Map<String, String> FIELD_NAME_TRANSLATIONS = Map.ofEntries(
+            Map.entry("name", "nome"),
+            Map.entry("description", "descrição"),
+            Map.entry("categoryOther", "outra categoria"),
+            Map.entry("brandOther", "outra marca"),
+            Map.entry("sizeOther", "outro tamanho"),
+            Map.entry("priceInCents", "preço"),
+            Map.entry("fabric", "tecido"),
+            Map.entry("color", "cor"),
+            Map.entry("category", "categoria"),
+            Map.entry("size", "tamanho"),
+            Map.entry("gender", "gênero"),
+            Map.entry("brand", "marca"),
+            Map.entry("store", "loja"),
+            Map.entry("images", "imagens"),
+            Map.entry("clotheOrder", "pedido"),
+            Map.entry("createdAt", "data de criação"),
+            Map.entry("number", "número"),
+            Map.entry("street", "rua"),
+            Map.entry("neighborhood", "bairro"),
+            Map.entry("city", "cidade")
+    );
+
+
+}

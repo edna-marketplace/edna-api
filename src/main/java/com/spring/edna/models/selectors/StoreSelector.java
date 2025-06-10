@@ -34,7 +34,7 @@ public class StoreSelector extends BaseSelector implements Specification<Store> 
             predicates.add(cb.like(root.get("storeName"), "%" + this.getStoreName() + "%"));
         }
 
-        if(this.getTargetCustomer() != null) {
+        if(this.getTargetCustomer() != null && this.getTargetCustomer() != TargetCustomer.ALL) {
             predicates.add(cb.equal(root.get("targetCustomer"), this.getTargetCustomer()));
         }
 

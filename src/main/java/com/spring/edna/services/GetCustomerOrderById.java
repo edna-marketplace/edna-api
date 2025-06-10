@@ -20,11 +20,11 @@ public class GetCustomerOrderById {
 
     public CustomerOrderDTO execute(String orderId, String subjectId) throws EdnaException {
         ClotheOrder order = clotheOrderRepository.findById(orderId).orElseThrow(() ->
-                new EdnaException("Order not found", HttpStatus.BAD_REQUEST)
+                new EdnaException("Pedido não encontrado", HttpStatus.BAD_REQUEST)
         );
 
         if(!order.getCustomer().getId().equals(subjectId)) {
-            throw new EdnaException("This order does not belong to this customer", HttpStatus.BAD_REQUEST);
+            throw new EdnaException("Esse pedido não pertence a esse cliente", HttpStatus.BAD_REQUEST);
         }
 
         return toCustomerOrderDTO(order);

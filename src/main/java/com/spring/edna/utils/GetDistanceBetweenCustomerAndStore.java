@@ -26,7 +26,6 @@ public class GetDistanceBetweenCustomerAndStore {
     private static final double COORDINATE_THRESHOLD_METERS = 500.0;
 
     public String execute(CoordinatesDTO customerCoordinates, Address storeAddress) {
-
         String storeKey = createStoreKey(storeAddress);
 
         String cachedDistance = findCachedDistance(customerCoordinates, storeKey);

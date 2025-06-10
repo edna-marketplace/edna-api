@@ -25,11 +25,11 @@ public class CreateClothe {
 
     public HttpStatus execute(Clothe clothe, List<MultipartFile> images, String subjectId) throws EdnaException, IOException {
         if (images == null || images.isEmpty()) {
-            throw new EdnaException("The clothe needs at least one image.", HttpStatus.BAD_REQUEST);
+            throw new EdnaException("A peça precisa de pelo menos 1 imagem.", HttpStatus.BAD_REQUEST);
         }
 
         if (images.size() > 5) {
-            throw new EdnaException("The max amount of images is 5 per clothe.", HttpStatus.BAD_REQUEST);
+            throw new EdnaException("O máximo de imagens por peça é 5.", HttpStatus.BAD_REQUEST);
         }
 
         Store store = new Store();

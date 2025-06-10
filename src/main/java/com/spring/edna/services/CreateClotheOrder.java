@@ -4,9 +4,11 @@ import com.spring.edna.exception.EdnaException;
 import com.spring.edna.models.entities.Clothe;
 import com.spring.edna.models.entities.Customer;
 import com.spring.edna.models.entities.ClotheOrder;
+import com.spring.edna.models.entities.Store;
 import com.spring.edna.models.repositories.ClotheRepository;
 import com.spring.edna.models.repositories.ClotheOrderRepository;
 import com.spring.edna.models.repositories.CustomerRepository;
+import com.spring.edna.models.repositories.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -27,20 +29,24 @@ public class CreateClotheOrder {
         ClotheOrder clotheOrderInDB = clotheOrderRepository.findByClotheId(clotheId).orElse(null);
 
         if(clotheOrderInDB != null) {
-            throw new EdnaException("This clothe already have an order.", HttpStatus.CONFLICT);
+            throw new EdnaException("Essa peça já está em um pedidos.", HttpStatus.CONFLICT);
         }
 
         Clothe clothe = clotheRepository.findById(clotheId).orElseThrow(
-                () -> new EdnaException("Clothe not found.",HttpStatus.BAD_REQUEST)
+                () -> new EdnaException("Peça não encontrada.",HttpStatus.BAD_REQUEST)
         );
         Customer customer = customerRepository.findById(customerId).orElseThrow(
-                () -> new EdnaException("Customer not found.",HttpStatus.BAD_REQUEST)
+                () -> new EdnaException("Cliente não encontrado.",HttpStatus.BAD_REQUEST)
         );
 
         ClotheOrder clotheOrder = new ClotheOrder();
         clotheOrder.setCustomer(customer);
         clotheOrder.setClothe(clothe);
         clotheOrder.setStore(clothe.getStore());
+
+        boolean alreadyOrdered = clotheOrderRepository.existsByCustomerIdAndStoreId(clotheOrder.getCustomer().getId(),
+                clotheOrder.getStore().getId());
+        clotheOrder.setFirstOrder(!alreadyOrdered);
 
         clotheOrderRepository.save(clotheOrder);
 

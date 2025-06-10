@@ -42,11 +42,11 @@ public class UpdateStoreSchedule {
         for (StoreDaySchedule daySchedule : requestSchedule) {
             StoreDaySchedule dayScheduleInDB = storeDayScheduleRepository.findById(daySchedule.getId())
                     .orElseThrow(() -> new EdnaException(
-                            "Could not find day schedule with ID: " + daySchedule.getId(), HttpStatus.BAD_REQUEST
+                            "Não foi possível encontrar o horário de atendimento diário com o ID: " + daySchedule.getId(), HttpStatus.BAD_REQUEST
                     ));
 
             if (!dayScheduleInDB.getStore().getId().equals(subjectId)) {
-                throw new EdnaException("You cant update another store's schedule.", HttpStatus.BAD_REQUEST);
+                throw new EdnaException("Você não pode atualizar o horário de atendimento diário de outra loja.", HttpStatus.BAD_REQUEST);
             }
         }
     }

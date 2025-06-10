@@ -17,15 +17,15 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class Store extends User{
 
-    @NotBlank(message = "Store name is required.")
+    @NotBlank(message = "nome da loja é obrigatório.")
     @Column(unique = true)
     private String name;
 
     @Size(max = 400)
     private String description;
 
-    @NotBlank(message = "CNPJ is required.")
-    @CNPJ(message = "CNPJ must be valid.")
+    @NotBlank(message = "é obrigatório.")
+    @CNPJ(message = "deve ser válido.")
     @Column(unique = true)
     private String cnpj;
 
@@ -51,4 +51,14 @@ public class Store extends User{
     @OneToMany(mappedBy = "store")
     @JsonBackReference(value = "store-images")
     private List<StoreImage> images;
+
+    @Override
+    public String toString() {
+        return "Store{" +
+                "address=" + address +
+                ", cnpj='" + cnpj + '\'' +
+                ", description='" + description + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
