@@ -33,11 +33,11 @@ public class UpdateClotheImages {
     public HttpStatus execute(List<String> removedImages, List<MultipartFile> newImages, String clotheId, String subjectId) throws EdnaException, IOException {
 
         Clothe clothe = clotheRepository.findById(clotheId).orElseThrow(() -> new EdnaException(
-                "Clothe not found", HttpStatus.BAD_REQUEST
+                "Peça não encontrada", HttpStatus.BAD_REQUEST
         ));
 
         if(!clothe.getStore().getId().equals(subjectId)) {
-            throw new EdnaException("You can only update clothes from your store.", HttpStatus.BAD_REQUEST);
+            throw new EdnaException("Você só pode atualizar peças da sua loja.", HttpStatus.BAD_REQUEST);
         }
 
         removeOldImages(removedImages);
@@ -56,7 +56,7 @@ public class UpdateClotheImages {
     private void removeOldImages(List<String> removedImages) throws EdnaException {
         for(String imageId : removedImages) {
             ClotheImage image = clotheImageRepository.findById(imageId).orElseThrow(() -> new EdnaException(
-                    "Image not found", HttpStatus.BAD_REQUEST
+                    "Imagem não encontrado", HttpStatus.BAD_REQUEST
             ));
 
             clotheImageRepository.deleteById(imageId);
@@ -66,11 +66,11 @@ public class UpdateClotheImages {
 
     private void validateMaxImagesAmount(Clothe clothe, List<MultipartFile> newImages) throws EdnaException {
         if(newImages.size() > 5) {
-            throw new EdnaException("The max amount of files is 5 per clothe.", HttpStatus.BAD_REQUEST);
+            throw new EdnaException("O máximo de arquivos por peça é 5.", HttpStatus.BAD_REQUEST);
         }
 
         if((5 - clothe.getImages().size()) < newImages.size()) {
-            throw new EdnaException("The max amount of files is 5 per clothe, this clothe already have "
+            throw new EdnaException("O máximo de arquivos por peça é 5, essa peça já tem uma."
                     + clothe.getImages().size() + " images.", HttpStatus.BAD_REQUEST
             );
         }

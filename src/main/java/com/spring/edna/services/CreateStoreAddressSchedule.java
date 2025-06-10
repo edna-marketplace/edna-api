@@ -60,7 +60,7 @@ public class CreateStoreAddressSchedule {
                 .orElse(null);
 
         if (addressWithSameCepAndNumber != null) {
-            throw new EdnaException("Address already exists", HttpStatus.BAD_REQUEST);
+            throw new EdnaException("Endereço já existe.", HttpStatus.BAD_REQUEST);
         }
     }
 }

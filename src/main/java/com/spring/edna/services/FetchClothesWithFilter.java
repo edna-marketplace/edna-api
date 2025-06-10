@@ -77,7 +77,7 @@ public class FetchClothesWithFilter {
 
         for (Clothe clothe : clothes) {
             Store store = storeRepository.findById(clothe.getStore().getId()).orElseThrow(() ->
-                    new EdnaException("Store not found for the clothe with name:" + clothe.getName(), HttpStatus.BAD_REQUEST)
+                    new EdnaException("Loja não encontrada com o nome:" + clothe.getName(), HttpStatus.BAD_REQUEST)
             );
 
             ClotheSummaryDTO clotheSummary = new ClotheSummaryDTO(

@@ -18,7 +18,7 @@ public class CancelOrder {
     public HttpStatus execute(String orderId) throws EdnaException {
 
         ClotheOrder order = clotheOrderRepository.findById(orderId).
-                orElseThrow(() -> new EdnaException("Clothe Order not found.", HttpStatus.NOT_FOUND));
+                orElseThrow(() -> new EdnaException("Pedido não encontrado.", HttpStatus.NOT_FOUND));
 
         if (order.getStatus().equals(OrderStatus.COMPLETED)) {
             throw new EdnaException("Esse pedido não pode ser cancelado, pois já foi concluido", HttpStatus.BAD_REQUEST);

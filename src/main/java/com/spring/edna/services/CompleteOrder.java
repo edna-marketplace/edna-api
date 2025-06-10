@@ -17,7 +17,7 @@ public class CompleteOrder {
     public HttpStatus execute(String orderId) throws EdnaException {
 
         ClotheOrder order = clotheOrderRepository.findById(orderId).
-                orElseThrow(() -> new EdnaException("Order not found.", HttpStatus.NOT_FOUND));
+                orElseThrow(() -> new EdnaException("Pedido não encontrado.", HttpStatus.NOT_FOUND));
 
         if (order.getStatus().equals(OrderStatus.AWAITING_WITHDRAWAL)) {
             order.setStatus(OrderStatus.COMPLETED);

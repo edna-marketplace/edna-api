@@ -16,11 +16,11 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class Customer extends User {
 
-    @NotBlank(message = "Name is required.")
+    @NotBlank(message = "é obrigatório.")
     private String name;
 
-    @NotBlank(message = "CPF is required.")
-    @CPF(message = "CPF must be valid.")
+    @NotBlank(message = "é obrigatório.")
+    @CPF(message = "deve ser válido.")
     @Column(unique = true)
     private String cpf;
 

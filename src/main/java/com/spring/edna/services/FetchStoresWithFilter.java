@@ -56,7 +56,7 @@ public class FetchStoresWithFilter {
         List<Store> stores = storeRepository.findAll(selector, page).toList();
 
         Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new EdnaException(
-                "Customer not found! Verify the authentication token and try again.", HttpStatus.NOT_FOUND
+                "Cliente não encontrado! Verifique o token de autenticação e tente novamente.", HttpStatus.NOT_FOUND
         ));
 
         List<StoreSummaryDTO> storesSummary = toStoreSummaryDTOList(stores, customer, customerCoordinates);

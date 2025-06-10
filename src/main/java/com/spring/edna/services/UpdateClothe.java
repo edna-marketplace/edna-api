@@ -17,10 +17,10 @@ public class UpdateClothe {
 
     public HttpStatus execute(Clothe clothe, String subjectId) throws EdnaException, IOException {
 
-        Clothe clotheInDB = clotheRepository.findById(clothe.getId()).orElseThrow(() -> new EdnaException("Clothe not found", HttpStatus.BAD_REQUEST));
+        Clothe clotheInDB = clotheRepository.findById(clothe.getId()).orElseThrow(() -> new EdnaException("Peça não encontrada", HttpStatus.BAD_REQUEST));
 
         if(!clotheInDB.getStore().getId().equals(subjectId)) {
-            throw new EdnaException("You can only update clothes from your store.", HttpStatus.BAD_REQUEST);
+            throw new EdnaException("Você só pode atualizar as peças da sua loja.", HttpStatus.BAD_REQUEST);
         }
 
         clothe.setStore(clotheInDB.getStore());

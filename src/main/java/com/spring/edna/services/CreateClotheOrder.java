@@ -29,14 +29,14 @@ public class CreateClotheOrder {
         ClotheOrder clotheOrderInDB = clotheOrderRepository.findByClotheId(clotheId).orElse(null);
 
         if(clotheOrderInDB != null) {
-            throw new EdnaException("This clothe already have an order.", HttpStatus.CONFLICT);
+            throw new EdnaException("Essa peça já está em um pedidos.", HttpStatus.CONFLICT);
         }
 
         Clothe clothe = clotheRepository.findById(clotheId).orElseThrow(
-                () -> new EdnaException("Clothe not found.",HttpStatus.BAD_REQUEST)
+                () -> new EdnaException("Peça não encontrada.",HttpStatus.BAD_REQUEST)
         );
         Customer customer = customerRepository.findById(customerId).orElseThrow(
-                () -> new EdnaException("Customer not found.",HttpStatus.BAD_REQUEST)
+                () -> new EdnaException("Cliente não encontrado.",HttpStatus.BAD_REQUEST)
         );
 
         ClotheOrder clotheOrder = new ClotheOrder();

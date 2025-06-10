@@ -21,19 +21,19 @@ public class Address {
     @UuidGenerator
     private String id;
 
-    @NotBlank(message = "Number is required.")
+    @NotBlank(message = "É obrigatório")
     private String number;
 
-    @NotBlank(message = "CEP is required.")
+    @NotBlank(message = "É obrigatório.")
     private String cep;
 
-    @NotBlank(message = "Street is required.")
+    @NotBlank(message = "É obrigatório.")
     private String street;
 
-    @NotBlank(message = "Neighborhood is required.")
+    @NotBlank(message = "É obrigatório.")
     private String neighborhood;
 
-    @NotBlank(message = "City is required.")
+    @NotBlank(message = "É obrigatório.")
     private String city;
 
     @OneToOne

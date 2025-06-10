@@ -59,12 +59,12 @@ public class GetStoreById {
 
     public GetStoreByIdResponse execute(String storeId, String customerId, CoordinatesDTO customerCoordinates) throws EdnaException {
         Store store = storeRepository.findById(storeId).orElseThrow(() -> new EdnaException(
-                "Store not found",
+                "Loja não encontrada",
                 HttpStatus.BAD_REQUEST
         ));
 
         if (store.isDeleted()) {
-            throw new EdnaException("This store was deleted", HttpStatus.BAD_REQUEST);
+            throw new EdnaException("Essa loja já foi excluída", HttpStatus.BAD_REQUEST);
         }
 
         Customer customer = customerRepository.findById(customerId).orElse(null);

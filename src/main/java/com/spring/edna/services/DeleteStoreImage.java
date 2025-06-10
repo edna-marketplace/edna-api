@@ -24,7 +24,7 @@ public class DeleteStoreImage {
 
     public HttpStatus execute(String imageUrl, String storeId) throws EdnaException {
         Store store = storeRepository.findById(storeId).orElseThrow(() ->
-            new EdnaException("Store not found", HttpStatus.BAD_REQUEST)
+            new EdnaException("Loja não encontrada", HttpStatus.BAD_REQUEST)
         );
 
         StoreImage storeImageInDB = store
@@ -32,7 +32,7 @@ public class DeleteStoreImage {
                 .stream()
                 .filter(image -> image.getUrl().equals(imageUrl))
                 .findFirst()
-                .orElseThrow(() -> new EdnaException("Image not found", HttpStatus.BAD_REQUEST));
+                .orElseThrow(() -> new EdnaException("Imagem não encontrada", HttpStatus.BAD_REQUEST));
 
         storeImageRepository.deleteById(storeImageInDB.getId());
         deleteImageFromR2.execute(storeImageInDB.getUrl());

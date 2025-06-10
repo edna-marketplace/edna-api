@@ -20,15 +20,15 @@ public class UpdateAddress {
                 address.getCep(), address.getNumber());
 
         Address addressToUpdate = addressRepository.findById(address.getId())
-                .orElseThrow(() -> new EdnaException("Address not found", HttpStatus.BAD_REQUEST));
+                .orElseThrow(() -> new EdnaException("Endereço não encontrado", HttpStatus.BAD_REQUEST));
 
         if (!addressToUpdate.getStore().getId().equals(storeId)) {
-            throw new EdnaException("You can only update the address from your store.", HttpStatus.BAD_REQUEST);
+            throw new EdnaException("Você só pode atualizar o endereço da sua loja.", HttpStatus.BAD_REQUEST);
         }
 
         if (existingAddressWithCepAndNumber.isPresent() &&
                 !existingAddressWithCepAndNumber.get().getId().equals(address.getId())) {
-            throw new EdnaException("Address already exists", HttpStatus.CONFLICT);
+            throw new EdnaException("Endereço já existente", HttpStatus.CONFLICT);
         }
 
         address.setStore(addressToUpdate.getStore());
