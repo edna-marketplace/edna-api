@@ -16,7 +16,7 @@ import java.util.Optional;
 @Data
 public class StoreSelector extends BaseSelector implements Specification<Store> {
 
-    private String storeName;
+    private String name;
     private TargetCustomer targetCustomer;
 
     @JsonProperty("isFavorite")
@@ -30,8 +30,8 @@ public class StoreSelector extends BaseSelector implements Specification<Store> 
 
         predicates.add(cb.equal(root.get("deleted"), false));
 
-        if(this.getStoreName() != null && !this.getStoreName().trim().isEmpty()) {
-            predicates.add(cb.like(root.get("storeName"), "%" + this.getStoreName() + "%"));
+        if(this.getName() != null && !this.getName().trim().isEmpty()) {
+            predicates.add(cb.like(cb.lower(root.get("name")), "%" + this.getName() + "%"));
         }
 
         if(this.getTargetCustomer() != null && this.getTargetCustomer() != TargetCustomer.ALL) {
