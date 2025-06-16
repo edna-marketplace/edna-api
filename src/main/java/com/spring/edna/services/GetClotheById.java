@@ -1,15 +1,18 @@
 package com.spring.edna.services;
 
 import com.spring.edna.exception.EdnaException;
-import com.spring.edna.models.entities.Clothe;
-import com.spring.edna.models.entities.ClotheImage;
+import com.spring.edna.models.dtos.AddressDetailsDTO;
+import com.spring.edna.models.entities.*;
 import com.spring.edna.models.enums.ClotheBrand;
 import com.spring.edna.models.enums.ClotheCategory;
 import com.spring.edna.models.enums.ClotheGender;
 import com.spring.edna.models.enums.ClotheSize;
+import com.spring.edna.models.mappers.AddressMapper;
 import com.spring.edna.models.repositories.ClotheRepository;
+import com.spring.edna.models.repositories.CustomerRepository;
 import com.spring.edna.storage.GetImageUrl;
 import com.spring.edna.utils.StoreImageUtils;
+import com.spring.edna.utils.StoreRatingUtils;
 import com.spring.edna.utils.VerifySubjectStore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,14 +41,20 @@ public class GetClotheById {
         private ClotheBrand brand;
         private String brandOther;
         private ClotheCategory category;
+        private boolean isSaved;
         private String storeId;
         private String storeName;
         private String storeProfileImageUrl;
+        private AddressDetailsDTO storeAddress;
+        private Double storeAvgRating;
         private List<ClotheImageDTO> images;
     }
 
     @Autowired
     private ClotheRepository clotheRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @Autowired
     private GetImageUrl getImageUrl;
@@ -68,10 +77,12 @@ public class GetClotheById {
             throw new EdnaException("Essa peça já foi excluída.", HttpStatus.BAD_REQUEST);
         }
 
-        return toGetClotheByIdResponse(clothe, isSubjectStore);
+        Double storeAvgRating = StoreRatingUtils.calculateAverageRating(clothe.getStore().getClotheOrders());
+
+        return toGetClotheByIdResponse(clothe, storeAvgRating, subjectId, isSubjectStore);
     }
 
-    private GetClotheByIdResponse toGetClotheByIdResponse(Clothe clothe, boolean isSubjectStore) {
+    private GetClotheByIdResponse toGetClotheByIdResponse(Clothe clothe, Double storeAvgRating, String subjectId, boolean isSubjectStore) throws EdnaException {
         return new GetClotheByIdResponse(
                 clothe.getId(),
                 clothe.getName(),
@@ -85,9 +96,12 @@ public class GetClotheById {
                 clothe.getBrand(),
                 clothe.getBrandOther(),
                 clothe.getCategory(),
+                isSubjectStore ? null : isClotheSaved(subjectId, clothe.getId()),
                 isSubjectStore ? null : clothe.getStore().getId(),
                 isSubjectStore ? null : clothe.getStore().getName(),
                 isSubjectStore ? null : storeImageUtils.getProfileImageUrl(clothe.getStore()),
+                isSubjectStore ? null : AddressMapper.toAddressDetailsDTO(clothe.getStore().getAddress()),
+                isSubjectStore ? null : storeAvgRating,
                 getClotheImagesUrls(clothe.getImages())
         );
     }
@@ -110,5 +124,19 @@ public class GetClotheById {
         }
 
         return images;
+    }
+
+    private boolean isClotheSaved(String customerId, String clotheId) throws EdnaException {
+        Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new EdnaException(
+                "Usuário não encontrado, se autentique novamente", HttpStatus.BAD_REQUEST
+        ));
+
+        for (SavedClothe c : customer.getSavedClothes()) {
+            if (c.getClothe().getId().equals(clotheId)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
