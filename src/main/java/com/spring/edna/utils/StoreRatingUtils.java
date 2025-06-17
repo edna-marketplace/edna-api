@@ -16,9 +16,10 @@ public class StoreRatingUtils {
         List<OrderRating> ratings = new ArrayList<>();
 
         for (ClotheOrder order : orders) {
-            OrderRating rating = order.getRating();
-
-            ratings.add(rating);
+            if (order.getRating() != null) {
+                OrderRating rating = order.getRating();
+                ratings.add(rating);
+            }
         }
 
         Double storeRatingAcc = 0.0;
