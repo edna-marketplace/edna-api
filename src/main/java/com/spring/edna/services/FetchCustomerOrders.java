@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class FetchCustomerOrders {
 
         int totalCount = (int) clotheOrderRepository.count(selector);
 
-        PageRequest page = PageRequest.of(selector.getPage() - 1, selector.getLimit());
+        PageRequest page = PageRequest.of(selector.getPage() - 1, selector.getLimit(), Sort.by(Sort.Direction.DESC, "createdAt"));
         List<ClotheOrder> clotheOrders = clotheOrderRepository.findAll(selector, page).toList();
 
         PaginationMetaDTO meta = new PaginationMetaDTO(selector.getPage(), clotheOrders.size(), totalCount);
@@ -61,6 +62,7 @@ public class FetchCustomerOrders {
                     order.getCreatedAt().toLocalDate().toString(),
                     order.getClothe().getPriceInCents(),
                     order.getStatus(),
+                    order.getRating(),
                     order.getStatus() == OrderStatus.AWAITING_WITHDRAWAL ?
                             AddressMapper.toAddressDetailsDTO(order.getStore().getAddress())
                             : null

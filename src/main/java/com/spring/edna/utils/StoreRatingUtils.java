@@ -1,7 +1,6 @@
 package com.spring.edna.utils;
 
 import com.spring.edna.models.entities.ClotheOrder;
-import com.spring.edna.models.entities.OrderRating;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,19 +12,19 @@ public class StoreRatingUtils {
             return 0.0;
         }
 
-        List<OrderRating> ratings = new ArrayList<>();
+        List<Integer> ratings = new ArrayList<>();
 
         for (ClotheOrder order : orders) {
             if (order.getRating() != null) {
-                OrderRating rating = order.getRating();
+                Integer rating = order.getRating();
                 ratings.add(rating);
             }
         }
 
         Double storeRatingAcc = 0.0;
 
-        for(OrderRating orderRating : ratings) {
-            storeRatingAcc += orderRating.getRating();
+        for(Integer orderRating : ratings) {
+            storeRatingAcc += orderRating;
         }
 
         Double avgRating = storeRatingAcc / ratings.size();
