@@ -39,6 +39,7 @@ public class GetCustomerOrderById {
                 order.getCreatedAt().toLocalDate().toString(),
                 order.getClothe().getPriceInCents(),
                 order.getStatus(),
+                order.getRating(),
                 null
         );
     }

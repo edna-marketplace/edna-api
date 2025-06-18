@@ -40,8 +40,4 @@ public class Customer extends User {
     @JoinTable(name = "favorite_store", joinColumns = @JoinColumn(name = "customer_id"), inverseJoinColumns = @JoinColumn(name = "store_id"))
     @JsonBackReference(value = "customer-favorite-stores")
     private List<Store> favoriteStores = new ArrayList<>();
-
-    @OneToMany(mappedBy = "customer")
-    @JsonBackReference(value = "customer-order-ratings")
-    private List<OrderRating> orderRatings;
 }

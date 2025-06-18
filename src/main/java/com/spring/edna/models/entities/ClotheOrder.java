@@ -1,6 +1,5 @@
 package com.spring.edna.models.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.spring.edna.models.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -33,12 +32,10 @@ public class ClotheOrder {
     @JoinColumn(name = "clothe_id")
     private Clothe clothe;
 
-    @OneToOne(mappedBy = "clotheOrder")
-    @JsonBackReference
-    private OrderRating rating;
-
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    private Integer rating;
 
     private boolean isFirstOrder;
 }

@@ -14,5 +14,6 @@ public class CustomerOrderDTO {
     private String createdAt;
     private Integer priceInCents;
     private OrderStatus orderStatus;
+    private Integer rating;
     private AddressDetailsDTO storeAddress;
 }
