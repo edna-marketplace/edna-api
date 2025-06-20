@@ -4,8 +4,10 @@ import com.spring.edna.exception.EdnaException;
 import com.spring.edna.models.dtos.ClotheSummaryDTO;
 import com.spring.edna.models.dtos.PaginationMetaDTO;
 import com.spring.edna.models.entities.Clothe;
+import com.spring.edna.models.entities.Customer;
 import com.spring.edna.models.entities.Store;
 import com.spring.edna.models.repositories.ClotheRepository;
+import com.spring.edna.models.repositories.CustomerRepository;
 import com.spring.edna.models.repositories.StoreRepository;
 import com.spring.edna.models.selectors.ClotheSelector;
 import com.spring.edna.storage.GetImageUrl;
@@ -38,6 +40,9 @@ public class FetchClothesWithFilter {
     private StoreRepository storeRepository;
 
     @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
     private GetImageUrl getImageUrl;
 
     @Autowired
@@ -51,6 +56,8 @@ public class FetchClothesWithFilter {
 
         if (isSubjectStore) {
             selector.setStoreId(subjectId);
+        } else {
+            selector.setCustomerId(subjectId);
         }
 
         long totalCount = clotheRepository.count(selector);
@@ -58,7 +65,15 @@ public class FetchClothesWithFilter {
         PageRequest page = PageRequest.of(selector.getPage() - 1, selector.getLimit());
         List<Clothe> clothes = clotheRepository.findAll(selector, page).toList();
 
-        List<ClotheSummaryDTO> clothesSummaries = toCotheSummaryDTOList(clothes, isSubjectStore);
+        Customer customer = null;
+
+        if (!isSubjectStore) {
+            customer = customerRepository.findById(subjectId).orElseThrow(() -> new EdnaException(
+                    "Cliente não encontrado! Verifique o token de autenticação e tente novamente.", HttpStatus.NOT_FOUND
+            ));
+        }
+
+        List<ClotheSummaryDTO> clothesSummaries = toCotheSummaryDTOList(clothes, customer, isSubjectStore);
 
         PaginationMetaDTO meta = new PaginationMetaDTO(
                 selector.getPage(),
@@ -72,13 +87,20 @@ public class FetchClothesWithFilter {
         );
     }
 
-    private List<ClotheSummaryDTO> toCotheSummaryDTOList(List<Clothe> clothes, boolean isSubjectStore) throws EdnaException {
+    private List<ClotheSummaryDTO> toCotheSummaryDTOList(List<Clothe> clothes, Customer customer, boolean isSubjectStore) throws EdnaException {
         List<ClotheSummaryDTO> clothesSummaries = new ArrayList<>();
 
         for (Clothe clothe : clothes) {
             Store store = storeRepository.findById(clothe.getStore().getId()).orElseThrow(() ->
                     new EdnaException("Loja não encontrada com o nome:" + clothe.getName(), HttpStatus.BAD_REQUEST)
             );
+
+            boolean isSaved = false;
+
+            if (!isSubjectStore) {
+                isSaved = customer.getSavedClothes().stream()
+                        .anyMatch(savedClothe -> savedClothe.getClothe().equals(clothe));
+            }
 
             ClotheSummaryDTO clotheSummary = new ClotheSummaryDTO(
                     clothe.getId(),
@@ -88,7 +110,9 @@ public class FetchClothesWithFilter {
                     clothe.getBrandOther(),
                     clothe.getSize(),
                     clothe.getSizeOther(),
+                    isSaved,
                     getClotheFirstImage(clothe),
+                    isSubjectStore ? null : clothe.getStore().getName(),
                     isSubjectStore ? null : storeImageUtils.getProfileImageUrl(store)
             );
 

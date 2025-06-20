@@ -1,14 +1,15 @@
 package com.spring.edna.models.selectors;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.spring.edna.models.entities.Clothe;
+import com.spring.edna.models.entities.Customer;
+import com.spring.edna.models.entities.SavedClothe;
+import com.spring.edna.models.entities.Store;
 import com.spring.edna.models.enums.ClotheBrand;
 import com.spring.edna.models.enums.ClotheCategory;
 import com.spring.edna.models.enums.ClotheGender;
 import com.spring.edna.models.enums.ClotheSize;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -28,6 +29,11 @@ public class ClotheSelector extends BaseSelector implements Specification<Clothe
     private Integer maxPrice;
     private ClotheGender gender;
     private String storeId;
+
+    @JsonProperty("isSaved")
+    private boolean isSaved;
+
+    private String customerId;
 
     @Override
     public Predicate toPredicate(Root<Clothe> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
@@ -61,6 +67,19 @@ public class ClotheSelector extends BaseSelector implements Specification<Clothe
             predicates.add(cb.equal(root.get("store").get("id"), this.getStoreId()));
         }
         applyPriceRangeFilter(root, cb, predicates, this.getMinPrice(), this.getMaxPrice(), "priceInCents");
+
+        if (this.isSaved()) {
+            Subquery<String> savedSubquery = query.subquery(String.class);
+            Root<SavedClothe> savedClotheRoot = savedSubquery.from(SavedClothe.class);
+
+            savedSubquery.select(savedClotheRoot.get("id"))
+                    .where(
+                            cb.equal(savedClotheRoot.get("customer").get("id"), this.getCustomerId()),
+                            cb.equal(savedClotheRoot.get("clothe"), root)
+                    );
+
+            predicates.add(cb.exists(savedSubquery));
+        }
 
         return cb.and(predicates.toArray(new Predicate[0]));
     }

@@ -16,6 +16,8 @@ public class ClotheSummaryDTO {
     private String brandOther;
     private ClotheSize size;
     private String sizeOther;
+    private boolean isSaved;
     private String imageURL;
+    private String storeName;
     private String storeImageURL;
 }
