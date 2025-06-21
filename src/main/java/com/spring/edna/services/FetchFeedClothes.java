@@ -90,9 +90,12 @@ public class FetchFeedClothes {
                     clothe.getPriceInCents(),
                     clothe.getSize(),
                     clothe.getSizeOther(),
+                    clothe.getBrand(),
+                    clothe.getBrandOther(),
                     getClotheFirstImage(clothe),
-                    storeImageUtils.getProfileImageUrl(store),
-                    clothe.getStore().getName()
+                    clothe.getStore().getId(),
+                    clothe.getStore().getName(),
+                    storeImageUtils.getProfileImageUrl(store)
             );
 
             feedClothes.add(clotheSummary);
