@@ -8,13 +8,13 @@ INSERT INTO edna.customer (
       ('5d7d9e6f-8c4d-4c32-b0d5-372f9eb7fd43', CURRENT_TIMESTAMP, 'carla.pereira@example.com', 'password202', '11987654325', '09394763040', 'Carla Pereira', false);
 
 INSERT INTO edna.store (
-    id, created_at, email, "password", phone, cnpj, name, target_customer, deleted
+    id, created_at, email, "password", phone, cnpj, name, target_customer, deleted, stripe_onboarding_completed
 ) VALUES
-      ('6e1f8c1e-d229-4e98-99c2-7a6239a8b531', CURRENT_TIMESTAMP, 'brecho.bella@example.com', 'securepass1', '11976543210', '87736276000110', 'Brechó Bella', 'FEMALE', false),
-      ('7f2c9a2e-bd5b-4a09-a3b8-8c2347c8d632', CURRENT_TIMESTAMP, 'vintage.style@example.com', 'securepass2', '11976543211', '57768821000190', 'Vintage Style', 'ALL', false),
-      ('8a3d0b3f-ce6c-4b18-b1d9-9d3456d9e743', CURRENT_TIMESTAMP, 'chic.retro@example.com', 'securepass3', '11976543212', '84577905000119', 'Chic Retrô', 'FEMALE', false),
-      ('9b4e1c4f-de7d-4c29-c2e0-0e4567d0f854', CURRENT_TIMESTAMP, 'urban.wear@example.com', 'securepass4', '11976543213', '57556282000125', 'Urban Wear', 'MALE', false),
-      ('af5f2d5f-ef8e-4d39-d3f1-1f5678e1f965', CURRENT_TIMESTAMP, 'eco.brecho@example.com', 'securepass5', '11976543214', '12872344000170', 'Eco Brechó', 'ALL', false);
+      ('6e1f8c1e-d229-4e98-99c2-7a6239a8b531', CURRENT_TIMESTAMP, 'brecho.bella@example.com', 'securepass1', '11976543210', '87736276000110', 'Brechó Bella', 'FEMALE', false, false),
+      ('7f2c9a2e-bd5b-4a09-a3b8-8c2347c8d632', CURRENT_TIMESTAMP, 'vintage.style@example.com', 'securepass2', '11976543211', '57768821000190', 'Vintage Style', 'ALL', false, false),
+      ('8a3d0b3f-ce6c-4b18-b1d9-9d3456d9e743', CURRENT_TIMESTAMP, 'chic.retro@example.com', 'securepass3', '11976543212', '84577905000119', 'Chic Retrô', 'FEMALE', false, false),
+      ('9b4e1c4f-de7d-4c29-c2e0-0e4567d0f854', CURRENT_TIMESTAMP, 'urban.wear@example.com', 'securepass4', '11976543213', '57556282000125', 'Urban Wear', 'MALE', false, false),
+      ('af5f2d5f-ef8e-4d39-d3f1-1f5678e1f965', CURRENT_TIMESTAMP, 'eco.brecho@example.com', 'securepass5', '11976543214', '12872344000170', 'Eco Brechó', 'ALL', false, false);
 
 INSERT INTO edna.store_image (id, created_at, deleted, url, type, store_id) VALUES
 -- Multiple images
