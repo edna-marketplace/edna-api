@@ -1,23 +1,21 @@
 package com.spring.edna.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.spring.edna.factories.CustomerFactory;
 import com.spring.edna.models.entities.Customer;
 import com.spring.edna.models.repositories.CustomerRepository;
 import com.spring.edna.services.CreateCustomer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.ActiveProfiles;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
-@ActiveProfiles("test")
+@ExtendWith(MockitoExtension.class)
 public class CreateCustomerTest {
 
     @Mock
@@ -33,8 +31,9 @@ public class CreateCustomerTest {
         customer.setId("customer-id");
 
         when(customerRepository.save(customer)).thenReturn(customer);
+
         HttpStatus result = createCustomer.execute(customer);
 
-        assertThat(result).isEqualTo("customer-id");
+        assertThat(result).isEqualTo(HttpStatus.CREATED);
     }
 }

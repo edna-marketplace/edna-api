@@ -7,10 +7,10 @@ import com.spring.edna.models.repositories.CustomerRepository;
 import com.spring.edna.services.UpdateCustomer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
 import java.util.Optional;
@@ -19,8 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
-@ActiveProfiles("test")
+@ExtendWith(MockitoExtension.class)
 public class UpdateCustomerTest {
 
     @Mock
@@ -38,7 +37,6 @@ public class UpdateCustomerTest {
         Customer customerReq = CustomerFactory.create();
         customerReq.setId(customerInDB.getId());
         customerReq.setName("customer-name");
-        customerReq.setCpf("customer-cpf");
 
         when(customerRepository.findById("customer-id")).thenReturn(Optional.of(customerInDB));
         when(customerRepository.save(customerReq)).thenReturn(customerInDB);
@@ -49,15 +47,15 @@ public class UpdateCustomerTest {
     }
 
     @Test
-    @DisplayName("it should not be able to update a customer that doesnt exists")
-    public void testUpdateCustomer$customerDoesntExists(){
+    @DisplayName("it should not be able to update a customer that doesn't exist")
+    public void testUpdateCustomer$customerDoesntExists() {
         Customer customerReq = CustomerFactory.create();
         customerReq.setId("customer-id");
 
         when(customerRepository.findById("customer-id")).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> updateCustomer.execute(customerReq)).isInstanceOf(EdnaException.class)
-                .hasMessageContaining("Customer not found");
+        assertThatThrownBy(() -> updateCustomer.execute(customerReq))
+                .isInstanceOf(EdnaException.class)
+                .hasMessageContaining("Cliente não encontrado.");
     }
-
 }

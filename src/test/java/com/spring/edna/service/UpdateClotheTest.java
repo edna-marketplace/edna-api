@@ -1,8 +1,5 @@
 package com.spring.edna.service;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.when;
-
 import com.spring.edna.exception.EdnaException;
 import com.spring.edna.factories.ClotheFactory;
 import com.spring.edna.factories.StoreFactory;
@@ -10,18 +7,21 @@ import com.spring.edna.models.entities.Clothe;
 import com.spring.edna.models.entities.Store;
 import com.spring.edna.models.repositories.ClotheRepository;
 import com.spring.edna.services.UpdateClothe;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 import java.util.Optional;
 
-@SpringBootTest
-@ActiveProfiles("test")
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
 public class UpdateClotheTest {
 
     @Mock
@@ -30,15 +30,21 @@ public class UpdateClotheTest {
     @InjectMocks
     private UpdateClothe updateClothe;
 
+    private Store store;
+    private Clothe clotheInDB;
+
+    @BeforeEach
+    void setUp() {
+        store = StoreFactory.create();
+        store.setId("store-id");
+
+        clotheInDB = ClotheFactory.create(store);
+        clotheInDB.setId("clothe-id");
+    }
+
     @Test
     @DisplayName("it should be able to update a clothe")
     public void testUpdateClothe$success() throws EdnaException, IOException {
-        Store store = StoreFactory.create();
-        store.setId("store-id");
-
-        Clothe clotheInDB = ClotheFactory.create(store);
-        clotheInDB.setId("clothe-id");
-
         Clothe clotheReq = ClotheFactory.create(store);
         clotheReq.setId(clotheInDB.getId());
         clotheReq.setName("new-clothe-name");
@@ -50,11 +56,8 @@ public class UpdateClotheTest {
     }
 
     @Test
-    @DisplayName("it should not be able to update a clothe that doesnt exist")
+    @DisplayName("it should not be able to update a clothe that doesn't exist")
     public void testUpdateClothe$clotheDoesntExist() {
-        Store store = StoreFactory.create();
-        store.setId("store-id");
-
         Clothe clotheReq = ClotheFactory.create(store);
         clotheReq.setId("clothe-id");
 
@@ -62,28 +65,22 @@ public class UpdateClotheTest {
 
         assertThatThrownBy(() -> updateClothe.execute(clotheReq, "store-id"))
                 .isInstanceOf(EdnaException.class)
-                .hasMessageContaining("Clothe not found");
+                .hasMessageContaining("Peça não encontrada");
     }
 
     @Test
     @DisplayName("it should not be able to update a clothe from another store")
     public void testUpdateClothe$wrongStore() {
-        Store store1 = StoreFactory.create();
-        store1.setId("store-id-1");
+        Store otherStore = StoreFactory.create();
+        otherStore.setId("other-store-id");
 
-        Store store2 = StoreFactory.create();
-        store2.setId("store-id-2");
-
-        Clothe clotheInDB = ClotheFactory.create(store1);
-        clotheInDB.setId("clothe-id");
-
-        Clothe clotheReq = ClotheFactory.create(store2);
+        Clothe clotheReq = ClotheFactory.create(otherStore);
         clotheReq.setId(clotheInDB.getId());
 
         when(clotheRepository.findById("clothe-id")).thenReturn(Optional.of(clotheInDB));
 
-        assertThatThrownBy(() -> updateClothe.execute(clotheReq, "store-id-2"))
+        assertThatThrownBy(() -> updateClothe.execute(clotheReq, "other-store-id"))
                 .isInstanceOf(EdnaException.class)
-                .hasMessageContaining("You can only update clothes from your store.");
+                .hasMessageContaining("Você só pode atualizar as peças da sua loja.");
     }
 }

@@ -11,20 +11,19 @@ import com.spring.edna.services.ToggleFavoriteStore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
-@ActiveProfiles("test")
+@ExtendWith(MockitoExtension.class)
 public class ToggleFavoriteStoreTest {
 
     @Mock
@@ -49,20 +48,22 @@ public class ToggleFavoriteStoreTest {
     }
 
     @Test
-    @DisplayName("it should be able to favorite store")
+    @DisplayName("it should be able to favorite and unfavorite a store")
     public void testToggleFavoriteStore$success() throws EdnaException {
         when(customerRepository.findById("customer-id")).thenReturn(Optional.of(customer));
         when(storeRepository.findById("store-id")).thenReturn(Optional.of(store));
 
-        HttpStatus response = toggleFavoriteStore.execute("customer-id", "store-id");
+        // Primeiro toggle (adiciona)
+        HttpStatus response1 = toggleFavoriteStore.execute("customer-id", "store-id");
 
-        assertThat(response).isEqualTo(HttpStatus.NO_CONTENT);
+        assertThat(response1).isEqualTo(HttpStatus.NO_CONTENT);
         assertThat(customer.getFavoriteStores()).contains(store);
 
-        toggleFavoriteStore.execute("customer-id", "store-id");
+        // Segundo toggle (remove)
+        HttpStatus response2 = toggleFavoriteStore.execute("customer-id", "store-id");
 
-        assertThat(response).isEqualTo(HttpStatus.NO_CONTENT);
-        assertThat(customer.getFavoriteStores()).isEmpty();
+        assertThat(response2).isEqualTo(HttpStatus.NO_CONTENT);
+        assertThat(customer.getFavoriteStores()).doesNotContain(store);
     }
 
     @Test
@@ -72,7 +73,7 @@ public class ToggleFavoriteStoreTest {
 
         assertThatThrownBy(() -> toggleFavoriteStore.execute("customer-id", "store-id"))
                 .isInstanceOf(EdnaException.class)
-                .hasMessageContaining("Customer not found");
+                .hasMessageContaining("Cliente não encontrado");
     }
 
     @Test
@@ -83,6 +84,6 @@ public class ToggleFavoriteStoreTest {
 
         assertThatThrownBy(() -> toggleFavoriteStore.execute("customer-id", "store-id"))
                 .isInstanceOf(EdnaException.class)
-                .hasMessageContaining("Store not found");
+                .hasMessageContaining("Loja não encontrada");
     }
 }
