@@ -24,38 +24,37 @@ public class UpdateUserPassword {
 
 
     public void execute(String oldPassword, String newPassword, String subjectId) throws EdnaException {
+        // tenta com um brecho primeiro
         Store store = storeRepository.findById(subjectId).orElse(null);
 
-        Customer customer = null;
-
-        if (store == null) {
-            customer = customerRepository.findById(subjectId).orElse(null);
-
-            if (customer == null) {
-                throw new EdnaException("Usuário não encontrado.", HttpStatus.BAD_REQUEST);
-            }
+        // se for um brecho, faz o update da senha e da return para cortar a execucao do metodo
+        if (store != null) {
+            updateStorePassword(store, oldPassword, newPassword);
+            return;
         }
 
-        if (store != null) {
-            boolean doesPasswordMathes = passwordEncoder.matches(oldPassword, store.getPassword());
+        // se nao for um brecho, tenta com o cliente
+        Customer customer = customerRepository.findById(subjectId)
+                .orElseThrow(() -> new EdnaException("Usuário não encontrado.", HttpStatus.BAD_REQUEST));
 
-            if (!doesPasswordMathes) {
-                throw new EdnaException("Senha antiga inválida.", HttpStatus.BAD_REQUEST);
-            }
+        updateCustomerPassword(customer, oldPassword, newPassword);
+    }
 
-            store.setPassword(passwordEncoder.encode(newPassword));
+    private void updateStorePassword(Store store, String oldPassword, String newPassword) throws EdnaException {
+        validateCurrentPassword(oldPassword, store.getPassword());
+        store.setPassword(passwordEncoder.encode(newPassword));
+        storeRepository.save(store);
+    }
 
-            storeRepository.save(store);
-        } else {
-            boolean doesPasswordMathes = passwordEncoder.matches(oldPassword, customer.getPassword());
+    private void updateCustomerPassword(Customer customer, String oldPassword, String newPassword) throws EdnaException {
+        validateCurrentPassword(oldPassword, customer.getPassword());
+        customer.setPassword(passwordEncoder.encode(newPassword));
+        customerRepository.save(customer);
+    }
 
-            if (!doesPasswordMathes) {
-                throw new EdnaException("Senha antiga inválida.", HttpStatus.BAD_REQUEST);
-            }
-
-            customer.setPassword(passwordEncoder.encode(newPassword));
-
-            customerRepository.save(customer);
+    private void validateCurrentPassword(String providedPassword, String storedPassword) throws EdnaException {
+        if (!passwordEncoder.matches(providedPassword, storedPassword)) {
+            throw new EdnaException("Senha antiga inválida.", HttpStatus.BAD_REQUEST);
         }
     }
 }
