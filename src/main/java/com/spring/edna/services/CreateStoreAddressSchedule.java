@@ -36,7 +36,7 @@ public class CreateStoreAddressSchedule {
     @Autowired
     private StoreDayScheduleRepository storeDayScheduleRepository;
 
-    public HttpStatus execute(CreateStoreAddressScheduleRequest request) throws EdnaException {
+    public Store execute(CreateStoreAddressScheduleRequest request) throws EdnaException {
 
         verifyDuplicateAddress(request.getAddress());
 
@@ -51,7 +51,7 @@ public class CreateStoreAddressSchedule {
         addressRepository.saveAndFlush(request.getAddress());
 
 
-        return HttpStatus.CREATED;
+        return store;
     }
 
     public void verifyDuplicateAddress(Address address) throws EdnaException {

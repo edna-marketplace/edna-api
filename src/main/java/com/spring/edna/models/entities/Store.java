@@ -15,7 +15,7 @@ import java.util.List;
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Store extends User{
+public class    Store extends User{
 
     @NotBlank(message = "nome da loja é obrigatório.")
     @Column(unique = true)
@@ -51,6 +51,10 @@ public class Store extends User{
     @OneToMany(mappedBy = "store")
     @JsonBackReference(value = "store-images")
     private List<StoreImage> images;
+
+    private String stripeAccountId;
+
+    private boolean stripeOnboardingCompleted = false;
 
     @Override
     public String toString() {
