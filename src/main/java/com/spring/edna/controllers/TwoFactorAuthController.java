@@ -1,7 +1,10 @@
 package com.spring.edna.controllers;
 
 import com.spring.edna.auth.AuthService;
-import lombok.Data;
+import com.spring.edna.exception.EdnaException;
+import com.spring.edna.models.dtos.SignInRequestDTO;
+import com.spring.edna.models.dtos.TwoFactorAuthRequestDTO;
+import com.spring.edna.services.ValidateTwoFactorOTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,14 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
-public class AuthController {
+public class TwoFactorAuthController {
 
-
-    @Data
-    public static class SignInRequest {
-        private String email;
-        private String password;
-    }
+    @Autowired
+    private ValidateTwoFactorOTP validateTwoFactorOTP;
 
     @Autowired
     private AuthService authService;
@@ -29,12 +28,17 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
 
     @PostMapping
-    public String handle(@RequestBody SignInRequest credentials) {
+    public String handle(@RequestBody TwoFactorAuthRequestDTO credentials) throws EdnaException {
+        // valida a otp
+        validateTwoFactorOTP.execute(credentials.getOtp(), credentials.getEmail());
+
+        // instancia uma classe de autenticacao com as credenciais
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 credentials.getEmail(),
                 credentials.getPassword()
         );
 
+        // autentica com base nas credenciais da classe de autenticacao
         Authentication authenticated = authenticationManager.authenticate(authentication);
 
         String token = authService.authenticate(authenticated);
