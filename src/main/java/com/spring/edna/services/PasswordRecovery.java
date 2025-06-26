@@ -55,7 +55,6 @@ public class PasswordRecovery {
         }
 
         sendPasswordEmail(email, newPassword);
-
     }
 
     private String generateRandomPassword() {
