@@ -74,15 +74,17 @@ public class UpdateStoreScheduleTest {
     public void testUpdateStoreSchedule$invalidTime() {
         List<StoreDaySchedule> scheduleReq = StoreScheduleFactory.create(store);
 
-        for (int i = 0; i < scheduleReq.size(); i++) {
-            scheduleReq.get(i).setId(UUID.randomUUID().toString());
+        for (StoreDaySchedule ds : scheduleReq) {
+            ds.setId(UUID.randomUUID().toString());
+            when(storeDayScheduleRepository.findById(ds.getId()))
+                    .thenReturn(Optional.of(ds)); // necessário para ownership
         }
 
+        // Definindo horário inválido no terceiro dia
         scheduleReq.get(2).setOpeningTimeInMinutes(540);
-        scheduleReq.get(2).setClosingTimeInMinutes(540); // mesmo horário, inválido
+        scheduleReq.get(2).setClosingTimeInMinutes(540); // inválido (mesmo horário)
 
-        when(storeDayScheduleRepository.findById(scheduleReq.get(0).getId())).thenReturn(Optional.of(scheduleReq.get(0)));
-        when(storeDayScheduleRepository.findByStoreId(store.getId())).thenReturn(scheduleInDB);
+        // Não precisa mockar findByStoreId pois não chega a esse ponto
 
         assertThatThrownBy(() -> updateStoreSchedule.execute(scheduleReq, store.getId()))
                 .isInstanceOf(EdnaException.class)
