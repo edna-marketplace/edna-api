@@ -21,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -49,27 +50,41 @@ public class FetchFeedClothes {
     private StoreImageUtils storeImageUtils;
 
     public FetchFeedClothesResponse execute(ClotheSelector selector, String subjectId) throws EdnaException {
+        // busca usuario que fez a requisicao
         Customer customer = customerRepository.findById(subjectId).orElse(null);
 
         if (customer == null) {
             throw new EdnaException("Usuário não encontrado.", HttpStatus.BAD_REQUEST);
         }
 
+        // seta filtro de genero da peca com base na preferencia do usuario
         selector.setGender(customer.getStylePreference());
 
+        // limita o retorno a 20 resultados
+        selector.setLimit(20);
+
+        // cria variavel de total count para usar no meta
         long totalCount = clotheRepository.count(selector);
 
+        // cria uma page request trazendo as 20 peças mais recentes
         PageRequest page = PageRequest.of(selector.getPage() - 1, selector.getLimit(), Sort.by(Sort.Direction.DESC, "createdAt"));
+        // faz a query no banco usando a page request e filtros
         List<Clothe> clothes = clotheRepository.findAll(selector, page).toList();
 
+        // converte para o tipo correto de retorno (retornando somente os dados nescessários
         List<FeedClotheDTO> feedClothes = toFeedClotheDTOList(clothes);
 
+        // aleatoriza pecas retornadas pelo banco
+        Collections.shuffle(feedClothes);
+
+        // cria objeto de metadados para facilitar paginacao no front (se nescessario)
         PaginationMetaDTO meta = new PaginationMetaDTO(
                 selector.getPage(),
                 clothes.size(),
                 totalCount
         );
 
+        // retorna objeto com as pecas do feed e meta
         return new FetchFeedClothesResponse(
                 feedClothes,
                 meta
