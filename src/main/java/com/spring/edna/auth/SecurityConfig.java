@@ -45,7 +45,7 @@ public class SecurityConfig {
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(
   auth -> auth
-                                        .requestMatchers("/auth", "/public/**").permitAll()
+                                        .requestMatchers("/auth", "/public/**", "/webhooks/*").permitAll()
                                         .anyRequest().authenticated())
         .httpBasic(Customizer.withDefaults())
         .oauth2ResourceServer(
