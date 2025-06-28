@@ -9,7 +9,10 @@ import com.stripe.param.AccountCreateParams;
 import com.stripe.param.AccountLinkCreateParams;
 import com.stripe.param.PaymentIntentCreateParams;
 import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,6 +26,9 @@ public class StripeService {
         Stripe.apiKey = stripeSecretKey;
     }
 
+    @Autowired
+    private JavaMailSender mailSender;
+
     public String createConnectAccount(String email) throws StripeException {
         AccountCreateParams params = AccountCreateParams.builder()
                 .setType(AccountCreateParams.Type.EXPRESS)
@@ -34,7 +40,10 @@ public class StripeService {
         return account.getId();
     }
 
-    public String createOnboardingLink(String accountId, String refreshUrl, String returnUrl) throws StripeException {
+    public String createOnboardingLink(String email, String accountId) throws StripeException {
+        String refreshUrl = "http://localhost:3000/stripe-refresh";
+        String returnUrl = "http://localhost:3000/stripe-return";
+
         AccountLinkCreateParams params = AccountLinkCreateParams.builder()
                 .setAccount(accountId)
                 .setRefreshUrl(refreshUrl)
@@ -43,6 +52,9 @@ public class StripeService {
                 .build();
 
         AccountLink accountLink = AccountLink.create(params);
+
+        sendOnboardingLinkEmail(email, accountLink.getUrl());
+
         return accountLink.getUrl();
     }
 
@@ -59,5 +71,21 @@ public class StripeService {
                 .build();
 
         return PaymentIntent.create(params);
+    }
+
+    private void sendOnboardingLinkEmail(String email, String link) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("Edna Marketplace - Link para conexão com a Stripe");
+        message.setText("Olá! " +
+                "\nObrigado por se cadastrar em nossa plataforma. Para concluir seu cadastro e começar a utilizar os" +
+                " nossos serviços, é necessário finalizar seu registro na Stripe. " +
+                "\nVocê pode fazer isso acessando o link abaixo:" +
+                "\n\n" + link +
+                "\n\nSe você já completou o processo de conexão com a Stripe, ignore esse email." +
+                "\n\nAtenciosamente," +
+                "\nEquipe Edna Marketplace");
+
+        mailSender.send(message);
     }
 }

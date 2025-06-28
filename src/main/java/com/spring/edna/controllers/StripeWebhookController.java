@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/webhooks")
-public class StripeWebhook {
+public class StripeWebhookController {
 
     @Autowired
     private StoreRepository storeRepository;

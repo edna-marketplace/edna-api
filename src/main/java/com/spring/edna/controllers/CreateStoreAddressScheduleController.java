@@ -47,9 +47,7 @@ public class CreateStoreAddressScheduleController {
 
             storeRepository.save(savedStore);
 
-            String refreshUrl = "http://localhost:3000/signup";
-            String returnUrl = "http://localhost:3000/signin";
-            String onboardingUrl = stripeService.createOnboardingLink(stripeAccountId, refreshUrl, returnUrl);
+            String onboardingUrl = stripeService.createOnboardingLink(request.getStore().getEmail(), stripeAccountId);
 
             return ResponseEntity.ok(Map.of(
                     "storeId", savedStore.getId(),
