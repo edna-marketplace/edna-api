@@ -62,7 +62,7 @@ public class StripeService {
         PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
                 .setAmount(amount) // valor em centavos
                 .setCurrency(currency)
-                .setApplicationFeeAmount(amount * 10 / 100) // 10% de taxa
+                .setApplicationFeeAmount(amount * 14 / 100) // 14% de taxa
                 .setTransferData(
                         PaymentIntentCreateParams.TransferData.builder()
                                 .setDestination(connectedAccountId)

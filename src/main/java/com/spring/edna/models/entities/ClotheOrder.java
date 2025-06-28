@@ -37,5 +37,7 @@ public class ClotheOrder {
 
     private Integer rating;
 
+    private String paymentIntentId;
+
     private boolean isFirstOrder;
 }
