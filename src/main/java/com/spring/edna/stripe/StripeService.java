@@ -43,8 +43,8 @@ public class StripeService {
     }
 
     public String createOnboardingLink(String email, String accountId) throws StripeException {
-        String refreshUrl = "http://localhost:3000/stripe-refresh";
-        String returnUrl = "http://localhost:3000/stripe-return";
+        String refreshUrl = "http://localhost:3000/signup/stripe-refresh";
+        String returnUrl = "http://localhost:3000/signup/stripe-return";
 
         AccountLinkCreateParams params = AccountLinkCreateParams.builder()
                 .setAccount(accountId)
