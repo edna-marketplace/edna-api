@@ -36,6 +36,10 @@ public class CreateStoreAddressScheduleController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> handle(@Valid @RequestBody CreateStoreAddressScheduleRequest request) throws EdnaException, StripeException {
         try {
+            if(request.getStore().getPassword().length() < 6 || request.getStore().getPassword().length() > 15) {
+                throw new EdnaException("A senha deve ter no mínimo 6 e no máximo 15 caracteres", HttpStatus.BAD_REQUEST);
+            }
+
             String hashedPassword = passwordEncoder.encode(request.getStore().getPassword());
 
             request.getStore().setPassword(hashedPassword);

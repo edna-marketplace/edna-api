@@ -2,6 +2,7 @@ package com.spring.edna.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.spring.edna.exception.EdnaException;
 import com.spring.edna.factories.CustomerFactory;
 import com.spring.edna.models.entities.Customer;
 import com.spring.edna.models.repositories.CustomerRepository;
@@ -28,7 +29,7 @@ public class CreateCustomerTest {
 
     @Test
     @DisplayName("it should be able to create a customer")
-    public void testCreateCustomer$success() {
+    public void testCreateCustomer$success() throws EdnaException {
         Customer customer = CustomerFactory.create();
         customer.setId("customer-id");
 
