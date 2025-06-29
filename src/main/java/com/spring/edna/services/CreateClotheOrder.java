@@ -25,7 +25,7 @@ public class CreateClotheOrder {
     @Autowired
     private ClotheOrderRepository clotheOrderRepository;
 
-    public HttpStatus execute(String clotheId, String customerId) throws EdnaException {
+    public HttpStatus execute(String clotheId, String paymentIntentId, String customerId) throws EdnaException {
         ClotheOrder clotheOrderInDB = clotheOrderRepository.findByClotheId(clotheId).orElse(null);
 
         if(clotheOrderInDB != null) {
@@ -43,6 +43,7 @@ public class CreateClotheOrder {
         clotheOrder.setCustomer(customer);
         clotheOrder.setClothe(clothe);
         clotheOrder.setStore(clothe.getStore());
+        clotheOrder.setPaymentIntentId(paymentIntentId);
 
         boolean alreadyOrdered = clotheOrderRepository.existsByCustomerIdAndStoreId(clotheOrder.getCustomer().getId(),
                 clotheOrder.getStore().getId());

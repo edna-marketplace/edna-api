@@ -17,6 +17,8 @@ import java.util.Optional;
 @Repository
 public interface ClotheOrderRepository extends JpaRepository<ClotheOrder, String>, JpaSpecificationExecutor<ClotheOrder> {
 
+    Optional<ClotheOrder> findByPaymentIntentId(String paymentIntentId);
+
     Optional<ClotheOrder> findByClotheId(String clotheId);
 
     long countByStoreIdAndStatusAndCreatedAtBetween(String storeId, OrderStatus status, LocalDateTime start, LocalDateTime end);

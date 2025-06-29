@@ -32,6 +32,10 @@ public class CreateClothe {
             throw new EdnaException("O máximo de imagens por peça é 5.", HttpStatus.BAD_REQUEST);
         }
 
+        if (clothe.getPriceInCents() < 1000) {
+            throw new EdnaException("O valor mínimo da peça é R$ 10,00", HttpStatus.BAD_REQUEST);
+        }
+
         Store store = new Store();
         store.setId(subjectId);
 

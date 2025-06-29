@@ -16,4 +16,5 @@ public class CustomerOrderDTO {
     private OrderStatus orderStatus;
     private Integer rating;
     private AddressDetailsDTO storeAddress;
+    private String paymentIntentId;
 }

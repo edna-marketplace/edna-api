@@ -16,10 +16,11 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(path = "/orders")
-public class CreatePaymentIntent {
+public class CreatePaymentIntentController {
 
     @Autowired
     ClotheRepository clotheRepository;
+
     @Autowired
     private StripeService stripeService;
 
@@ -48,7 +49,7 @@ public class CreatePaymentIntent {
                 "amount", clothe.getPriceInCents().longValue()
         ));
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Erro ao gerar o pagamento do cliente.");
+            throw new EdnaException(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }
