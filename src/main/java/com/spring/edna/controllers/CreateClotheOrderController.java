@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CreateClotheOrderController {
 
     @Data
-    private class CreateClotheOrderRequest {
+    public static class CreateClotheOrderRequest {
         private String clotheId;
         private String paymentIntentId;
     }

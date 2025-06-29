@@ -5,9 +5,11 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.Account;
 import com.stripe.model.AccountLink;
 import com.stripe.model.PaymentIntent;
+import com.stripe.model.Refund;
 import com.stripe.param.AccountCreateParams;
 import com.stripe.param.AccountLinkCreateParams;
 import com.stripe.param.PaymentIntentCreateParams;
+import com.stripe.param.RefundCreateParams;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -71,6 +73,16 @@ public class StripeService {
                 .build();
 
         return PaymentIntent.create(params);
+    }
+
+    public Refund createFullRefund(String paymentIntentId) throws StripeException {
+        RefundCreateParams params = RefundCreateParams.builder()
+                .setPaymentIntent(paymentIntentId)
+                .setReverseTransfer(true)
+                .setRefundApplicationFee(true)
+                .build();
+
+        return Refund.create(params);
     }
 
     private void sendOnboardingLinkEmail(String email, String link) {

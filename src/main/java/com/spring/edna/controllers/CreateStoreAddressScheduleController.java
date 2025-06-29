@@ -55,7 +55,7 @@ public class CreateStoreAddressScheduleController {
             ));
 
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error creating store");
+            throw new EdnaException(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }
