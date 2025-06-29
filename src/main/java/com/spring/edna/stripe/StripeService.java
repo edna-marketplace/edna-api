@@ -88,13 +88,13 @@ public class StripeService {
     private void sendOnboardingLinkEmail(String email, String link) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
-        message.setSubject("Edna Marketplace - Link para conexão com a Stripe");
+        message.setSubject("Edna Marketplace - Link para conexão com o Stripe");
         message.setText("Olá! " +
                 "\nObrigado por se cadastrar em nossa plataforma. Para concluir seu cadastro e começar a utilizar os" +
-                " nossos serviços, é necessário finalizar seu registro na Stripe. " +
+                " nossos serviços, é necessário finalizar seu registro no Stripe. " +
                 "\nVocê pode fazer isso acessando o link abaixo:" +
                 "\n\n" + link +
-                "\n\nSe você já completou o processo de conexão com a Stripe, ignore esse email." +
+                "\n\nSe você já completou o processo de conexão com o Stripe, ignore esse email." +
                 "\n\nAtenciosamente," +
                 "\nEquipe Edna Marketplace");
 
