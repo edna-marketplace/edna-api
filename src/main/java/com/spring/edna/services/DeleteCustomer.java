@@ -14,7 +14,8 @@ public class DeleteCustomer {
     private CustomerRepository customerRepository;
 
     public HttpStatus execute(String customerId) throws EdnaException {
-        Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new EdnaException("Customer not found", HttpStatus.BAD_REQUEST));
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new EdnaException("Cliente não encontrado.", HttpStatus.BAD_REQUEST));
 
         customer.setDeleted(true);
 

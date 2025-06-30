@@ -9,10 +9,10 @@ import com.spring.edna.services.GetCustomerById.CustomerDetailsResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
@@ -20,8 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
-@ActiveProfiles("test")
+@ExtendWith(MockitoExtension.class)
 public class GetCustomerByIdTest {
 
     @Mock
@@ -30,7 +29,7 @@ public class GetCustomerByIdTest {
     @InjectMocks
     private GetCustomerById getCustomerById;
 
-    Customer customer;
+    private Customer customer;
 
     @BeforeEach
     void setUp() {
@@ -52,21 +51,23 @@ public class GetCustomerByIdTest {
     }
 
     @Test
-    @DisplayName("it should not be able to get a customer that does not exists")
-    public void testGetCustomerById$customerDoesntExists(){
+    @DisplayName("it should not be able to get a customer that does not exist")
+    public void testGetCustomerById$customerDoesNotExist() {
         when(customerRepository.findById("customer-id")).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> getCustomerById.execute("customer-id")).isInstanceOf(EdnaException.class)
-                .hasMessageContaining("Customer not found");
+        assertThatThrownBy(() -> getCustomerById.execute("customer-id"))
+                .isInstanceOf(EdnaException.class)
+                .hasMessageContaining("Cliente não encontrado");
     }
 
     @Test
     @DisplayName("it should not be able to get a deleted customer")
-    public void testGetCustomerById$customerDeleted(){
+    public void testGetCustomerById$customerDeleted() {
         customer.setDeleted(true);
         when(customerRepository.findById("customer-id")).thenReturn(Optional.of(customer));
 
-        assertThatThrownBy(() -> getCustomerById.execute("customer-id")).isInstanceOf(EdnaException.class)
-                .hasMessageContaining("This customer was deleted");
+        assertThatThrownBy(() -> getCustomerById.execute("customer-id"))
+                .isInstanceOf(EdnaException.class)
+                .hasMessageContaining("Cliente já foi excluído");
     }
 }

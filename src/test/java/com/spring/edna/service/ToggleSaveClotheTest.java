@@ -14,11 +14,11 @@ import com.spring.edna.services.ToggleSaveClothe;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -26,8 +26,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
-@ActiveProfiles("test")
+@ExtendWith(MockitoExtension.class)
 class ToggleSaveClotheTest {
 
     @Mock
@@ -71,7 +70,7 @@ class ToggleSaveClotheTest {
         HttpStatus result = toggleSaveClotheService.execute("clothe-id", "user-id");
 
         assertEquals(HttpStatus.NO_CONTENT, result);
-        verify(savedClotheRepository, never()).delete(savedClothe);
+        verify(savedClotheRepository, never()).delete(any());
         verify(savedClotheRepository, times(1)).save(any(SavedClothe.class));
     }
 

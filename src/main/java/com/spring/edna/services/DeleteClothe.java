@@ -23,7 +23,7 @@ public class DeleteClothe {
     private DeleteImageFromR2 deleteImageFromR2;
 
     public HttpStatus execute(String clotheId, String storeId) throws EdnaException {
-        Clothe clothe = clotheRepository.findById(clotheId).orElseThrow(() -> new EdnaException("Clothe not found", HttpStatus.BAD_REQUEST));
+        Clothe clothe = clotheRepository.findById(clotheId).orElseThrow(() -> new EdnaException("Peça não encontrada.", HttpStatus.BAD_REQUEST));
 
         if (!clothe.getStore().getId().equals(storeId)) {
             throw new EdnaException("Você só pode deletar peças da sua loja.", HttpStatus.BAD_REQUEST);

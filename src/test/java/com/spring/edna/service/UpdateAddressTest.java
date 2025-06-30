@@ -10,11 +10,11 @@ import com.spring.edna.services.UpdateAddress;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
 
@@ -22,8 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
-@ActiveProfiles("test")
+@ExtendWith(MockitoExtension.class)
 public class UpdateAddressTest {
 
     @Mock
@@ -32,14 +31,14 @@ public class UpdateAddressTest {
     @InjectMocks
     private UpdateAddress updateAddress;
 
-    Store store;
-    Address addressInDB;
+    private Store store;
+    private Address addressInDB;
 
-    /*
     @BeforeEach
     void setUp() {
         store = StoreFactory.create();
         store.setId("store-id");
+
         addressInDB = AddressFactory.create(store);
         addressInDB.setId("address-id");
     }
@@ -49,33 +48,68 @@ public class UpdateAddressTest {
     public void testUpdateAddress$success() throws EdnaException {
         Address addressReq = AddressFactory.create(store);
         addressReq.setId(addressInDB.getId());
-        addressReq.setStreet("Street A");
-        addressReq.setCity("City B");
+        addressReq.setStreet("Rua Nova");
+        addressReq.setCity("Cidade Nova");
 
-        when(addressRepository.findByCepAndNumber(addressReq.getCep(), addressReq.getNumber())).thenReturn(
-                Optional.of(addressInDB)
-        );
-        when(addressRepository.findById(addressReq.getId())).thenReturn(Optional.of(addressInDB));
-        when(addressRepository.save(addressReq)).thenReturn(addressReq);
+        // Moca a existência do mesmo endereço no banco com o mesmo ID (atualizando)
+        when(addressRepository.findByCepAndNumber(addressReq.getCep(), addressReq.getNumber()))
+                .thenReturn(Optional.of(addressInDB));
+        when(addressRepository.findById(addressReq.getId()))
+                .thenReturn(Optional.of(addressInDB));
+
         HttpStatus result = updateAddress.execute(addressReq, store.getId());
 
         assertThat(result).isEqualTo(HttpStatus.NO_CONTENT);
     }
 
     @Test
-    @DisplayName("it should not be able to update with same cep and number")
-    public void testUpdateAddress$cpfAndNumberAlreadyExists() throws EdnaException {
+    @DisplayName("it should not be able to update if storeId is different")
+    public void testUpdateAddress$invalidStore() {
         Address addressReq = AddressFactory.create(store);
-        addressReq.setId("new-address-id");
+        addressReq.setId(addressInDB.getId());
 
-        when(addressRepository.findByCepAndNumber(addressReq.getCep(), addressReq.getNumber())).thenReturn(
-                Optional.of(addressInDB)
-        );
+        Store otherStore = StoreFactory.create();
+        otherStore.setId("other-store-id");
 
-        System.out.println(addressReq.getId());
-        System.out.println(addressInDB.getId());
+        addressInDB.setStore(otherStore);
 
-        assertThatThrownBy(() -> updateAddress.execute(addressReq, store.getId())).isInstanceOf(EdnaException.class)
-                .hasMessageContaining("Address already exists");
-    }*/
+        when(addressRepository.findById(addressReq.getId()))
+                .thenReturn(Optional.of(addressInDB));
+
+        assertThatThrownBy(() -> updateAddress.execute(addressReq, store.getId()))
+                .isInstanceOf(EdnaException.class)
+                .hasMessageContaining("Você só pode atualizar o endereço da sua loja.");
+    }
+
+    @Test
+    @DisplayName("it should not be able to update if address with same cep and number exists")
+    public void testUpdateAddress$duplicateAddress() {
+        Address addressReq = AddressFactory.create(store);
+        addressReq.setId("new-id"); // diferente do existente
+
+        when(addressRepository.findByCepAndNumber(addressReq.getCep(), addressReq.getNumber()))
+                .thenReturn(Optional.of(addressInDB));
+        when(addressRepository.findById(addressReq.getId()))
+                .thenReturn(Optional.of(addressReq));
+
+        addressReq.setStore(store); // importante para evitar NPE em comparação de ID
+
+        assertThatThrownBy(() -> updateAddress.execute(addressReq, store.getId()))
+                .isInstanceOf(EdnaException.class)
+                .hasMessageContaining("Endereço já existente");
+    }
+
+    @Test
+    @DisplayName("it should throw error if address does not exist in DB")
+    public void testUpdateAddress$notFound() {
+        Address addressReq = AddressFactory.create(store);
+        addressReq.setId("invalid-id");
+
+        when(addressRepository.findById("invalid-id"))
+                .thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> updateAddress.execute(addressReq, store.getId()))
+                .isInstanceOf(EdnaException.class)
+                .hasMessageContaining("Endereço não encontrado");
+    }
 }
