@@ -4,10 +4,12 @@ import com.spring.edna.exception.EdnaException;
 import com.spring.edna.models.dtos.SignInRequestDTO;
 import com.spring.edna.services.SendTwoFactorOTP;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,12 +27,16 @@ public class SendTwoFactorOTPController {
 
     @PostMapping
     public ResponseEntity<?> handle(@RequestBody SignInRequestDTO credentials) throws EdnaException {
-        Authentication authentication = new UsernamePasswordAuthenticationToken(credentials.getEmail(), credentials.getPassword());
+        try {
+            Authentication authentication = new UsernamePasswordAuthenticationToken(credentials.getEmail(), credentials.getPassword());
 
-        authenticationManager.authenticate(authentication);
+            authenticationManager.authenticate(authentication);
 
-        sendTwoFactorOTP.execute(credentials.getEmail());
+            sendTwoFactorOTP.execute(credentials.getEmail());
 
-        return ResponseEntity.ok().build();
+            return ResponseEntity.ok().build();
+        }  catch (AuthenticationException e) {
+            throw new EdnaException("E-mail ou senha inválidos", HttpStatus.UNAUTHORIZED);
+        }
     }
 }
