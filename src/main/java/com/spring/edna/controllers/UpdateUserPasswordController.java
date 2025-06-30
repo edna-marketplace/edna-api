@@ -4,13 +4,13 @@ import com.spring.edna.auth.AuthService;
 import com.spring.edna.exception.EdnaException;
 import com.spring.edna.models.dtos.UpdatePasswordRequestDTO;
 import com.spring.edna.models.entities.User;
-import com.spring.edna.services.PasswordRecovery;
 import com.spring.edna.services.UpdateUserPassword;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/users")
@@ -21,7 +21,6 @@ public class UpdateUserPasswordController {
 
     @Autowired
     private AuthService authService;
-
 
     @PatchMapping("/update-password")
     public ResponseEntity<Void> handle(@RequestBody UpdatePasswordRequestDTO request) throws EdnaException {

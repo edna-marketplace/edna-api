@@ -21,6 +21,8 @@ public class VerifyDuplicateStoreController {
 
     @PostMapping
     public ResponseEntity<VerifyDuplicateStoreResponse> handle(@Valid @RequestBody Store store) {
+        System.out.println(store);
+
         VerifyDuplicateStoreResponse response = verifyDuplicateStore.execute(store);
 
         if (response.getStatus() == HttpStatus.CONFLICT) {

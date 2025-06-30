@@ -36,6 +36,10 @@ public class CreateStoreAddressScheduleController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> handle(@Valid @RequestBody CreateStoreAddressScheduleRequest request) throws EdnaException, StripeException {
         try {
+            if(request.getStore().getPassword().length() < 6 || request.getStore().getPassword().length() > 15) {
+                throw new EdnaException("A senha deve ter no mínimo 6 e no máximo 15 caracteres", HttpStatus.BAD_REQUEST);
+            }
+
             String hashedPassword = passwordEncoder.encode(request.getStore().getPassword());
 
             request.getStore().setPassword(hashedPassword);
@@ -47,9 +51,7 @@ public class CreateStoreAddressScheduleController {
 
             storeRepository.save(savedStore);
 
-            String refreshUrl = "http://localhost:3000/signup";
-            String returnUrl = "http://localhost:3000/signin";
-            String onboardingUrl = stripeService.createOnboardingLink(stripeAccountId, refreshUrl, returnUrl);
+            String onboardingUrl = stripeService.createOnboardingLink(request.getStore().getEmail(), stripeAccountId);
 
             return ResponseEntity.ok(Map.of(
                     "storeId", savedStore.getId(),
@@ -57,7 +59,7 @@ public class CreateStoreAddressScheduleController {
             ));
 
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error creating store");
+            throw new EdnaException(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

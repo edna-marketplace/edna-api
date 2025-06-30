@@ -40,7 +40,8 @@ public class GetCustomerOrderById {
                 order.getClothe().getPriceInCents(),
                 order.getStatus(),
                 order.getRating(),
-                null
+                null,
+                order.getPaymentIntentId()
         );
     }
 }

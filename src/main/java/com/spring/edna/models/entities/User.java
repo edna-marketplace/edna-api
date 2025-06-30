@@ -3,6 +3,7 @@ package com.spring.edna.models.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UuidGenerator;
@@ -22,12 +23,12 @@ public abstract class User implements UserDetails {
     @UuidGenerator
     private String id;
 
-    @NotBlank(message = "Email is required.")
-    @Email(message = "Email must be valid.")
+    @NotBlank(message = "e-mail é obrigatório.")
+    @Email(message = "e-mail deve ser válido.")
     @Column(unique = true)
     private String email;
 
-    @NotBlank(message = "Phone is required.")
+    @NotBlank(message = "telefone é obrigatório.")
     @Column(unique = true)
     private String phone;
 

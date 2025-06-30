@@ -30,7 +30,6 @@ public class GetDistanceBetweenCustomerAndStore {
 
         String cachedDistance = findCachedDistance(customerCoordinates, storeKey);
         if (cachedDistance != null) {
-            System.out.println("RETORNOU CACHE: " + cachedDistance);
             return cachedDistance;
         }
 

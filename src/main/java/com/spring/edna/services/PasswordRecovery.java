@@ -55,7 +55,6 @@ public class PasswordRecovery {
         }
 
         sendPasswordEmail(email, newPassword);
-
     }
 
     private String generateRandomPassword() {
@@ -75,9 +74,9 @@ public class PasswordRecovery {
         message.setTo(email);
         message.setSubject("Edna Marketplace - Recuperação de Senha");
         message.setText("Olá, " +
-                "\nRecebemos sua solicitação para recuperação de senha. Geramos uma senha provisória " +
-                "para que você possa acessar a plataforma, lembre-se de alterar a senha assim que realizar o login novamente." +
-                "\n\nSenha provisória: " + newPassword +
+                "\nRecebemos sua solicitação para recuperação de senha. Geramos uma nova senha " +
+                "para que você possa acessar a plataforma. Sua nova senha é:" +
+                "\n\n" + newPassword +
                 "\n\nAtenciosamente," +
                 "\nEquipe Edna Marketplace");
 

@@ -42,6 +42,12 @@ public class Clothe {
     @Nullable
     private String sizeOther;
 
+    @Nullable
+    private Integer height;
+
+    @Nullable
+    private Integer width;
+
     @NotNull(message = "É obrigatório.")
     private Integer priceInCents;
 
