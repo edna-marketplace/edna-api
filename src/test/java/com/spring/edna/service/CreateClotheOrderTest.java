@@ -70,7 +70,7 @@ public class CreateClotheOrderTest {
         when(clotheRepository.findById("clothe-id")).thenReturn(Optional.of(clothe));
         when(customerRepository.findById("customer-id")).thenReturn(Optional.of(customer));
 
-        HttpStatus result = createClotheOrder.execute("clothe-id", "customer-id");
+        HttpStatus result = createClotheOrder.execute("clothe-id", "payment-intent-id", "customer-id");
 
         assertEquals(HttpStatus.CREATED, result);
         verify(clotheOrderRepository, times(1)).save(any(ClotheOrder.class));
@@ -81,7 +81,7 @@ public class CreateClotheOrderTest {
     public void testCreateCustomerOrder$clotheAlreadyOrdered() {
         when(clotheOrderRepository.findByClotheId("clothe-id")).thenReturn(Optional.of(clotheOrder));
 
-        assertThatThrownBy(() -> createClotheOrder.execute("clothe-id", "customer-id"))
+        assertThatThrownBy(() -> createClotheOrder.execute("clothe-id", "payment-intent-id", "customer-id"))
                 .isInstanceOf(EdnaException.class)
                 .hasMessageContaining("Essa peça já está em um pedidos.");
     }
@@ -92,7 +92,7 @@ public class CreateClotheOrderTest {
         when(clotheOrderRepository.findByClotheId("clothe-id")).thenReturn(Optional.empty());
         when(clotheRepository.findById("clothe-id")).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> createClotheOrder.execute("clothe-id", "customer-id"))
+        assertThatThrownBy(() -> createClotheOrder.execute("clothe-id", "payment-intent-id", "customer-id"))
                 .isInstanceOf(EdnaException.class)
                 .hasMessageContaining("Peça não encontrada.");
     }
@@ -104,7 +104,7 @@ public class CreateClotheOrderTest {
         when(clotheRepository.findById("clothe-id")).thenReturn(Optional.of(clothe));
         when(customerRepository.findById("customer-id")).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> createClotheOrder.execute("clothe-id", "customer-id"))
+        assertThatThrownBy(() -> createClotheOrder.execute("clothe-id", "payment-intent-id", "customer-id"))
                 .isInstanceOf(EdnaException.class)
                 .hasMessageContaining("Cliente não encontrado.");
     }
