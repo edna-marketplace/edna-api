@@ -19,9 +19,9 @@ public class GetDistanceBetweenCustomerAndStore {
 
     private final Map<String, CachedDistance> distanceCache = new ConcurrentHashMap<>();
 
-    private static final long CACHE_EXPIRATION_MS = 60 * 60 * 1000; // 1 hour
+    private static final long CACHE_EXPIRATION_MS = 60 * 60 * 1000; // 1 hora
 
-    private static final long BUFFER_TIME_MS = 5 * 60 * 1000; // 5 minutes
+    private static final long BUFFER_TIME_MS = 5 * 60 * 1000; // 5 minutos
 
     private static final double COORDINATE_THRESHOLD_METERS = 500.0;
 
@@ -116,10 +116,10 @@ public class GetDistanceBetweenCustomerAndStore {
     }
 
     /**
-     * Calculates the distance in meters between two coordinates using the Haversine formula
+     * calcula a distancia em metros entre duas coordenadas usando a formula de Haversine
      */
     private double calculateDistanceInMeters(double lat1, double lon1, double lat2, double lon2) {
-        final int EARTH_RADIUS_KM = 6371; // Earth's radius in kilometers
+        final int EARTH_RADIUS_KM = 6371; // raio da Terra em km
 
         double latDistance = Math.toRadians(lat2 - lat1);
         double lonDistance = Math.toRadians(lon2 - lon1);
@@ -130,7 +130,7 @@ public class GetDistanceBetweenCustomerAndStore {
 
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-        return EARTH_RADIUS_KM * c * 1000; // Convert to meters
+        return EARTH_RADIUS_KM * c * 1000; // converte para metros
     }
 
     @Data

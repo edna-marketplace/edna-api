@@ -35,6 +35,7 @@ public class GetStoreById {
         private String bannerImageUrl;
         private String profileImageUrl;
         private String name;
+        private String email;
         private String phone;
         private TargetCustomer targetCustomer;
         private String distanceInKilometers;
@@ -102,6 +103,7 @@ public class GetStoreById {
                 bannerImageUrl,
                 profileImageUrl,
                 store.getName(),
+                store.getEmail(),
                 store.getPhone(),
                 store.getTargetCustomer(),
                 distanceInKilometers,

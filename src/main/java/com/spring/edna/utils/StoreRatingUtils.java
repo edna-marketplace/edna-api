@@ -21,6 +21,10 @@ public class StoreRatingUtils {
             }
         }
 
+        if (ratings.isEmpty()) {
+            return null;
+        }
+
         Double storeRatingAcc = 0.0;
 
         for(Integer orderRating : ratings) {

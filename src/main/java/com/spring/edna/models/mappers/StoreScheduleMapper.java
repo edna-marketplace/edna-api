@@ -23,6 +23,12 @@ public class StoreScheduleMapper {
             storeDayScheduleDTOList.add(dto);
         }
 
+        storeDayScheduleDTOList.sort((a, b) -> {
+            int dayA = a.getDayOfWeek() % 7;
+            int dayB = b.getDayOfWeek() % 7;
+            return Integer.compare(dayA, dayB);
+        });
+
         return storeDayScheduleDTOList;
     }
 }
