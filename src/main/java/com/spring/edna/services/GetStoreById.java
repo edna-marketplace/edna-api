@@ -71,9 +71,9 @@ public class GetStoreById {
 
         Customer customer = customerRepository.findById(customerId).orElse(null);
 
-        String distanceInKilometers = customerCoordinates != null
-                ? getDistanceBetweenCustomerAndStore.execute(customerCoordinates, store.getAddress())
-                : null;
+//        String distanceInKilometers = customerCoordinates != null
+//                ? getDistanceBetweenCustomerAndStore.execute(customerCoordinates, store.getAddress())
+//                : null;
 
         Double avgRating = StoreRatingUtils.calculateAverageRating(store.getClotheOrders());
 
@@ -82,7 +82,8 @@ public class GetStoreById {
 
         return toGetStoreByIdResponse(
                 store,
-                distanceInKilometers,
+//                distanceInKilometers,
+                null,
                 avgRating,
                 customer != null ? customer.getFavoriteStores() : new ArrayList<>(),
                 imagesUrls.getBannerImageUrl(),

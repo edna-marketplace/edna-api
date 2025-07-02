@@ -41,6 +41,7 @@ public class ClotheSelector extends BaseSelector implements Specification<Clothe
         List<Predicate> predicates = new ArrayList<>();
 
         predicates.add(cb.equal(root.get("ordered"), false));
+        predicates.add(cb.equal(root.get("store").get("deleted"), false));
 
         if (this.getName() != null && !this.getName().trim().isEmpty()) {
             predicates.add(cb.like(cb.lower(root.get("name")), "%" + this.getName().toLowerCase() + "%"));

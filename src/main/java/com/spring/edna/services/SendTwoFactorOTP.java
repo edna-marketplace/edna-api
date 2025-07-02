@@ -37,6 +37,10 @@ public class SendTwoFactorOTP {
 
         // se for um brecho, gera a OTP, salva no banco e manda por email
         if (store != null) {
+            if (store.isDeleted()) {
+                throw new EdnaException("Essa conta foi desativada.", HttpStatus.BAD_REQUEST);
+            }
+
             handleStoreOTP(store);
 
             return;
@@ -45,6 +49,10 @@ public class SendTwoFactorOTP {
         // se nao for um brecho, tenta o mesmo com o cliente
         Customer customer = customerRepository.findByEmail(email)
                 .orElseThrow(() -> new EdnaException("Usuário não encontrado.", HttpStatus.BAD_REQUEST));
+
+        if (customer.isDeleted()) {
+            throw new EdnaException("Essa conta foi desativada.", HttpStatus.BAD_REQUEST);
+        }
 
         handleCustomerOTP(customer);
     }

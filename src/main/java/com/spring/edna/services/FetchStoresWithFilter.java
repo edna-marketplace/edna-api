@@ -74,9 +74,9 @@ public class FetchStoresWithFilter {
         List<StoreSummaryDTO> storesSummaries = new ArrayList<>();
 
         for (Store store : stores) {
-            String distanceInKilometers = customerCoordinates != null
-                    ? getDistanceBetweenCustomerAndStore.execute(customerCoordinates, store.getAddress())
-                    : null;
+//            String distanceInKilometers = customerCoordinates != null
+//                    ? getDistanceBetweenCustomerAndStore.execute(customerCoordinates, store.getAddress())
+//                    : null;
 
             boolean isFavorite = customer.getFavoriteStores().contains(store);
             List<ClotheOrder> completedOrders = store.getClotheOrders()
@@ -90,7 +90,7 @@ public class FetchStoresWithFilter {
                     store.getName(),
                     StoreRatingUtils.calculateAverageRating(completedOrders),
                     store.getTargetCustomer(),
-                    distanceInKilometers,
+                    null,
                     isFavorite
             );
 
