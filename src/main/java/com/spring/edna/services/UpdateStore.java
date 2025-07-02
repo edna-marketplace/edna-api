@@ -19,6 +19,9 @@ public class UpdateStore {
         );
 
         store.setCnpj(storeInDatabase.getCnpj());
+        store.setEmail(storeInDatabase.getEmail());
+        store.setStripeAccountId(storeInDatabase.getStripeAccountId());
+        store.setStripeOnboardingCompleted(storeInDatabase.isStripeOnboardingCompleted());
         store.setPassword(storeInDatabase.getPassword());
         store.setCreatedAt(storeInDatabase.getCreatedAt());
 

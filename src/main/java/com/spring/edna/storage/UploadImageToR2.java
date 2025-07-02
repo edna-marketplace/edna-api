@@ -28,6 +28,7 @@ public class UploadImageToR2 {
 
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(file.getContentType());
+        metadata.setContentLength(file.getSize());
 
         String uniqueImageUrl = UUID.randomUUID() + "-" + file.getOriginalFilename();
 

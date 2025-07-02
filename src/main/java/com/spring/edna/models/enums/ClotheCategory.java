@@ -15,4 +15,5 @@ public enum ClotheCategory {
     ACCESSORIES,
     SLEEPWEAR,
     SWIMWEAR,
+    OTHER
 }

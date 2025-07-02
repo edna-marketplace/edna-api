@@ -21,6 +21,7 @@ public class ClotheSelector extends BaseSelector implements Specification<Clothe
 
     private String name;
     private ClotheCategory category;
+    private String categoryOther;
     private ClotheBrand brand;
     private ClotheSize size;
     private String fabric;
@@ -46,6 +47,9 @@ public class ClotheSelector extends BaseSelector implements Specification<Clothe
         }
         if (this.getCategory() != null && this.getCategory() != ClotheCategory.ALL) {
             predicates.add(cb.like(root.get("category"), "%" + this.getCategory() + "%"));
+        }
+        if (this.getCategory() == ClotheCategory.OTHER && this.getCategoryOther() != null && !this.getCategoryOther().trim().isEmpty()) {
+            predicates.add(cb.like(cb.lower(root.get("categoryOther")), "%" + this.getCategoryOther().toLowerCase() + "%"));
         }
         if (this.getBrand() != null && this.getBrand() != ClotheBrand.ALL) {
             predicates.add(cb.like(root.get("brand"), "%" + this.getBrand() + "%"));

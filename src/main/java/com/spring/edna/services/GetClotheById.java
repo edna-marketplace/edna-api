@@ -33,6 +33,8 @@ public class GetClotheById {
         private String name;
         private Integer priceInCents;
         private String description;
+        private Integer height;
+        private Integer width;
         private ClotheSize size;
         private String sizeOther;
         private ClotheGender gender;
@@ -41,7 +43,8 @@ public class GetClotheById {
         private ClotheBrand brand;
         private String brandOther;
         private ClotheCategory category;
-        private boolean isSaved;
+        private String categoryOther;
+        private Boolean isSaved;
         private String storeId;
         private String storeName;
         private String storeProfileImageUrl;
@@ -88,6 +91,8 @@ public class GetClotheById {
                 clothe.getName(),
                 clothe.getPriceInCents(),
                 clothe.getDescription(),
+                clothe.getHeight(),
+                clothe.getWidth(),
                 clothe.getSize(),
                 clothe.getSizeOther(),
                 clothe.getGender(),
@@ -96,6 +101,7 @@ public class GetClotheById {
                 clothe.getBrand(),
                 clothe.getBrandOther(),
                 clothe.getCategory(),
+                clothe.getCategoryOther(),
                 isSubjectStore ? null : isClotheSaved(subjectId, clothe.getId()),
                 isSubjectStore ? null : clothe.getStore().getId(),
                 isSubjectStore ? null : clothe.getStore().getName(),

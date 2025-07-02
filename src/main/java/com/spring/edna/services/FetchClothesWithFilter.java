@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -62,7 +63,7 @@ public class FetchClothesWithFilter {
 
         long totalCount = clotheRepository.count(selector);
 
-        PageRequest page = PageRequest.of(selector.getPage() - 1, selector.getLimit());
+        PageRequest page = PageRequest.of(selector.getPage() - 1, selector.getLimit(), Sort.by(Sort.Direction.DESC, "createdAt"));
         List<Clothe> clothes = clotheRepository.findAll(selector, page).toList();
 
         Customer customer = null;
