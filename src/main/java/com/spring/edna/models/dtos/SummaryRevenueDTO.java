@@ -7,6 +7,6 @@ import lombok.Data;
 @Data
 public class SummaryRevenueDTO {
 
-    private long weekRevenue;
-    private double percentageChange;
+    private long revenue;
+    private double variation;
 }
