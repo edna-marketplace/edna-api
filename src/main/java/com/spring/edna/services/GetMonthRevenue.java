@@ -28,6 +28,7 @@ public class GetMonthRevenue {
                 .orElseThrow(() -> new EdnaException("Loja não encontrada", HttpStatus.BAD_REQUEST));
 
         LocalDateTime now = LocalDateTime.now();
+        double variation = 0;
 
         LocalDate firstDayOfCurrentMonth = now.withDayOfMonth(1).toLocalDate();
         LocalDateTime startOfCurrentMonth = firstDayOfCurrentMonth.atStartOfDay();
@@ -45,16 +46,23 @@ public class GetMonthRevenue {
         int lastMonthTotal = Optional.ofNullable(
                 clotheOrderRepository.getRevenueInPeriod(store, startOfLastMonth, endOfLastMonth)).orElse(0);
 
-        // Calcula com double
         double currentMonthRevenue = currentMonthTotal * 0.86;
         double lastMonthRevenue = lastMonthTotal * 0.86;
 
         long currentMonthRevenueRounded = Math.round(currentMonthRevenue);
         long lastMonthRevenueRounded = Math.round(lastMonthRevenue);
 
-        double variation = (lastMonthRevenueRounded > 0)
-                ? ((double) (currentMonthRevenueRounded - lastMonthRevenueRounded) / lastMonthRevenueRounded) * 100
-                : 100;
+//        double variation = (lastMonthRevenueRounded > 0)
+//                ? ((double) (currentMonthRevenueRounded - lastMonthRevenueRounded) / lastMonthRevenueRounded) * 100
+//                : 100;
+
+        if (lastMonthRevenueRounded == 0 && currentMonthRevenueRounded == 0) {
+            variation = 0;
+        } else if (lastMonthRevenueRounded > 0) {
+            variation = ((double) (currentMonthRevenueRounded - lastMonthRevenueRounded) / lastMonthRevenueRounded) * 100;
+        } else {
+            variation = 100;
+        }
 
         double variationRounded = Math.round(variation * 100.0) / 100.0;
 

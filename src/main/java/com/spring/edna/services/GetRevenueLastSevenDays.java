@@ -29,6 +29,7 @@ public class GetRevenueLastSevenDays {
                 .orElseThrow(() -> new EdnaException("Loja não encontrada", HttpStatus.BAD_REQUEST));
 
         LocalDateTime now = LocalDateTime.now();
+        double variation = 0;
 
         LocalDateTime startOfCurrentWeek = now.with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 1)
                 .toLocalDate().atStartOfDay();
@@ -46,18 +47,26 @@ public class GetRevenueLastSevenDays {
                 clotheOrderRepository.getRevenueInPeriod(store, startOfLastWeek, endOfLastWeek)
         ).orElse(0);
 
-        double currentWeekRevenueRaw = currentWeekTotal * 0.86;
-        double lastWeekRevenueRaw = lastWeekTotal * 0.86;
+        double currentWeekRevenue = currentWeekTotal * 0.86;
+        double lastWeekRevenue = lastWeekTotal * 0.86;
 
-        long currentWeekRevenue = Math.round(currentWeekRevenueRaw);
-        long lastWeekRevenue = Math.round(lastWeekRevenueRaw);
+        long currentWeekRevenueRounded = Math.round(currentWeekRevenue);
+        long lastWeekRevenueRounded = Math.round(lastWeekRevenue);
 
-        double variation = (lastWeekRevenue > 0)
-                ? ((double)(currentWeekRevenue - lastWeekRevenue) / lastWeekRevenue) * 100
-                : 100;
+//        variation = (lastWeekRevenue > 0)
+//                ? ((double)(currentWeekRevenue - lastWeekRevenue) / lastWeekRevenue) * 100
+//                : 100;
+
+        if (lastWeekRevenueRounded == 0 && currentWeekRevenueRounded == 0) {
+            variation = 0;
+        } else if (lastWeekRevenueRounded > 0) {
+            variation = ((double) (currentWeekRevenueRounded - lastWeekRevenueRounded) / lastWeekRevenueRounded) * 100;
+        } else {
+            variation = 100;
+        }
 
         long variationRounded = Math.round(variation);
 
-        return new SummaryRevenueDTO(currentWeekRevenue, variationRounded);
+        return new SummaryRevenueDTO(currentWeekRevenueRounded, variationRounded);
     }
 }

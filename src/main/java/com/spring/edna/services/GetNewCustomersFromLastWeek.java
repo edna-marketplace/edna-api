@@ -23,6 +23,7 @@ public class GetNewCustomersFromLastWeek {
     public WeekCustomerDTO execute(String storeId) throws EdnaException {
 
         LocalDateTime now = LocalDateTime.now();
+        double variation = 0;
 
         LocalDateTime startOfCurrentWeek = now.with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 1).toLocalDate().atStartOfDay();
         LocalDateTime endOfCurrentWeek = startOfCurrentWeek.plusDays(6).withHour(23).withMinute(59).withSecond(59);
@@ -33,9 +34,13 @@ public class GetNewCustomersFromLastWeek {
         long lastWeekCustomers = clotheOrderRepository.countNewCustomersByStoreIdAndDateRange(storeId, startOfLastWeek, endOfLastWeek);
         long currentWeekCustomers = clotheOrderRepository.countNewCustomersByStoreIdAndDateRange(storeId, startOfCurrentWeek, endOfCurrentWeek);
 
-        double variation = (lastWeekCustomers > 0)
-                ? ((double) (currentWeekCustomers - lastWeekCustomers) / lastWeekCustomers) * 100
-                : 100;
+        if (lastWeekCustomers == 0 && currentWeekCustomers == 0) {
+            variation = 0;
+        } else if (lastWeekCustomers > 0) {
+            variation = ((double) (currentWeekCustomers - lastWeekCustomers) / lastWeekCustomers) * 100;
+        } else {
+            variation = 100;
+        }
 
         return new WeekCustomerDTO(currentWeekCustomers, variation);
     }

@@ -13,5 +13,5 @@ public class RevenuePeriodDTO {
 
     private Integer year;
     private Integer month;
-    private Long revenuePeriod;
+    private Long revenue;
 }
