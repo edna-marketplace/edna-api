@@ -8,6 +8,6 @@ import lombok.Data;
 public class WeekCustomerDTO {
 
     private long newCustomers;
-    private double variation;
+    private double percentageChange;
 
 }
