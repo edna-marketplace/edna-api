@@ -30,6 +30,8 @@ public class StoreSelector extends BaseSelector implements Specification<Store> 
 
         predicates.add(cb.equal(root.get("deleted"), false));
 
+        predicates.add(cb.equal(root.get("stripeOnboardingCompleted"), true));
+
         if(this.getName() != null && !this.getName().trim().isEmpty()) {
             predicates.add(cb.like(cb.lower(root.get("name")), "%" + this.getName() + "%"));
         }

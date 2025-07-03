@@ -17,4 +17,6 @@ public interface StoreRepository extends JpaRepository<Store, String>, JpaSpecif
     Optional<Store> findByStripeAccountId(String stripeAccountId);
 
     List<Store> findByNameOrEmailOrCnpjOrPhone(String name, String email, String cnpj, String phone);
+
+    List<Store> findByEmailOrPhone(String email, String phone);
 }

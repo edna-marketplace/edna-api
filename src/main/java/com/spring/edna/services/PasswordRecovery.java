@@ -3,6 +3,7 @@ package com.spring.edna.services;
 import com.spring.edna.exception.EdnaException;
 import com.spring.edna.models.entities.Customer;
 import com.spring.edna.models.entities.Store;
+import com.spring.edna.models.entities.TwoFactorOTP;
 import com.spring.edna.models.repositories.CustomerRepository;
 import com.spring.edna.models.repositories.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Random;
 
 @Service
@@ -32,29 +34,42 @@ public class PasswordRecovery {
     public void execute(String email) throws EdnaException {
         Store store = storeRepository.findByEmail(email).orElse(null);
 
-        Customer customer = null;
-
-        if (store == null) {
-            customer = customerRepository.findByEmail(email).orElse(null);
-
-            if (customer == null) {
-                throw new EdnaException("E-mail não cadastrado na plataforma.", HttpStatus.BAD_REQUEST);
+        if (store != null) {
+            if (store.isDeleted()) {
+                throw new EdnaException("Essa conta foi desativada.", HttpStatus.BAD_REQUEST);
             }
+
+            handleStoreNewPassword(store);
+
+            return;
         }
 
+        Customer customer = customerRepository.findByEmail(email)
+                .orElseThrow(() -> new EdnaException("Usuário não encontrado.", HttpStatus.BAD_REQUEST));
+
+        if (customer.isDeleted()) {
+            throw new EdnaException("Essa conta foi desativada.", HttpStatus.BAD_REQUEST);
+        }
+
+        handleCustomerNewPassword(customer);
+    }
+
+    private void handleStoreNewPassword(Store store) {
         String newPassword = generateRandomPassword();
 
-        if (store != null) {
-            store.setPassword(passwordEncoder.encode(newPassword));
+        store.setPassword(passwordEncoder.encode(newPassword));
+        storeRepository.save(store);
 
-            storeRepository.save(store);
-        } else {
-            customer.setPassword(passwordEncoder.encode(newPassword));
+        sendPasswordEmail(store.getEmail(), newPassword);
+    }
 
-            customerRepository.save(customer);
-        }
+    private void handleCustomerNewPassword(Customer customer) {
+        String newPassword = generateRandomPassword();
 
-        sendPasswordEmail(email, newPassword);
+        customer.setPassword(passwordEncoder.encode(newPassword));
+        customerRepository.save(customer);
+
+        sendPasswordEmail(customer.getEmail(), newPassword);
     }
 
     private String generateRandomPassword() {
@@ -62,7 +77,7 @@ public class PasswordRecovery {
         StringBuilder password = new StringBuilder();
         Random random = new Random();
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 14; i++) {
             password.append(chars.charAt(random.nextInt(chars.length())));
         }
 

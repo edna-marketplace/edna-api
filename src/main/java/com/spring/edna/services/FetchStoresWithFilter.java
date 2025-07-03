@@ -18,6 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -52,7 +53,7 @@ public class FetchStoresWithFilter {
 
         long totalCount = (int) storeRepository.count(selector);
 
-        PageRequest page = PageRequest.of(selector.getPage() - 1, selector.getLimit());
+        PageRequest page = PageRequest.of(selector.getPage() - 1, selector.getLimit(), Sort.by(Sort.Direction.DESC, "createdAt"));
         List<Store> stores = storeRepository.findAll(selector, page).toList();
 
         Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new EdnaException(
@@ -74,9 +75,9 @@ public class FetchStoresWithFilter {
         List<StoreSummaryDTO> storesSummaries = new ArrayList<>();
 
         for (Store store : stores) {
-//            String distanceInKilometers = customerCoordinates != null
-//                    ? getDistanceBetweenCustomerAndStore.execute(customerCoordinates, store.getAddress())
-//                    : null;
+            String distanceInKilometers = customerCoordinates != null
+                    ? getDistanceBetweenCustomerAndStore.execute(customerCoordinates, store.getAddress())
+                    : null;
 
             boolean isFavorite = customer.getFavoriteStores().contains(store);
             List<ClotheOrder> completedOrders = store.getClotheOrders()
@@ -90,7 +91,7 @@ public class FetchStoresWithFilter {
                     store.getName(),
                     StoreRatingUtils.calculateAverageRating(completedOrders),
                     store.getTargetCustomer(),
-                    null,
+                    distanceInKilometers,
                     isFavorite
             );
 
