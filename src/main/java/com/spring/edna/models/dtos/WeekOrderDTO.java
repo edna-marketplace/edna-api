@@ -8,5 +8,5 @@ import lombok.Data;
 public class WeekOrderDTO {
 
     private long newOrders;
-    private double variation;
+    private double percentageChange;
 }
