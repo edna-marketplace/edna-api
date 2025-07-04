@@ -24,30 +24,30 @@ public class StripeWebhookController {
     @Transactional
     @PostMapping("/stripe")
     public ResponseEntity<String> handleStripeWebhook(
-            @RequestBody String payload)
-//            @RequestHeader("Stripe-Signature") String sigHeader)
+            @RequestBody String payload,
+            @RequestHeader("Stripe-Signature") String sigHeader)
     {
 
         System.out.println("Webhook received: " + payload);
-//        System.out.println("Stripe signature: " + sigHeader);
+        System.out.println("Stripe signature: " + sigHeader);
 
         try {
-//            Event event = Webhook.constructEvent(payload, sigHeader, webhookSecret);
+            Event event = Webhook.constructEvent(payload, sigHeader, webhookSecret);
 
-//            if ("account.updated".equals(event.getType())) {
-//                String accountId = event.getAccount();
-//
-//                Account account = Account.retrieve(accountId);
-//
-//                if (account.getDetailsSubmitted() && account.getChargesEnabled()) {
-//                    Store store = storeRepository.findByStripeAccountId(accountId).orElse(null);
-//
-//                    if (store != null) {
-//                        store.setStripeOnboardingCompleted(true);
-//                        storeRepository.save(store);
-//                    }
-//                }
-//            }
+            if ("account.updated".equals(event.getType())) {
+                String accountId = event.getAccount();
+
+                Account account = Account.retrieve(accountId);
+
+                if (account.getDetailsSubmitted() && account.getChargesEnabled()) {
+                    Store store = storeRepository.findByStripeAccountId(accountId).orElse(null);
+
+                    if (store != null) {
+                        store.setStripeOnboardingCompleted(true);
+                        storeRepository.save(store);
+                    }
+                }
+            }
 
             return ResponseEntity.ok("Webhook received");
         } catch (Exception e) {
