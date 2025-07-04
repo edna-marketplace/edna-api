@@ -13,4 +13,5 @@ public class StoreOrderDTO {
     private OrderStatus orderStatus;
     private Integer priceInCents;
     private String createdAt;
+    private String paymentIntentId;
 }

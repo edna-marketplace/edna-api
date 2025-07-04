@@ -5,6 +5,7 @@ import com.spring.edna.models.repositories.StoreRepository;
 import com.stripe.model.Account;
 import com.stripe.model.Event;
 import com.stripe.net.Webhook;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +21,13 @@ public class StripeWebhookController {
     @Value("${stripe.webhook.secret}")
     private String webhookSecret;
 
+    @Transactional
     @PostMapping("/stripe")
     public ResponseEntity<String> handleStripeWebhook(
             @RequestBody String payload,
             @RequestHeader("Stripe-Signature") String sigHeader) {
+
+        System.out.println("Webhook received: " + payload);
 
         try {
             Event event = Webhook.constructEvent(payload, sigHeader, webhookSecret);
@@ -31,7 +35,10 @@ public class StripeWebhookController {
             if ("account.updated".equals(event.getType())) {
                 String accountId = event.getAccount();
 
+                System.out.println("Account ID: " + accountId);
+
                 Account account = Account.retrieve(accountId);
+                System.out.println("Event type: " + event.getType());
 
                 if (account.getDetailsSubmitted() && account.getChargesEnabled()) {
                     Store store = storeRepository.findByStripeAccountId(accountId).orElse(null);
