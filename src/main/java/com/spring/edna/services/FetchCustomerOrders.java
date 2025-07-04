@@ -65,8 +65,7 @@ public class FetchCustomerOrders {
                     order.getRating(),
                     order.getStatus() == OrderStatus.AWAITING_WITHDRAWAL ?
                             AddressMapper.toAddressDetailsDTO(order.getStore().getAddress())
-                            : null,
-                    order.getPaymentIntentId()
+                            : null
             );
 
             customerOrders.add(dto);

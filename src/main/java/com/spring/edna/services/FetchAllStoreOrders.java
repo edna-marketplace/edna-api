@@ -36,7 +36,8 @@ public class FetchAllStoreOrders {
                     order.getClothe().getName(),
                     order.getStatus(),
                     order.getClothe().getPriceInCents(),
-                    order.getCreatedAt().toLocalDate().toString()
+                    order.getCreatedAt().toLocalDate().toString(),
+                    order.getPaymentIntentId()
             );
 
             storeOrders.add(dto);
