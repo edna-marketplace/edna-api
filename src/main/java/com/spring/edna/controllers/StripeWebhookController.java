@@ -28,9 +28,6 @@ public class StripeWebhookController {
             @RequestHeader("Stripe-Signature") String sigHeader)
     {
 
-        System.out.println("Webhook received: " + payload);
-        System.out.println("Stripe signature: " + sigHeader);
-
         try {
             Event event = Webhook.constructEvent(payload, sigHeader, webhookSecret);
 
@@ -51,7 +48,6 @@ public class StripeWebhookController {
 
             return ResponseEntity.ok("Webhook received");
         } catch (Exception e) {
-            System.out.println("Webhook error: " + e.getMessage());
             return ResponseEntity.badRequest().body("Webhook error" +  e.getMessage());
         }
     }
