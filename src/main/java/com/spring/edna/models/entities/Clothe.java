@@ -30,7 +30,7 @@ public class Clothe {
     private String name;
 
     @Nullable
-    @Size(max = 300)
+    @Size(max = 600)
     private String description;
 
     @Nullable

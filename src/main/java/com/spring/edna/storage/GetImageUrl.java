@@ -29,6 +29,10 @@ public class GetImageUrl {
     private static final long BUFFER_TIME_MS = 5 * 60 * 1000; // 5 minutes
 
     public String execute(String imageUniqueName) {
+        if (imageUniqueName == null || imageUniqueName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Image unique name cannot be null or empty");
+        }
+
         CachedPresignedUrl cachedUrl = urlCache.get(imageUniqueName);
         long currentTime = new Date().getTime();
 

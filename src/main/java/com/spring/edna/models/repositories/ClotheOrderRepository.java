@@ -4,6 +4,9 @@ import com.spring.edna.models.dtos.RevenuePeriodDTO;
 import com.spring.edna.models.entities.ClotheOrder;
 import com.spring.edna.models.entities.Store;
 import com.spring.edna.models.enums.OrderStatus;
+import com.spring.edna.models.selectors.ClotheOrderSelector;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -59,5 +62,21 @@ public interface ClotheOrderRepository extends JpaRepository<ClotheOrder, String
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end);
 
-
+    @Query("SELECT c FROM ClotheOrder c WHERE " +
+            "(:#{#selector.customerName} IS NULL OR UPPER(c.customer.name) LIKE UPPER(CONCAT('%', :#{#selector.customerName}, '%'))) AND " +
+            "(:#{#selector.shouldApplyStatusFilter()} = false OR c.status = :#{#selector.orderStatus}) AND " +
+            "(:#{#selector.startDate} IS NULL OR c.createdAt >= :#{#selector.startDate}) AND " +
+            "(:#{#selector.endDate} IS NULL OR c.createdAt <= :#{#selector.endDate}) AND " +
+            "(:#{#selector.clotheName} IS NULL OR UPPER(c.clothe.name) LIKE UPPER(CONCAT('%', :#{#selector.clotheName}, '%'))) AND " +
+            "(:#{#selector.price} IS NULL OR c.clothe.priceInCents = :#{#selector.price}) AND " +
+            "(:#{#selector.storeId} IS NULL OR c.store.id = :#{#selector.storeId}) AND " +
+            "(:#{#selector.customerId} IS NULL OR c.customer.id = :#{#selector.customerId}) AND " +
+            "(:#{#selector.clotheId} IS NULL OR c.clothe.id = :#{#selector.clotheId}) " +
+            "ORDER BY CASE c.status " +
+            "WHEN 'PENDING' THEN 1 " +
+            "WHEN 'AWAITING_WITHDRAWAL' THEN 2 " +
+            "WHEN 'COMPLETED' THEN 3 " +
+            "WHEN 'CANCELED' THEN 4 " +
+            "ELSE 5 END, c.createdAt DESC")
+    Page<ClotheOrder> findAllWithStatusOrder(@Param("selector") ClotheOrderSelector selector, Pageable pageable);
 }

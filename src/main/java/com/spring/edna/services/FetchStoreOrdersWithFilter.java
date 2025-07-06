@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -34,10 +36,9 @@ public class FetchStoreOrdersWithFilter {
         int totalCount = (int) clotheOrderRepository.count(selector);
 
         PageRequest page = PageRequest.of(selector.getPage() - 1, selector.getLimit());
-        List<ClotheOrder> clotheOrders = clotheOrderRepository.findAll(selector, page).toList();
+        List<ClotheOrder> clotheOrders = clotheOrderRepository.findAllWithStatusOrder(selector, page).toList();
 
         PaginationMetaDTO meta = new PaginationMetaDTO(selector.getPage(), clotheOrders.size(), totalCount);
-
         List<StoreOrderDTO> storeOrders = toStoreOrderDTOList(clotheOrders);
 
         return new FetchStoreOrdersWithFilterResponse(storeOrders, meta);

@@ -31,7 +31,7 @@ public class ClotheOrderSelector extends BaseSelector implements Specification<C
             predicates.add(cb.like(root.get("customer").get("name"), "%%" + this.getCustomerName() + "%%"));
         }
 
-        if (this.getOrderStatus() != null) {
+        if (this.getOrderStatus() != null && this.getOrderStatus() != OrderStatus.ALL) {
             predicates.add(cb.equal(root.get("status"), this.getOrderStatus()));
         }
 
@@ -58,5 +58,9 @@ public class ClotheOrderSelector extends BaseSelector implements Specification<C
         }
 
         return cb.and(predicates.toArray(new Predicate[0]));
+    }
+
+    public boolean shouldApplyStatusFilter() {
+        return this.orderStatus != null && this.orderStatus != OrderStatus.ALL;
     }
 }
