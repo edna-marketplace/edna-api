@@ -65,7 +65,7 @@ class ToggleSaveClotheTest {
     void testToggleSaveClothe$successAddClothe() throws EdnaException {
         when(customerRepository.findById("user-id")).thenReturn(Optional.of(customer));
         when(clotheRepository.findById("clothe-id")).thenReturn(Optional.of(clothe));
-        when(savedClotheRepository.findByClothe(clothe)).thenReturn(Optional.empty());
+        when(savedClotheRepository.findByClotheAndCustomerId(clothe, "user-id")).thenReturn(Optional.empty());
 
         HttpStatus result = toggleSaveClotheService.execute("clothe-id", "user-id");
 
@@ -79,7 +79,7 @@ class ToggleSaveClotheTest {
     void testToggleSaveClothe$successRemoveClothe() throws EdnaException {
         when(customerRepository.findById("user-id")).thenReturn(Optional.of(customer));
         when(clotheRepository.findById("clothe-id")).thenReturn(Optional.of(clothe));
-        when(savedClotheRepository.findByClothe(clothe)).thenReturn(Optional.of(savedClothe));
+        when(savedClotheRepository.findByClotheAndCustomerId(clothe, "user-id")).thenReturn(Optional.of(savedClothe));
 
         HttpStatus result = toggleSaveClotheService.execute("clothe-id", "user-id");
 
