@@ -42,7 +42,7 @@ public interface ClotheOrderRepository extends JpaRepository<ClotheOrder, String
                 FROM ClotheOrder co
                 WHERE co.store.id = :storeId
                 AND co.createdAt BETWEEN :start AND :end
-                AND co.status = 'PENDING'
+                AND co.status = 'COMPLETED'
                 AND co.isFirstOrder = true
             """)
     long countNewCustomersByStoreIdAndDateRange(
