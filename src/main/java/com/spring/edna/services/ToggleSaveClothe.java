@@ -27,7 +27,7 @@ public class ToggleSaveClothe {
         Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new EdnaException("Esse cliente não existe.", HttpStatus.BAD_REQUEST));
         Clothe clothe = clotheRepository.findById(clotheId).orElseThrow(() -> new EdnaException("Essa peça não existe.", HttpStatus.BAD_REQUEST));
 
-        SavedClothe savedClotheInDB = savedClotheRepository.findByClothe(clothe).orElse(null);
+        SavedClothe savedClotheInDB = savedClotheRepository.findByClotheAndCustomerId(clothe, customerId).orElse(null);
 
         if (savedClotheInDB != null) {
             savedClotheRepository.delete(savedClotheInDB);

@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface SavedClotheRepository extends JpaRepository<SavedClothe, String> {
-    Optional<SavedClothe> findByClothe(Clothe clothe);
+    Optional<SavedClothe> findByClotheAndCustomerId(Clothe clothe, String customerId);
 
     @Query("""
             SELECT sc.clothe.id, sc.clothe.name, sc.clothe.priceInCents, COUNT(sc.customer.id)
