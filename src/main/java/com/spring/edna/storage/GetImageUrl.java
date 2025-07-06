@@ -26,15 +26,23 @@ public class GetImageUrl {
 
     private final Map<String, CachedPresignedUrl> urlCache = new ConcurrentHashMap<>();
 
-    private static final long BUFFER_TIME_MS = 5 * 60 * 1000; // 5 minutes
+    private static final long CACHE_EXPIRATION_MS = 60 * 60 * 1000; // 1 hora
+
+    private static final long BUFFER_TIME_MS = 5 * 60 * 1000; // 5 minutos
 
     public String execute(String imageUniqueName) {
+
         if (imageUniqueName == null || imageUniqueName.trim().isEmpty()) {
-            throw new IllegalArgumentException("Image unique name cannot be null or empty");
+            throw new IllegalArgumentException("Nome da imagem não pode ser nulo ou vazio");
         }
 
         CachedPresignedUrl cachedUrl = urlCache.get(imageUniqueName);
-        long currentTime = new Date().getTime();
+        long currentTime = System.currentTimeMillis();
+
+        if (cachedUrl != null && cachedUrl.getExpirationTime() < currentTime) {
+            urlCache.remove(imageUniqueName);
+            cachedUrl = null;
+        }
 
         if(cachedUrl != null && (cachedUrl.getExpirationTime() - currentTime) > BUFFER_TIME_MS) {
             return cachedUrl.getUrl();
@@ -42,12 +50,13 @@ public class GetImageUrl {
 
         String newUrl = generateUrl(imageUniqueName);
 
-        urlCache.put(imageUniqueName, new CachedPresignedUrl(newUrl, currentTime + 3600 * 1000));
+        urlCache.put(imageUniqueName, new CachedPresignedUrl(newUrl, currentTime + CACHE_EXPIRATION_MS));
+
         return newUrl;
     }
 
     private String generateUrl(String imageUniqueName) {
-        Date expiration = new Date(System.currentTimeMillis() + 3600 * 1000); // 1 hour
+        Date expiration = new Date(System.currentTimeMillis() + CACHE_EXPIRATION_MS); // 1 hour
 
         GeneratePresignedUrlRequest presignedUrlRequest =
                 new GeneratePresignedUrlRequest(bucketName, imageUniqueName)

@@ -21,8 +21,6 @@ public class GetDistanceBetweenCustomerAndStore {
 
     private static final long CACHE_EXPIRATION_MS = 60 * 60 * 1000; // 1 hora
 
-    private static final long BUFFER_TIME_MS = 5 * 60 * 1000; // 5 minutos
-
     private static final double COORDINATE_THRESHOLD_METERS = 500.0;
 
     public String execute(CoordinatesDTO customerCoordinates, Address storeAddress) {
@@ -36,11 +34,18 @@ public class GetDistanceBetweenCustomerAndStore {
         String customerCoordinatesString = customerCoordinates.getLatitude() + "," + customerCoordinates.getLongitude();
         String storeAddressString = formatStoreAddress(storeAddress);
 
-        String distance = googleDistanceMatrix.getDistance(customerCoordinatesString, storeAddressString);
+        try {
+            String distance = googleDistanceMatrix.getDistance(customerCoordinatesString, storeAddressString);
 
-        storeInCache(customerCoordinates, storeKey, distance);
+            if (distance != null && !distance.isEmpty()) {
+                storeInCache(customerCoordinates, storeKey, distance);
+                return distance;
+            }
 
-        return distance;
+            return null;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     private String findCachedDistance(CoordinatesDTO customerCoordinates, String storeKey) {
@@ -55,7 +60,8 @@ public class GetDistanceBetweenCustomerAndStore {
                 continue;
             }
 
-            if (currentTime > cachedItem.getExpirationTime() - BUFFER_TIME_MS) {
+            if (currentTime > cachedItem.getExpirationTime()) {
+                distanceCache.remove(entry.getKey());
                 continue;
             }
 
