@@ -16,12 +16,6 @@ public class DeleteClothe {
     @Autowired
     private ClotheRepository clotheRepository;
 
-    @Autowired
-    private ClotheImageRepository clotheImageRepository;
-
-    @Autowired
-    private DeleteImageFromR2 deleteImageFromR2;
-
     public HttpStatus execute(String clotheId, String storeId) throws EdnaException {
         Clothe clothe = clotheRepository.findById(clotheId).orElseThrow(() -> new EdnaException("Peça não encontrada.", HttpStatus.BAD_REQUEST));
 
@@ -29,17 +23,9 @@ public class DeleteClothe {
             throw new EdnaException("Você só pode deletar peças da sua loja.", HttpStatus.BAD_REQUEST);
         }
 
-        for (ClotheImage clotheImage : clothe.getImages()) {
-            deleteClotheImage(clotheImage);
-        }
-
-        clotheRepository.delete(clothe);
+        clothe.setDeleted(true);
+        clotheRepository.save(clothe);
 
         return HttpStatus.NO_CONTENT;
-    }
-
-    private void deleteClotheImage(ClotheImage clotheImage) {
-        clotheImageRepository.deleteById(clotheImage.getId());
-        deleteImageFromR2.execute(clotheImage.getUrl());
     }
 }

@@ -20,6 +20,7 @@ public interface SavedClotheRepository extends JpaRepository<SavedClothe, String
             JOIN Clothe c ON sc.clothe.id = c.id
             WHERE sc.createdAt BETWEEN :startOfMonth AND :endOfMonth
               AND c.ordered = false
+              AND c.deleted = false
             GROUP BY sc.clothe.id, sc.clothe.name, sc.clothe.priceInCents
             ORDER BY COUNT(sc.customer.id) DESC
             """)
