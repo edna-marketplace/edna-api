@@ -203,8 +203,8 @@ INSERT INTO public.clothe_order (id, created_at, status, clothe_id, customer_id,
 ('order-cr2', CURRENT_TIMESTAMP, 'COMPLETED', 't3i4j5k6-t789-0fgh-i34j-k567l8m901n2', '8g0h9i1j-1f7g-4f65-e3h8-605h2he0ig76', '8a3d0b3f-ce6c-4b18-b1d9-9d3456d9e743', false, 2),
 ('order-cr3', CURRENT_TIMESTAMP, 'COMPLETED', 't4j5k6l7-u890-1ghi-j45k-l678m9n012o3', 'd290f1ee-6c54-4b01-90e6-d701748f0851', '8a3d0b3f-ce6c-4b18-b1d9-9d3456d9e743', false, 1),
 -- Orders for Brecho da Edna (8ca95f23-217b-485e-bdfa-35fa862b925c) - required 3 orders
-('order-be1', CURRENT_TIMESTAMP, 'CANCELED', 'f1g2h3i4-n012-3jkl-h78o-j012k3l456m0', '2a6fa6dd-8b1f-4d3d-97cb-20adcf11cc74', '8ca95f23-217b-485e-bdfa-35fa862b925c', false, NULL),
-('order-be2', CURRENT_TIMESTAMP, 'COMPLETED', 'f3i4j5k6-p234-5lmn-j90q-l234m5n678o2', '3b9f0b7c-a7e2-47c5-bc88-9f2522d6e78e', '8ca95f23-217b-485e-bdfa-35fa862b925c', false, 5),
+('order-be1', '2025-05-08 14:30:00', 'CANCELED', 'f1g2h3i4-n012-3jkl-h78o-j012k3l456m0', '2a6fa6dd-8b1f-4d3d-97cb-20adcf11cc74', '8ca95f23-217b-485e-bdfa-35fa862b925c', false, NULL),
+('order-be2', '2025-06-08 14:30:00', 'COMPLETED', 'f3i4j5k6-p234-5lmn-j90q-l234m5n678o2', '3b9f0b7c-a7e2-47c5-bc88-9f2522d6e78e', '8ca95f23-217b-485e-bdfa-35fa862b925c', false, 5),
 ('order-be3', CURRENT_TIMESTAMP, 'AWAITING_WITHDRAWAL', 'g3j4k5l6-s567-8opq-m23t-o567p8q901r5', '4c8e1d08-5ae7-4b66-8c6b-563d44f872ed', '8ca95f23-217b-485e-bdfa-35fa862b925c', false, NULL);
 
 
